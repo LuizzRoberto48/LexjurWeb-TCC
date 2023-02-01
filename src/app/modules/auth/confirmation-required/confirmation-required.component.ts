@@ -9,9 +9,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class AuthConfirmationRequiredComponent
 {
-    /**
-     * Constructor
-     */
+    
     constructor()
     {
     }

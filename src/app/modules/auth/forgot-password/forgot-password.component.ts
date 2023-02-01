@@ -4,6 +4,7 @@ import { finalize } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
+import { LJError } from 'app/core/errors/error.model';
 
 @Component({
   selector: 'auth-forgot-password',
@@ -40,13 +41,8 @@ export class AuthForgotPasswordComponent implements OnInit {
       return;
     }
 
-    // Disable the form
     this.forgotPasswordForm.disable();
-
-    // Hide the alert
     this.showAlert = false;
-
-    // Forgot password
     this._authService.forgotPassword(this.forgotPasswordForm.get('email').value)
       .pipe(
         finalize(() => {
@@ -60,13 +56,14 @@ export class AuthForgotPasswordComponent implements OnInit {
           next: () => {
             this.alert = {
               type: 'success',
-              message: 'Password reset sent! You\'ll receive an email if you are registered on our system.'
+              message: 'Você receberá um e-mail para alterar sua senha.'
             };
           },
-          error: () => {
+          error: (error) => {
+            const pError:LJError = error.error
             this.alert = {
               type: 'error',
-              message: 'Email does not found! Are you sure you are already a member?'
+              message: pError.message
             };
           }
         }
