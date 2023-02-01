@@ -50,7 +50,6 @@ export class AuthSignInComponent implements OnInit {
       next: (res: any) => {
         const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('dashboard') || '/dashboard';
         this._router.navigateByUrl(redirectURL);
-        console.log(res)
         this.signInForm.enable();
         this.signInNgForm.resetForm();
       },

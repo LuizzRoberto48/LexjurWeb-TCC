@@ -26,6 +26,10 @@ export class AuthService {
     return localStorage.getItem('accessToken') ?? '';
   }
 
+  get authUser(): TokenInfo {
+    return <TokenInfo>this.decodeUserToken(this.accessToken)
+  }
+
   forgotPassword(email: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('email', email);
@@ -48,9 +52,6 @@ export class AuthService {
 
         // Set the authenticated flag to true
         this._authenticated = true;
-
-        // Store the user on the user service
-        this._userService.user = response.user;
 
         // Return a new observable with the response
         return of(response);
@@ -91,15 +92,15 @@ export class AuthService {
     return of(true);
   }
 
-  decodeUserToken(token:string):TokenInfo {
+  decodeUserToken(token: string): TokenInfo {
     try {
       return jwt_decode(token);
-    } catch(Error) {
+    } catch (Error) {
       return null;
     }
   }
 
-  isTokenExpired(expToken:number) {
+  isTokenExpired(expToken: number) {
     const currentDateTime = DateTime.now().toFormat('HH:mm:ss')
     const expiresDateTime = DateTime.fromSeconds(expToken).toFormat('HH:mm:ss');
     return expiresDateTime > currentDateTime ? false : true

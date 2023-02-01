@@ -4,78 +4,38 @@ import { BooleanInput } from '@angular/cdk/coercion';
 import { Subject, takeUntil } from 'rxjs';
 import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
+import { AuthService } from 'app/core/auth/auth.service';
+import { TokenInfo } from 'app/core/auth/models/token-info';
 
 @Component({
-    selector       : 'user',
-    templateUrl    : './user.component.html',
-    encapsulation  : ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    exportAs       : 'user'
+  selector: 'user',
+  templateUrl: './user.component.html',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  exportAs: 'user'
 })
-export class UserComponent implements OnInit, OnDestroy
-{
-    /* eslint-disable @typescript-eslint/naming-convention */
-    static ngAcceptInputType_showAvatar: BooleanInput;
-    /* eslint-enable @typescript-eslint/naming-convention */
+export class UserComponent implements OnInit {
 
-    @Input() showAvatar: boolean = true;
-    user: User = { email:'phil@gmail', id:'1', name:'philipe'};
+  static ngAcceptInputType_showAvatar: BooleanInput;
 
-    private _unsubscribeAll: Subject<any> = new Subject<any>();
-
-    /**
-     * Constructor
-     */
-    constructor(
-        private _changeDetectorRef: ChangeDetectorRef,
-        private _router: Router,
-        private _userService: UserService
-    )
-    {
-    }
-
-    ngOnInit(): void
-    {
-       /*  // Subscribe to user changes
-        this._userService.user$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((user: User) => {
-                this.user = user;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            }); */
-    }
-
+  @Input() showAvatar: boolean = true;
   
-    ngOnDestroy(): void
-    {
-        // Unsubscribe from all subscriptions
-        //this._unsubscribeAll.next(null);
-        //this._unsubscribeAll.complete();
-    }
+  constructor(
+    private _router: Router,
+    private _authService:AuthService
+  ) {
+  }
+  
+  get authUser():TokenInfo {
+    return this._authService.authUser
+  }
+  
+  ngOnInit(): void {
 
- 
-    updateUserStatus(status: string): void
-    {
-       /*  // Return if user is not available
-        if ( !this.user )
-        {
-            return;
-        }
+  }
 
-        // Update the user
-        this._userService.update({
-            ...this.user,
-            status
-        }).subscribe(); */
-    }
-
-    /**
-     * Sign out
-     */
-    signOut(): void
-    {
-        this._router.navigate(['/sign-out']);
-    }
+  signOut(): void {
+    this._authService.signOut()
+    this._router.navigateByUrl('sign-in')
+  }
 }
