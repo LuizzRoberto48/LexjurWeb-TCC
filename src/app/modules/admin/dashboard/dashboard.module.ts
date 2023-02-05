@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
+import { MaterialModule } from 'app/core/material.module';
 import { DashboardComponent } from './dashboard.component';
 
 
@@ -17,7 +18,8 @@ const exampleRoutes: Route[] = [
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(exampleRoutes)
+    RouterModule.forChild(exampleRoutes),
+    MaterialModule
   ]
 })
 export class DashboardModule {

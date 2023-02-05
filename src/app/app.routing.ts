@@ -30,6 +30,8 @@ export const appRoutes: Route[] = [
     component: LayoutComponent,
     children: [
       { path: 'dashboard', loadChildren: () => import('app/modules/admin/dashboard/dashboard.module').then(m => m.DashboardModule) },
+      { path: 'processos', loadChildren: () => import('app/modules/admin/processes/processes.module').then(m => m.ProcessesModule) },
     ]
-  }
+  },
+  
 ];

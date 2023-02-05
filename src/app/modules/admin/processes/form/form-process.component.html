@@ -1,0 +1,317 @@
+<div class="xl:col-span-2 flex flex-col flex-auto bg-card overflow-hidden pt-4">
+  <div class="overflow-x-auto mx-6" style="padding: 20px;">
+    <form>
+      <div class="grid w-full mt-10 ">
+        <h1 class="font-semibold tracking-wide uppercase text-blue-800">Infomações Processo</h1>
+        <hr>
+        <div class="grid grid-cols-1 ">
+          <div class="flex flex-col gt-xs:flex-row">
+            <mat-checkbox class="mb-2" [checked]="true" [color]="'primary'">
+              CNJ
+            </mat-checkbox>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 ">
+          <div class="flex flex-col ">
+            <mat-form-field class="w-full">
+              <mat-label>Número do processo</mat-label>
+              <input matInput type="text">
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="w-full">
+              <mat-label>Número Antigo do Processo</mat-label>
+              <input matInput type="text">
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pr-3">
+              <mat-label>Processo eletrônico</mat-label>
+              <mat-select [placeholder]="'Country / Region'">
+                <mat-option value="country-1">Sim</mat-option>
+                <mat-option value="country-2">Não</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Sistema eletrônico</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Creta</mat-option>
+                <mat-option value="language-2">E-Proc</mat-option>
+                <mat-option value="language-3">E-SAJ</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Área do direito</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Administrativo</mat-option>
+                <mat-option value="language-2">Ambiental</mat-option>
+                <mat-option value="language-3">Cível</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Sub área do direito</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Administrativo</mat-option>
+                <mat-option value="language-2">Ambiental</mat-option>
+                <mat-option value="language-3">Cível</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Origem</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Órgão</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="w-full">
+              <mat-label>Número do órgão</mat-label>
+              <input matInput type="text">
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>UFs</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">RJ</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Comarca</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">RJ</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Foro</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">RJ</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Advogado responsável</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Philipe Amorim</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Instância</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Philipe Amorim</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Tipo de ação</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de ação</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Fase</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de fase</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Objeto</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de objeto</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Sub objeto</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de objeto</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Assunto</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">teste Assunto</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Cliente</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Banco BMG</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Partes Interessadas</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de parte</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Posição da parte interessada</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de parte</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+        </div>
+      </div>
+      <div class="grid w-full mt-10 mb-10">
+        <h1 class="font-semibold tracking-wide uppercase text-blue-800">Parte adversa</h1>
+        <hr>
+        <div class="grid grid-cols-3 gap-6">
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Tipo </mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de parte</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Nome </mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de parte</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Posição </mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de parte</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>CPF/CNPJ </mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de parte</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Telefone</mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de parte</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>E-mail </mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de parte</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>UF OAB Advogado adverso </mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de parte</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Nome advogado adverso </mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de parte</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>OAB Advogado adverso </mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de parte</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="grid w-full mt-10 ">
+        <h1 class="font-semibold tracking-wide uppercase text-blue-800">Outros</h1>
+        <hr>
+        <div class="grid grid-cols-3 gap-6">
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Data da distribuição </mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de parte</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Data da citação </mat-label>
+              <mat-select [placeholder]="'Language'">
+                <mat-option value="language-1">Teste de parte</mat-option>,
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col ">
+            <div class="flex flex-col ">
+              <mat-form-field class="w-full">
+                <mat-label>Valor da causa</mat-label>
+                <input matInput type="text">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 w-full min-w-0">
+        <div class="flex flex-col">
+          <mat-form-field class="flex-auto">
+            <mat-label>Breve relato</mat-label>
+            <textarea matInput cdkTextareaAutosize [cdkAutosizeMinRows]="2"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
