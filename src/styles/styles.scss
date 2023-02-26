@@ -2,3 +2,45 @@
 /*  @ Import/write your custom styles here.
 /*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
 /* ----------------------------------------------------------------------------------------------------- */
+
+
+.theme-default .light .mat-mdc-snack-bar-container, .theme-default.light .mat-mdc-snack-bar-container {
+  &.success {
+    --mdc-snackbar-supporting-text-size:#000;
+    --mdc-snackbar-container-color: #e0ffe5;
+    --mat-mdc-snack-bar-button-color: #000
+    --mdc-snackbar-supporting-text-color: #9999;
+    --mdc-snackbar-text-color:#000;
+    --mdc-snackbar-supporting-text-color: #3d3d3d;
+    --mdc-snackbar-border-color:#9999
+    border: 1px solid #00c334 !important;
+    border-radius: 5px;
+  }
+
+}
+
+.theme-default .light .mat-mdc-snack-bar-container, .theme-default.light .mat-mdc-snack-bar-container {
+  &.warning {
+    --mdc-snackbar-supporting-text-size:#000;
+    --mdc-snackbar-container-color: #fffde0;
+    --mat-mdc-snack-bar-button-color: #000
+    --mdc-snackbar-supporting-text-color: #9999;
+    --mdc-snackbar-text-color:#000;
+    --mdc-snackbar-supporting-text-color: #3d3d3d;
+    --mdc-snackbar-border-color:#9999
+    border: 1px solid #c0c300 !important;
+    border-radius: 5px;
+  }
+}
+
+.theme-default .light .mat-mdc-snack-bar-container, .theme-default.light .mat-mdc-snack-bar-container {
+  &.danger {
+    --mdc-snackbar-container-color: #ffe0e0;
+    
+    --mdc-snackbar-text-color:#000;
+    --mdc-snackbar-supporting-text-color: #3d3d3d;
+    --mdc-snackbar-container-border: #ff0000 !important;
+    //--mdc-snackbar-border-color:#c30000;
+   
+  }
+}

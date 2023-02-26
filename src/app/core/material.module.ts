@@ -19,6 +19,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+
 
 @NgModule({
   imports: [
@@ -39,7 +43,10 @@ import { MatInputModule } from '@angular/material/input';
     MatIconModule,
     MatSelectModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatRadioModule,
+    MatChipsModule,
+    MatAutocompleteModule
     
   ],
   //providers: [{ provide: MatPaginatorIntl, useClass: PaginatorIntl }],
@@ -61,8 +68,10 @@ import { MatInputModule } from '@angular/material/input';
     MatIconModule,
     MatSelectModule,
     MatFormFieldModule,
-    MatInputModule
-    
+    MatInputModule,
+    MatRadioModule,
+    MatChipsModule,
+    MatAutocompleteModule
   ],
 })
 export class MaterialModule {}

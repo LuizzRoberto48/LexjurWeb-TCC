@@ -27,7 +27,7 @@ export class ProcessComponent implements OnInit {
   constructor(private route: Router) { }
 
   ngOnInit() {
-    this.changeItem(this.currentItem)
+    //this.changeItem(this.currentItem)
   }
 
   newProcess() {

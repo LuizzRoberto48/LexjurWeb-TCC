@@ -6,6 +6,8 @@ import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
 import { AuthService } from 'app/core/auth/auth.service';
 import { TokenInfo } from 'app/core/auth/models/token-info';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { BottomSheetCoreList } from 'app/shared/bottom-core-sheet/bottom-core-sheet';
 
 @Component({
   selector: 'user',
@@ -22,7 +24,8 @@ export class UserComponent implements OnInit {
   
   constructor(
     private _router: Router,
-    private _authService:AuthService
+    private _authService:AuthService,
+    private _bottomSheet: MatBottomSheet
   ) {
   }
   
@@ -30,9 +33,14 @@ export class UserComponent implements OnInit {
     return this._authService.authUser
   }
   
+  
   ngOnInit(): void {
-
   }
+
+  changeCore() {
+    this._bottomSheet.open(BottomSheetCoreList);
+  }
+
 
   signOut(): void {
     this._authService.signOut()

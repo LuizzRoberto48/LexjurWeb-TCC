@@ -6,36 +6,22 @@
         <!-- Avatar and name -->
         <div class="flex flex-auto items-center min-w-0">
 
-          <div class="flex flex-col min-w-0 ml-4">
-            <div class="text-4xl font-extrabold tracking-tight leading-none">Processos</div>
+          <div class="flex flex-col min-w-0 ml-4 flex">
+            <div class="text-4xl font-extrabold tracking-tight leading-none  flex flex-row" >
+               <p>Processos</p> 
+              <mat-chip-listbox aria-label="Fish selection" class=" ml-4" style="margin-top: -0.2rem;">
+                <mat-chip-option color="accent" selected>Núcleo: Júpter</mat-chip-option>
+              </mat-chip-listbox>
+            </div>
             <div class="flex items-center space-x-2">
               <a class="text-primary cursor-pointer" [routerLink]="['/processos']">Home
               </a>
               <div class="">/</div>
-              <!-- <ng-container *ngFor="let path of items.path; let last = last; trackBy: trackByFn">
-                  <ng-container *ngIf="!last">
-                      <a
-                          class="text-primary cursor-pointer"
-                          [routerLink]="['/apps/file-manager/folders/', path.id]">{{path.name}}</a>
-                  </ng-container>
-                  <ng-container *ngIf="last">
-                      <div>{{path.name}}</div>
-                  </ng-container>
-                  <ng-container *ngIf="!last">
-                      <div class="">/</div>
-                  </ng-container>
-              </ng-container> -->
+              
             </div>
           </div>
         </div>
-        <!-- Actions -->
-        <!-- <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
-
-          <button mat-flat-button [color]="'primary'" (click)="newProcess()">
-            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-            <span class="ml-2 mr-1">Novo processo</span>
-          </button>
-        </div> -->
+       
       </div>
       <!-- Project selector -->
       <div

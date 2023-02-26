@@ -1,6 +1,6 @@
-<div class="xl:col-span-2 flex flex-col flex-auto bg-card overflow-hidden pt-4">
+<div class="xl:col-span-2 flex flex-col flex-auto overflow-hidden pt-4">
   <div class="overflow-x-auto mx-6" style="padding: 20px;">
-    <table class="w-full bg-transparent" mat-table matSort [dataSource]="recentTransactionsDataSource"
+    <table class="w-full" mat-table matSort [dataSource]="recentTransactionsDataSource"
       [trackBy]="trackByFn" #recentTransactionsTable>
   
       <!-- Transaction ID -->

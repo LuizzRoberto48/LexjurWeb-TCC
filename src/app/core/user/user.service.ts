@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable, ReplaySubject, tap } from 'rxjs';
 import { User } from 'app/core/user/user.types';
 import { environment } from 'environments/environment';
+import { UserCore } from './model/user-core';
 
 @Injectable({
   providedIn: 'root'
@@ -44,5 +45,9 @@ export class UserService {
         this._user.next(user);
       })
     );
+  }
+
+  getByCore(coreId: number): Observable<UserCore[]> {
+    return this._httpClient.get<UserCore[]>(`${environment.apiURL}/users/core/${coreId}`)
   }
 }
