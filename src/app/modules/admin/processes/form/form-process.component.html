@@ -280,7 +280,7 @@
                 <mat-label>Nome advogado adverso</mat-label>
                 <mat-select formControlName="name" (selectionChange)="changedLawyerOabAdverse()">
                   <mat-option [value]="adLawyer.name" *ngFor="let adLawyer of adverseLawyers">
-                    {{adLawyer.name + ' - ' + adLawyer.oab}}
+                    {{adLawyer.name}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>

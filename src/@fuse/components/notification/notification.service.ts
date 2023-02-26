@@ -11,33 +11,33 @@ type Message = {
 export class NotificationService {
   constructor(private _snackBar: MatSnackBar) {}
 
-  success(message: string, action: string) {
+  success(message: string, action?: string) {
     this._snackBar.open(message, '', {
       data: message,
       panelClass: ['success'],
       horizontalPosition:'right',
       verticalPosition: 'top',
-      duration:1115000
+      duration:5000
     });
   }
 
-  waning(message: string, action: string) {
+  waning(message: string, action?: string) {
     this._snackBar.open(message, '', {
       data: message,
       panelClass: ['warning'],
       horizontalPosition:'right',
       verticalPosition: 'top',
-      duration:1115000
+      duration:5000
     });
   }
 
-  danger(message: string, action: string) {
+  danger(message: string, action?: string) {
     this._snackBar.open(message, '', {
       data: message,
       panelClass: ['danger'],
       horizontalPosition:'right',
       verticalPosition: 'top',
-      duration:1115000
+      duration:5000
     });
   }
 

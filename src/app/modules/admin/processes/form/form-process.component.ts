@@ -143,28 +143,21 @@ export class FormProcessComponent implements OnInit {
   }
 
   onSubmit() {
-    
-    const obj = this.formService.formToObj(this.form.value)
-    if (!this.form.valid)
+    if (!this.form.valid) {
+      this.notification.danger('Formulário inválido. Preencha os campos corretamente')
       return
-    const {
-      uf,
-      organId,
-      clientId,
-      countyId,
-      lawAreaId,
-      originId,
-      objectId,
-      ...process } = this.form.value
-    /* this.processService.create(process).subscribe({
+    }
+    const obj = this.formService.formToObj(this.form.value)
+    console.log(obj)
+    this.processService.create(obj).subscribe({
       next: (resp) => {
-        this.notification.success('Enviado com sucesso', '')
-        console.log(resp)
+        this.notification.success('Enviado com sucesso')
       },
-      error: () => {
-        this.notification.danger('Enviado com sucesso', '')
+      error: (erro) => {
+        console.log(erro);
+        this.notification.danger('Formulário incorreto')
       }
-    }) */
+    })
 
   }
 

@@ -22,21 +22,21 @@ export interface CreateProcess {
   isEletronic: boolean
   instance: InstanceType
   phaseId: number
-  eletronicSystemId: number
+  eletronicSystemId?: number
   actionTypeId: number
   forumId: number;
   subObjectId: number
   subjectId: number
   coreId: number
-  clientId: number
   adverseStakeholderId: number
   stakeholderId: number,
-  distributionDate: Date
-  quoteDate: Date
+  distributionDate: string
+  quoteDate: string
   description: string;
   stakeholderPosition: string;
   adversePosition: string;
   lawyerProcess: number[],
+  causeValue:string
 }
 
 export interface ProcessForm {

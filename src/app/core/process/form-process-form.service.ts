@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { CreateProcess, PersonType, Process, ProcessForm } from "app/core/process/models/process.model";
+import { DateTime } from "luxon";
 
 @Injectable({
   providedIn: 'any'
@@ -49,7 +50,7 @@ export class FormProcessService {
         email: new FormControl('', { validators: [Validators.email] }),
         cpfCnpj: new FormControl(''),
         phone: new FormControl(''),
-        
+
       }),
       distributionDate: new FormControl('', { validators: [Validators.required] }),
       quoteDate: new FormControl('', { validators: [Validators.required] }),
@@ -77,32 +78,32 @@ export class FormProcessService {
     return type === PersonType.FISICA ? 'Física' : 'Jurídica'
   }
 
-  formToObj(form:ProcessForm):CreateProcess {
+  formToObj(form: ProcessForm): CreateProcess {
     const {
       uf,
       countyId,
       lawAreaId,
       originId,
       distributionDate,
+      clientId,
       quoteDate,
       objectId,
       insideLawyerId,
       adverseLawyer,
       adverseStakeholder,
+      causeValue,
       ...process } = form
-    
-    console.log(adverseLawyer)
-    const obj:CreateProcess = {
+
+    const obj: CreateProcess = {
       ...process,
       adverseStakeholderId: adverseStakeholder.id,
       adversePosition: adverseStakeholder.position,
       lawyerProcess: [insideLawyerId, adverseLawyer.id],
-      distributionDate: new Date(),
-      quoteDate: new Date()
-    } 
-    console.log(obj)
-    
-    return obj
-
+      distributionDate: DateTime.fromFormat(distributionDate, 'dd/MM/yyyy').toISO(),
+      quoteDate: DateTime.fromFormat(quoteDate, 'dd/MM/yyyy').toISO(),
+      causeValue: causeValue.toString()
+    }
+    process.isEletronic ? obj.eletronicSystemId : delete obj.eletronicSystemId;
+    return obj;
   }
 }

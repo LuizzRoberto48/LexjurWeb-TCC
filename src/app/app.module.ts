@@ -6,7 +6,7 @@ import { FuseModule } from '@fuse';
 import { FuseConfigModule } from '@fuse/services/config';
 import { CoreModule } from 'app/core/core.module';
 import { appConfig } from 'app/core/config/app.config';
-
+import { LuxonModule } from 'luxon-angular';
 import { LayoutModule } from 'app/layout/layout.module';
 import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
@@ -30,7 +30,8 @@ const routerConfig: ExtraOptions = {
 		FuseModule,
 		FuseConfigModule.forRoot(appConfig),
 		CoreModule,
-		LayoutModule
+		LayoutModule,
+		LuxonModule
 	],
 	bootstrap: [
 		AppComponent
