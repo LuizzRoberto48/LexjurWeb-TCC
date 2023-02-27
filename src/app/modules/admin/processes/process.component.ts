@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import {  ActivatedRoute, Router } from '@angular/router';
 
-interface SelectTab {
-  name: string,
-  path: string
-}
 
 @Component({
   selector: 'app-processes',
@@ -13,30 +8,17 @@ interface SelectTab {
 })
 export class ProcessComponent implements OnInit {
 
-  items: SelectTab[] = [{
-    name: 'Listar',
-    path: 'processos'
-  },
-  {
-    name: 'Cadastrar',
-    path: 'processos/new'
-  }];
-
-  currentItem: SelectTab = this.items[0]
-
-  constructor(private route: Router) { }
+  constructor(public route: Router, private activeRoute:ActivatedRoute) { }
 
   ngOnInit() {
-    //this.changeItem(this.currentItem)
+   
+    console.log( this.route.url)
   }
+
+
 
   newProcess() {
     this.route.navigate(['processos/new'])
   }
 
-  changeItem(selected: SelectTab) {
-    this.currentItem = selected
-    this.route.navigate([selected.path])
-
-  }
 }

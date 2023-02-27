@@ -12,7 +12,17 @@ export enum PersonType {
   JURIDICA = 'JURIDICA'
 };
 
-
+export interface GetProcess {
+  id?:number
+  caseNumber:string;
+  oldCaseNumber:string;
+  subject:string;
+  lawyer:string;
+  distributionDate:string;
+  quoteDate:string;
+  instance:string;
+  causeValue:string
+}
 
 export interface CreateProcess {
   id?: number
@@ -60,6 +70,7 @@ export interface ProcessForm {
   oldCaseNumber: string
   organId: number
   organNumber?: string
+  lawSubAreaId:number
   originId: number
   phaseId: number
   quoteDate: string

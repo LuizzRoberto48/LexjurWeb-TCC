@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "environments/environment";
-import { Observable } from "rxjs";
-import { ActionType, AdverseStakeholder, Client, County, CreateProcess, Forum, LawArea, LawSubArea, Object, Organ, Origin, PersonType, Phase, Process, Stakeholder, Subject, SubObject, Ufs } from "./models/process.model";
+import { map, Observable } from "rxjs";
+import { ActionType, AdverseStakeholder, Client, County, CreateProcess, Forum, GetProcess, LawArea, LawSubArea, Object, Organ, Origin, PersonType, Phase, Process, Stakeholder, Subject, SubObject, Ufs } from "./models/process.model";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,22 @@ export class ProcessService {
 
   getProcessById(id: number): Observable<Process> {
     return this._http.get<Process>(`${environment.apiURL}/processes/${id}`)
+  }
+
+  getProcessByCore(coreId: number): Observable<GetProcess[]> {
+    return this._http.get<Process[]>(`${environment.apiURL}/processes/core/${coreId}`).pipe(
+      map(res => res.map((data: any) =>
+        ({ ...data, subject: data.Subject.name, lawyer: this.getInsideLawyerByProcess(data).name })
+      ))
+    )
+  }
+
+  getInsideLawyerByProcess(data) {
+    return data.LawyerProcess.filter(lp => lp.Lawyer.userId).map(res => ({ name: res.Lawyer.person.name, id: res.Lawyer.id }))[0]
+  }
+
+  getOutsideLawyerByProcess(data) {
+    return data.LawyerProcess.filter(lp => !lp.Lawyer.userId).map(res => ({ lawyer: res.Lawyer }))[0]
   }
 
   create(process: CreateProcess): Observable<CreateProcess> {

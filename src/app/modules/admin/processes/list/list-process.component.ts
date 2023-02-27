@@ -1,62 +1,9 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { GetProcess } from 'app/core/process/models/process.model';
+import { ProcessService } from 'app/core/process/process.service';
 
-const recentTransactions = [
-  {
-    id: 1,
-
-    name: '528651571NT',
-    date:'2019-10-07T22:22:37.274Z',
-    phase: 'Morgan Page',
-    eletronic_system: +1358.75,
-    object: 'completed',
-    area: 'teste era',
-    instance:'teste',
-    number_case:'7923743324',
-    old_number_case:'7979074090340-',
-    isCNJ:true
-  },
-  {
-    id: 2,
-    name: '528651571NT',
-    date: '2019-10-07T22:22:37.274Z',
-    phase: 'Morgan Page',
-    eletronic_system: +1358.75,
-    object: 'completed',
-    area: 'teste area',
-    instance:'teste',
-    number_case:'7923743324',
-    old_number_case:'7979074090340-',
-    isCNJ:true
-  },
-  {
-    id: 3,
-    name: '528651571NT',
-    date: '2019-10-07T22:22:37.274Z',
-    phase: 'Morgan Page',
-    eletronic_system: +1358.75,
-    object: 'completed',
-    area: 'teste',
-    instance:'teste',
-    number_case:'7923743324',
-    old_number_case:'7979074090340-',
-    isCNJ:true
-  },
-  {
-    id: 4,
-    name: '528651571NT',
-    date: '2019-10-07T22:22:37.274Z',
-    phase: 'Morgan Page',
-    eletronic_system: +1358.75,
-    object: 'completed',
-    area: 'teste',
-    instance:'teste',
-    number_case:'7923743324',
-    old_number_case:'7979074090340-',
-    isCNJ:true
-  }
-]
 
 @Component({
   selector: 'app-form-process',
@@ -65,18 +12,44 @@ const recentTransactions = [
 export class ListProcessComponent {
 
   recentTransactionsDataSource: MatTableDataSource<any> = new MatTableDataSource();
-  recentTransactionsTableColumns: string[] = ['name','date' ,'phase', 'eletronic_system', 'object', 'area', 'instance', 'number_case', 'old_number_case', 'isCNJ'];
+  recentTransactionsTableColumns: string[] = [
+    'caseNumber',
+    'oldCaseNumber',
+    'subject',
+    'lawyer',
+    'distributionDate',
+    'quoteDate',
+    'instance',
+    'causeValue',
+    'action'];
 
   trackByFn(index: number, item: any): any {
     return item.id || index;
   }
 
-  constructor(private route:Router) { }
+  constructor(private route: Router, private processService: ProcessService) { }
 
   ngOnInit() {
-    this.recentTransactionsDataSource.data = recentTransactions
+    this.recentTransactionsDataSource.data = [];
+    this.getList()
   }
-  
+
+  editProcess(process:GetProcess) {
+    this.route.navigate([`processos/edit/${process.id}`])
+  }
+
+
+  getList() {
+    this.processService.getProcessByCore(1).subscribe({
+      next: (res: GetProcess[]) => {
+        this.recentTransactionsDataSource.data = res;
+      },
+      error: (error) => {
+        console.log(error)
+      }
+    })
+  }
+
   newProcess() {
     this.route.navigate(['processos/new'])
   }

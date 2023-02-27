@@ -1,12 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { LawyerService } from 'app/core/lawyer/lawyer.service';
 import { GetLawyer, LawyerFields } from 'app/core/lawyer/model/lawyer.model';
-import { ActionType, AdverseStakeholder, Client, County, Forum, InstanceType, IsEletronic, LawArea, LawSubArea, Object, Organ, Origin, PersonType, Phase, Stakeholder, Subject, SubObject, Ufs } from 'app/core/process/models/process.model';
+import {
+  ActionType,
+  AdverseStakeholder,
+  Client,
+  County,
+  CreateProcess,
+  Forum,
+  InstanceType,
+  IsEletronic,
+  LawArea,
+  LawSubArea,
+  Object,
+  Organ,
+  Origin,
+  PersonType,
+  Phase,
+  Stakeholder,
+  Subject,
+  SubObject,
+  Ufs
+} from 'app/core/process/models/process.model';
 import { ProcessService } from 'app/core/process/process.service';
-import { UserCore } from 'app/core/user/model/user-core';
-import { UserService } from 'app/core/user/user.service';
 import { map, Observable, startWith } from 'rxjs';
 import { FormProcessService } from '../../../../core/process/form-process-form.service';
 
@@ -39,14 +58,17 @@ export class FormProcessComponent implements OnInit {
   subjects: Subject[] = [];
   adverseLawyers: GetLawyer[] = []
   filteredOptions: Observable<AdverseStakeholder[]>;
+  isEdit: boolean = false;
 
   constructor(public formService: FormProcessService,
     private processService: ProcessService,
-    private userService: UserService,
     private notification: NotificationService,
-    private lawyerService: LawyerService) { }
+    private lawyerService: LawyerService,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    const id = this.route.params['id'];
+
     this.form.get('coreId').setValue(1)
     this.getLawyerAreas();
     this.getUfs();
@@ -57,7 +79,32 @@ export class FormProcessComponent implements OnInit {
     this.getClients();
     this.getStakeholderPositions();
     this.getSubjects();
-    this.observeChangeAdverseName()
+    this.observeChangeAdverseName();
+
+    if (id) {
+      this.isEdit = true;
+      this.getEditProcess()
+
+    }
+  }
+
+  getEditProcess() {
+    this.route.data.subscribe({
+      next: ({ data }) => {
+        
+        this.form = this.formService.objToForm(this.form, data);
+        this.changeLawArea();
+        this.changeOrigin();
+        this.changeUfs();
+        this.changeCounty();
+        this.changeObject();
+        this.changeClient();
+        this.changedUfOab();
+      },
+      error: () => {
+
+      }
+    })
   }
 
   changeLawArea() {
@@ -93,7 +140,7 @@ export class FormProcessComponent implements OnInit {
 
   changeUfs() {
     const ufId = this.form.get('uf').value;
-    this.getCountyByUf(ufId)
+    this.getCountyByUf(ufId);
   }
 
   changeCounty() {
@@ -143,12 +190,24 @@ export class FormProcessComponent implements OnInit {
   }
 
   onSubmit() {
-    if (!this.form.valid) {
-      this.notification.danger('Formulário inválido. Preencha os campos corretamente')
+    if(!this.validateError()) return
+    const obj = this.formService.formToObj(this.form.value)
+    if (this.isEdit) {
+      this.updateProcess(obj)
       return
     }
-    const obj = this.formService.formToObj(this.form.value)
-    console.log(obj)
+    this.createProcess(obj)
+  }
+
+  validateError() {
+    if (!this.form.valid) {
+      this.notification.danger('Formulário inválido. Preencha os campos corretamente')
+      return false;
+    }
+    return true;
+  }
+
+  private createProcess(obj: CreateProcess): void {
     this.processService.create(obj).subscribe({
       next: (resp) => {
         this.notification.success('Enviado com sucesso')
@@ -158,7 +217,19 @@ export class FormProcessComponent implements OnInit {
         this.notification.danger('Formulário incorreto')
       }
     })
+  }
 
+  private updateProcess(obj: CreateProcess): void {
+    const id = this.route.params['id'];
+    this.processService.update(id, obj).subscribe({
+      next: (resp) => {
+        this.notification.success('Editado com sucesso')
+      },
+      error: (erro) => {
+        console.log(erro);
+        this.notification.danger('Formulário incorreto')
+      }
+    })
   }
 
 
@@ -197,7 +268,7 @@ export class FormProcessComponent implements OnInit {
   private getUfs() {
     this.processService.findUfs().subscribe({
       next: (res) => {
-        this.ufs = res
+        this.ufs = res;
       }
     })
   }
@@ -246,7 +317,6 @@ export class FormProcessComponent implements OnInit {
   private findAdverseStakeholders(type: string) {
     this.processService.findAdverseStakeholdersByType(type).subscribe({
       next: (res) => {
-        console.log(res)
         this.adverseStakeholders = res;
         this.observeChangeAdverseName()
       }
@@ -274,7 +344,6 @@ export class FormProcessComponent implements OnInit {
   private getObjects() {
     this.processService.findObjects().subscribe({
       next: (res) => {
-        console.log(res)
         this.objects = res
       }
     })

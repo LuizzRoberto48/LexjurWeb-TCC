@@ -11,6 +11,7 @@ import { LayoutModule } from 'app/layout/layout.module';
 import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import { CommonModule } from '@angular/common';
+import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
 
 
 const routerConfig: ExtraOptions = {
@@ -31,7 +32,7 @@ const routerConfig: ExtraOptions = {
 		FuseConfigModule.forRoot(appConfig),
 		CoreModule,
 		LayoutModule,
-		LuxonModule
+		LuxonModule,
 	],
 	bootstrap: [
 		AppComponent

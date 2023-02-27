@@ -2,13 +2,14 @@ import { Injectable } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { CreateProcess, PersonType, Process, ProcessForm } from "app/core/process/models/process.model";
 import { DateTime } from "luxon";
+import { ProcessService } from "./process.service";
 
 @Injectable({
   providedIn: 'any'
 })
 export class FormProcessService {
 
-  constructor() { }
+  constructor(private processService: ProcessService) { }
 
   init() {
     return new FormGroup({
@@ -105,5 +106,38 @@ export class FormProcessService {
     }
     process.isEletronic ? obj.eletronicSystemId : delete obj.eletronicSystemId;
     return obj;
+  }
+
+  objToForm(form: FormGroup, obj: any): FormGroup<any> {
+    let process: ProcessForm = {
+      ...obj,
+      lawAreaId: obj.LawSubArea.lawAreaId,
+      lawSubAreaId: obj.LawSubArea.id,
+      originId: obj.Organ.originId,
+      clientId: obj.Stakeholder.clientId,
+      stakeholderId: obj.Stakeholder.id,
+      objectId: obj.SubObject.objectId,
+      subjectId: obj.SubObject.id,
+      insideLawyerId: this.processService.getInsideLawyerByProcess(obj).id,
+      uf: obj.Forum.County.ufId,
+      countyId: obj.Forum.countyId,
+      distributionDate: DateTime.fromISO(obj.distributionDate).toFormat('dd/MM/yyyy'),
+      quoteDate: DateTime.fromISO(obj.distributionDate).toFormat('dd/MM/yyyy'),
+      adverseStakeholder: {
+        type: obj.AdverseStakeholder.type,
+        cpfCnpj: obj.AdverseStakeholder.cpfCnpj,
+        phone: obj.AdverseStakeholder.phone,
+        email: obj.AdverseStakeholder.email,
+        name: obj.AdverseStakeholder.name,
+        position: obj.adversePosition,
+      },
+      adverseLawyer: {
+        ufOab: this.processService.getOutsideLawyerByProcess(obj).lawyer.ufOab,
+        name: this.processService.getOutsideLawyerByProcess(obj).lawyer.person.name,
+        oab:this.processService.getOutsideLawyerByProcess(obj).lawyer.oab
+      }
+    };
+    form.patchValue(process)
+    return form;
   }
 }

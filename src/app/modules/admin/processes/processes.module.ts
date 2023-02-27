@@ -7,30 +7,45 @@ import { FormProcessService } from '../../../core/process/form-process-form.serv
 import { FormProcessComponent } from './form/form-process.component';
 import { ListProcessComponent } from './list/list-process.component';
 import { ProcessComponent } from './process.component';
-import {  IConfig, NgxMaskDirective, provideEnvironmentNgxMask, provideNgxMask } from 'ngx-mask'
-import { FuseAlertModule } from '@fuse/components/alert';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask'
 import { NotificationModule } from '@fuse/components/notification/notification.module';
 import { LawyerService } from 'app/core/lawyer/lawyer.service';
+import { FormProcessResolver } from './form/process.resolver';
+import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
+import { BreadcrumbService } from '@components/breadcrumb/breadcrumb.service';
 
-const exampleRoutes: Route[] = [
+const routes: Route[] = [
   {
     path: '',
     component: ProcessComponent,
-    
+    data: { breadcrumb: 'Home' },
     children: [
       {
         path: '',
         redirectTo: 'list',
         pathMatch: 'full',
+
       },
       {
         path: 'new',
-        component: FormProcessComponent, 
+        component: FormProcessComponent,
+        data: { breadcrumb: 'Novo' },
+
+      },
+      {
+        path: 'edit/:id',
+        component: FormProcessComponent,
+        data: {
+          breadcrumb: (data: any) =>`${data.data.caseNumber}`},
+        resolve: {
+          data: FormProcessResolver
+        },
+
       },
       {
         path: 'list',
         component: ListProcessComponent,
-        
+        data: { breadcrumb: 'lista' },
       }
     ]
   }
@@ -40,20 +55,22 @@ const exampleRoutes: Route[] = [
   declarations: [
     ProcessComponent,
     FormProcessComponent,
-    ListProcessComponent
+    ListProcessComponent,
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterModule.forChild(exampleRoutes),
+    RouterModule.forChild(routes),
     MaterialModule,
     NgxMaskDirective,
-    NotificationModule
+    NotificationModule,
+    BreadCrumbModule
   ],
-  providers:[
+  providers: [
     FormProcessService,
     LawyerService,
-    provideNgxMask()
+    provideNgxMask(),
+    BreadcrumbService
   ]
 })
 export class ProcessesModule {
