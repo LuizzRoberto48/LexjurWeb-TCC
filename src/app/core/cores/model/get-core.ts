@@ -4,3 +4,8 @@ export interface Core {
   createAt:Date;
   updateAt:Date;
 }
+
+export interface LocalCore {
+  id:number;
+  name:string;
+}

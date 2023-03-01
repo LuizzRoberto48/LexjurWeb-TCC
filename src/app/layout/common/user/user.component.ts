@@ -1,13 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { BooleanInput } from '@angular/cdk/coercion';
-import { Subject, takeUntil } from 'rxjs';
-import { User } from 'app/core/user/user.types';
-import { UserService } from 'app/core/user/user.service';
 import { AuthService } from 'app/core/auth/auth.service';
 import { TokenInfo } from 'app/core/auth/models/token-info';
-import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { BottomSheetCoreList } from 'app/shared/bottom-core-sheet/bottom-core-sheet';
+import { MatBottomSheet } from '@angular/material/bottom-sheet'
+import { CoreSheedList } from 'app/core/cores/core-sheet/core-sheet.component';
 
 @Component({
   selector: 'user',
@@ -38,7 +35,7 @@ export class UserComponent implements OnInit {
   }
 
   changeCore() {
-    this._bottomSheet.open(BottomSheetCoreList);
+    this._bottomSheet.open(CoreSheedList);
   }
 
 

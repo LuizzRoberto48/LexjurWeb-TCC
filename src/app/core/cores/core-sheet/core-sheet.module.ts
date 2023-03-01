@@ -2,23 +2,25 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'app/core/material.module';
-import { CoreSheetModule } from 'app/core/cores/core-sheet/core-sheet.module';
+import { CoreSheedList } from './core-sheet.component';
+import { ChangeCoreDirective } from '../directive/change-core.directive';
 
 @NgModule({
-    declarations:[],
+    declarations:[CoreSheedList, ChangeCoreDirective],
     imports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        MaterialModule,
-        CoreSheetModule
+        MaterialModule
     ],
     exports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        CoreSheedList,
+        ChangeCoreDirective
     ]
 })
-export class SharedModule
+export class CoreSheetModule
 {
 }

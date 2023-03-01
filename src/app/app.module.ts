@@ -11,7 +11,7 @@ import { LayoutModule } from 'app/layout/layout.module';
 import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import { CommonModule } from '@angular/common';
-import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
+import { SharedModule } from './shared/shared.module';
 
 
 const routerConfig: ExtraOptions = {
@@ -33,6 +33,7 @@ const routerConfig: ExtraOptions = {
 		CoreModule,
 		LayoutModule,
 		LuxonModule,
+		SharedModule
 	],
 	bootstrap: [
 		AppComponent

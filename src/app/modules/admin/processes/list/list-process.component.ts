@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { CoreService } from 'app/core/cores/service/core.service';
 import { GetProcess } from 'app/core/process/models/process.model';
 import { ProcessService } from 'app/core/process/process.service';
 
@@ -27,20 +28,27 @@ export class ListProcessComponent {
     return item.id || index;
   }
 
-  constructor(private route: Router, private processService: ProcessService) { }
+  constructor(private route: Router,
+    private processService: ProcessService, 
+    private coreService: CoreService) { }
 
   ngOnInit() {
     this.recentTransactionsDataSource.data = [];
-    this.getList()
+    this.getCore()
   }
 
-  editProcess(process:GetProcess) {
+  getCore() {
+    this.coreService.$localCore.subscribe(res => {
+      this.getListByCore(res.id)
+    })
+  }
+
+  editProcess(process: GetProcess) {
     this.route.navigate([`processos/edit/${process.id}`])
   }
 
-
-  getList() {
-    this.processService.getProcessByCore(1).subscribe({
+  getListByCore(id: number) {
+    this.processService.getProcessByCore(id).subscribe({
       next: (res: GetProcess[]) => {
         this.recentTransactionsDataSource.data = res;
       },

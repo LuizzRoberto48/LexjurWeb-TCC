@@ -1,0 +1,8 @@
+<mat-nav-list>
+  <span class="inline-flex items-center px-2.5 py-0.5 font-semibold text-primary-600">
+   Núcleos
+  </span>
+  <a mat-list-item (click)="openLink(core)" *ngFor="let core of $coreList | async">
+    <span matListItemTitle>{{core.name}}</span>
+  </a>
+</mat-nav-list>

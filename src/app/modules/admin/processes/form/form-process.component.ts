@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from '@fuse/components/notification/notification.service';
+import { CoreService } from 'app/core/cores/service/core.service';
 import { LawyerService } from 'app/core/lawyer/lawyer.service';
 import { GetLawyer, LawyerFields } from 'app/core/lawyer/model/lawyer.model';
 import {
@@ -64,12 +65,13 @@ export class FormProcessComponent implements OnInit {
     private processService: ProcessService,
     private notification: NotificationService,
     private lawyerService: LawyerService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private coreService:CoreService) { }
 
   ngOnInit(): void {
-    const id = this.route.params['id'];
-
-    this.form.get('coreId').setValue(1)
+    const id = this.route.snapshot.paramMap.get('id')
+    
+    this.getCore()
     this.getLawyerAreas();
     this.getUfs();
     this.getLawyersByCore(1);
@@ -84,14 +86,18 @@ export class FormProcessComponent implements OnInit {
     if (id) {
       this.isEdit = true;
       this.getEditProcess()
-
     }
+  }
+
+  getCore() {
+    this.coreService.$localCore.subscribe(res => {
+      this.form.get('coreId').setValue(res.id)
+    })
   }
 
   getEditProcess() {
     this.route.data.subscribe({
       next: ({ data }) => {
-        
         this.form = this.formService.objToForm(this.form, data);
         this.changeLawArea();
         this.changeOrigin();
@@ -100,9 +106,6 @@ export class FormProcessComponent implements OnInit {
         this.changeObject();
         this.changeClient();
         this.changedUfOab();
-      },
-      error: () => {
-
       }
     })
   }
@@ -175,9 +178,7 @@ export class FormProcessComponent implements OnInit {
     if (found) {
       this.form.get('adverseLawyer.oab').setValue(found.oab);
       this.form.get('adverseLawyer.id').setValue(found.id);
-
     }
-
   }
 
   get instanceTypes() {

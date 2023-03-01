@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {  ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CoreService } from 'app/core/cores/service/core.service';
 
 
 @Component({
@@ -8,17 +9,15 @@ import {  ActivatedRoute, Router } from '@angular/router';
 })
 export class ProcessComponent implements OnInit {
 
-  constructor(public route: Router, private activeRoute:ActivatedRoute) { }
+  coreName: string = ''
+  constructor(public route: Router, private coreService: CoreService) { }
 
   ngOnInit() {
-   
-    console.log( this.route.url)
+    this.coreService.$localCore.subscribe(res => {
+      this.coreName =res.name
+    })
+
   }
 
-
-
-  newProcess() {
-    this.route.navigate(['processos/new'])
-  }
 
 }

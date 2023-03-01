@@ -13,6 +13,8 @@ import { LawyerService } from 'app/core/lawyer/lawyer.service';
 import { FormProcessResolver } from './form/process.resolver';
 import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
 import { BreadcrumbService } from '@components/breadcrumb/breadcrumb.service';
+import { ChangeCoreDirective } from 'app/core/cores/directive/change-core.directive';
+import { CoreSheetModule } from 'app/core/cores/core-sheet/core-sheet.module';
 
 const routes: Route[] = [
   {
@@ -55,7 +57,7 @@ const routes: Route[] = [
   declarations: [
     ProcessComponent,
     FormProcessComponent,
-    ListProcessComponent,
+    ListProcessComponent
   ],
   imports: [
     CommonModule,
@@ -64,7 +66,8 @@ const routes: Route[] = [
     MaterialModule,
     NgxMaskDirective,
     NotificationModule,
-    BreadCrumbModule
+    BreadCrumbModule,
+    CoreSheetModule
   ],
   providers: [
     FormProcessService,
