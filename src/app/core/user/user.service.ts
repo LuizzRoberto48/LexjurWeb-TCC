@@ -1,21 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable, ReplaySubject, tap } from 'rxjs';
-import { User } from 'app/core/user/user.types';
+
 import { environment } from 'environments/environment';
 import { UserCore } from './model/user-core';
+import { User } from './profile/models/user.model';
+import { ProfileHelper } from './profile/profile-helper';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserService extends ProfileHelper {
   private _user: ReplaySubject<User> = new ReplaySubject<User>(1);
 
   constructor(private _httpClient: HttpClient) {
+    super()
   }
 
   set user(value: User) {
-    // Store the value
     this._user.next(value);
   }
 

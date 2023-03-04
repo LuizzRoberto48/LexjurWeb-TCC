@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { CoreService } from 'app/core/cores/service/core.service';
-import { GetProcess } from 'app/core/process/models/process.model';
+import { GetProcess, Process } from 'app/core/process/models/process.model';
 import { ProcessService } from 'app/core/process/process.service';
+import { configDialog } from 'app/core/process/utils';
 
 
 @Component({
@@ -29,8 +31,9 @@ export class ListProcessComponent {
   }
 
   constructor(private route: Router,
-    private processService: ProcessService, 
-    private coreService: CoreService) { }
+    private processService: ProcessService,
+    private coreService: CoreService,
+    private __confirmationService: FuseConfirmationService) { }
 
   ngOnInit() {
     this.recentTransactionsDataSource.data = [];
@@ -38,7 +41,7 @@ export class ListProcessComponent {
   }
 
   getCore() {
-    this.coreService.$localCore.subscribe(res => {
+    this.coreService.$obsevableCore.subscribe(res => {
       this.getListByCore(res.id)
     })
   }
@@ -60,5 +63,15 @@ export class ListProcessComponent {
 
   newProcess() {
     this.route.navigate(['processos/new'])
+  }
+
+  removeProcessDialog(process: Process): void {
+    // Open the dialog and save the reference of it
+    const dialogRef = this.__confirmationService.open(configDialog(process.caseNumber));
+
+    // Subscribe to afterClosed from the dialog reference
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+    });
   }
 }

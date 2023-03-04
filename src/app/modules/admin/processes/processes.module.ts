@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Route, RouterModule } from '@angular/router';
-import { MaterialModule } from 'app/core/material.module';
+import { MaterialModule } from 'app/shared/material.module';
 import { FormProcessService } from '../../../core/process/form-process-form.service';
 import { FormProcessComponent } from './form/form-process.component';
 import { ListProcessComponent } from './list/list-process.component';

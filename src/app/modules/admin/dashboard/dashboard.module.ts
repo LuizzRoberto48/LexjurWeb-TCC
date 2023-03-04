@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { MaterialModule } from 'app/core/material.module';
+import { MaterialModule } from 'app/shared/material.module';
 import { DashboardComponent } from './dashboard.component';
 
 

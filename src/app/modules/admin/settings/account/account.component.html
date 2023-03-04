@@ -1,0 +1,66 @@
+<div class="w-full">
+  <form [formGroup]="accountForm">
+
+    <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+      <div class="sm:col-span-4">
+        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>Nome</mat-label>
+          <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:user'" matPrefix></mat-icon>
+          <input [formControlName]="'name'" matInput>
+        </mat-form-field>
+      </div>
+
+      <!-- Username -->
+      <div class="sm:col-span-2">
+        <mat-form-field class="fuse-mat-emphasized-affix w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>E-mail</mat-label>
+          <input [formControlName]="'username'" matInput>
+        </mat-form-field>
+      </div>
+
+      <div class="sm:col-span-2">
+        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>Permissão</mat-label>
+          <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:office-building'" matPrefix></mat-icon>
+          <input [formControlName]="'company'" matInput>
+        </mat-form-field>
+      </div>
+
+      <!-- Title -->
+      <div class="sm:col-span-2">
+        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>UF</mat-label>
+          <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:briefcase'" matPrefix></mat-icon>
+          <input [formControlName]="'title'" matInput>
+        </mat-form-field>
+      </div>
+
+      <!-- Company -->
+      <div class="sm:col-span-2">
+        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>OAB</mat-label>
+          <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:office-building'" matPrefix></mat-icon>
+          <input [formControlName]="'company'" matInput>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="my-10 border-t"></div>
+
+    <!-- Section -->
+    <div class="w-full">
+      <div class="text-xl">Endereço</div>
+    </div>
+
+    <!-- Divider -->
+    <div class="mt-11 mb-10 border-t"></div>
+
+    <!-- Actions -->
+    <div class="flex items-center justify-end">
+      <button class="ml-4" mat-flat-button type="button" [color]="'primary'">
+        Salvar
+      </button>
+    </div>
+  </form>
+</div>

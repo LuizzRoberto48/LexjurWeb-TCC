@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MaterialModule } from 'app/core/material.module';
+import { MaterialModule } from 'app/shared/material.module';
 import { NotificationService } from './notification.service';
 
 @NgModule({

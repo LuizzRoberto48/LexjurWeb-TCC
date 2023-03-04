@@ -103,4 +103,5 @@ export class ProcessService {
     return this._http.get<AdverseStakeholder[]>(`${environment.apiURL}/adverse-stakeholders/${type}`)
   }
 
+  
 }

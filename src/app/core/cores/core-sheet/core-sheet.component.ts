@@ -15,12 +15,11 @@ export class CoreSheedList {
 
   ngOnInit() {
     this.$coreList = this.coreService.getCoresByUser();
-
   }
 
   openLink(core: Core): void {
     const { id, name } = core
-    this.coreService.addLocalStorage({ id, name })
+    this.coreService.updateLocalStorage({ id, name })
     this._bottomSheetRef.dismiss();
   }
 

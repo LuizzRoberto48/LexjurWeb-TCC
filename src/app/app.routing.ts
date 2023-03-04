@@ -31,6 +31,7 @@ export const appRoutes: Route[] = [
     children: [
       { path: 'dashboard', loadChildren: () => import('app/modules/admin/dashboard/dashboard.module').then(m => m.DashboardModule) },
       { path: 'processos', loadChildren: () => import('app/modules/admin/processes/processes.module').then(m => m.ProcessesModule) },
+      { path: 'profile', loadChildren: () => import('app/modules/admin/settings/settings.module').then(m => m.SettingsModule) },
     ]
   },
   

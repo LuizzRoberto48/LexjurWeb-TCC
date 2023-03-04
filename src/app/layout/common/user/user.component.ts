@@ -5,6 +5,9 @@ import { AuthService } from 'app/core/auth/auth.service';
 import { TokenInfo } from 'app/core/auth/models/token-info';
 import { MatBottomSheet } from '@angular/material/bottom-sheet'
 import { CoreSheedList } from 'app/core/cores/core-sheet/core-sheet.component';
+import { CoreService } from 'app/core/cores/service/core.service';
+import { LocalCore } from 'app/core/cores/model/get-core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'user',
@@ -16,22 +19,27 @@ import { CoreSheedList } from 'app/core/cores/core-sheet/core-sheet.component';
 export class UserComponent implements OnInit {
 
   static ngAcceptInputType_showAvatar: BooleanInput;
-
+  coreName: string
   @Input() showAvatar: boolean = true;
-  
+  $subsChangedCore: Subscription = new Subscription()
+
   constructor(
     private _router: Router,
-    private _authService:AuthService,
-    private _bottomSheet: MatBottomSheet
+    private _authService: AuthService,
+    private _bottomSheet: MatBottomSheet,
+    private coreService: CoreService
   ) {
   }
-  
-  get authUser():TokenInfo {
+
+  get authUser(): TokenInfo {
     return this._authService.authUser
   }
-  
-  
+
+
   ngOnInit(): void {
+    this.$subsChangedCore = this.coreService.$obsevableCore.subscribe(res => {
+      this.coreName = res?.name
+    })
   }
 
   changeCore() {
@@ -42,5 +50,9 @@ export class UserComponent implements OnInit {
   signOut(): void {
     this._authService.signOut()
     this._router.navigateByUrl('sign-in')
+  }
+
+  ngOnDestroy() {
+    this.$subsChangedCore.unsubscribe()
   }
 }

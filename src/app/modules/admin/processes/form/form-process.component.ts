@@ -90,7 +90,7 @@ export class FormProcessComponent implements OnInit {
   }
 
   getCore() {
-    this.coreService.$localCore.subscribe(res => {
+    this.coreService.$obsevableCore.subscribe(res => {
       this.form.get('coreId').setValue(res.id)
     })
   }

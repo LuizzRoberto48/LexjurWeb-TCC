@@ -8,7 +8,7 @@ import { FuseConfirmationConfig } from '@fuse/services/confirmation/confirmation
 export class FuseConfirmationService
 {
     private _defaultConfig: FuseConfirmationConfig = {
-        title      : 'Confirm action',
+        title      : 'Deseja remover este item',
         message    : 'Are you sure you want to confirm this action?',
         icon       : {
             show : true,

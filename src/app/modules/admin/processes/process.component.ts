@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoreService } from 'app/core/cores/service/core.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -8,16 +9,18 @@ import { CoreService } from 'app/core/cores/service/core.service';
   templateUrl: './process.component.html',
 })
 export class ProcessComponent implements OnInit {
-
+  $subsChangedCore: Subscription = new Subscription()
   coreName: string = ''
-  constructor(public route: Router, private coreService: CoreService) { }
+  constructor(public route: Router, public coreService: CoreService) { }
 
   ngOnInit() {
-    this.coreService.$localCore.subscribe(res => {
-      this.coreName =res.name
+    this.$subsChangedCore = this.coreService.$obsevableCore.subscribe(res => {
+      this.coreName = res?.name
     })
-
   }
 
 
+  ngOnDestroy() {
+    this.$subsChangedCore.unsubscribe()
+  }
 }

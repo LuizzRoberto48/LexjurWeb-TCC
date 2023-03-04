@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from 'app/core/material.module';
-import { CoreSheetModule } from 'app/core/cores/core-sheet/core-sheet.module';
+import { MaterialModule } from 'app/shared/material.module';
 
 @NgModule({
     declarations:[],
@@ -10,13 +9,13 @@ import { CoreSheetModule } from 'app/core/cores/core-sheet/core-sheet.module';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        MaterialModule,
-        CoreSheetModule
+        MaterialModule
     ],
     exports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        MaterialModule
     ]
 })
 export class SharedModule
