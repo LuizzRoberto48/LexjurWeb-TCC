@@ -1103,11 +1103,9 @@
 
     .mat-mdc-paginator-container {
         padding: 8px 16px;
-        justify-content: space-between;
+        justify-content: end;
 
-        @screen sm {
-            justify-content: normal;
-        }
+        
 
         /* Page size select */
         .mat-mdc-paginator-page-size {

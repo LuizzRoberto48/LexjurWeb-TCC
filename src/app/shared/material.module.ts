@@ -22,6 +22,8 @@ import { MatInputModule } from '@angular/material/input';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MyPaginatorIntl } from './paginator/paginator.service';
+
 
 
 @NgModule({
@@ -73,5 +75,9 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatChipsModule,
     MatAutocompleteModule
   ],
+  providers:[
+    
+    { provide: MatPaginatorIntl, useClass: MyPaginatorIntl }
+  ]
 })
 export class MaterialModule {}

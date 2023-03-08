@@ -1,347 +1,364 @@
-<div class="xl:col-span-2 flex flex-col flex-auto overflow-hidden pt-4">
-  <div class="overflow-x-auto mx-6" style="padding: 20px;">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div class="grid w-full mt-10 ">
-        <h1 class="font-semibold tracking-wide uppercase text-blue-800">Infomações Processo</h1>
-        <hr>
-        <div class="grid grid-cols-1 ">
-          <div class="flex flex-col gt-xs:flex-row">
-            <mat-checkbox class="mb-2" formControlName="isCNJ" [color]="'primary'">
-              CNJ
-            </mat-checkbox>
+<div class="inset-0 flex flex-col min-w-0 overflow-hidden w-full">
+  <div class="bg-card">
+    <div class="flex flex-col w-full mx-auto sm:px-10 min-w-0 sm:my-1 flex-auto">
+      <div class="flex justify-start py-5">
+        <div class="grid gap-4 content-between">
+          <div>
+            <gl-breadcrumb></gl-breadcrumb>
+          </div>
+          <div>
+            <h2 class="text-3xl md:text-3xl font-bold tracking-tight leading-7 sm:leading-7 truncate">
+              Informações do processo
+            </h2>
           </div>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 ">
-          <div class="flex flex-col ">
-            <mat-form-field class="w-full">
-              <mat-label>Número do processo</mat-label>
-              <input matInput type="text" formControlName="caseNumber">
-            </mat-form-field>
+        
+      </div>
+    </div>
+  </div>
+  <div class="xl:col-span-2 flex flex-col flex-auto overflow-hidden pt-4">
+    <div class="mb-10 px-10 " >
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="grid w-full mt-10 ">
+          <div class="grid grid-cols-1 ">
+            <div class="flex flex-col gt-xs:flex-row">
+              <mat-checkbox class="mb-2" formControlName="isCNJ" [color]="'primary'">
+                CNJ
+              </mat-checkbox>
+            </div>
           </div>
-          <div class="flex flex-col ">
-            <mat-form-field class="w-full">
-              <mat-label>Número Antigo do Processo</mat-label>
-              <input matInput type="text" formControlName="oldCaseNumber">
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6  my-5">
-          <div class="flex flex-col items-center justify-center">
-            <mat-label>Processo eletrônico</mat-label>
-            <mat-radio-group color="primary" formControlName="isEletronic">
-              <mat-radio-button [value]="eletronic.value"
-                *ngFor="let eletronic of isEletronicTypes">{{eletronic.label}}</mat-radio-button>
-            </mat-radio-group>
-          </div>
-          <div class="flex flex-col" *ngIf="form.get('isEletronic').value">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>Sistema eletrônico</mat-label>
-              <mat-select formControlName="eletronicSystemId">
-                <mat-option value="language-1">Creta</mat-option>
-                <mat-option value="language-2">E-Proc</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 ">
-          <div class="flex flex-col ">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>Área do direito</mat-label>
-              <mat-select formControlName="lawAreaId" (selectionChange)="changeLawArea()">
-                <mat-option [value]="area.id" *ngFor="let area of lawAreas">{{area.name}}</mat-option>
-
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="flex flex-col ">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>Sub área do direito</mat-label>
-              <mat-select [placeholder]="'Language'" formControlName="lawSubAreaId">
-                <mat-option [value]="subarea.id" *ngFor="let subarea of lawSubAreas">{{subarea.name}}</mat-option>
-
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-6 ">
-          <div class="flex flex-col ">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>Origem</mat-label>
-              <mat-select formControlName="originId" (selectionChange)="changeOrigin()">
-                <mat-option [value]="origin.id" *ngFor="let origin of origins">{{origin.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <ng-container>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 ">
             <div class="flex flex-col ">
-              <mat-form-field class="flex-auto gt-xs:pl-3">
-                <mat-label>Órgão</mat-label>
-                <mat-select formControlName="organId" (selectionChange)="changeOrgan()">
-                  <mat-option [value]="organ.id" *ngFor="let organ of organs">{{organ.name}}</mat-option>
-                </mat-select>
+              <mat-form-field class="w-full">
+                <mat-label>Número do processo</mat-label>
+                <input matInput type="text" formControlName="caseNumber">
               </mat-form-field>
             </div>
             <div class="flex flex-col ">
               <mat-form-field class="w-full">
-                <mat-label>Número do órgão</mat-label>
-                <input matInput type="text" formControlName="organNumber">
+                <mat-label>Número Antigo do Processo</mat-label>
+                <input matInput type="text" formControlName="oldCaseNumber">
               </mat-form-field>
             </div>
-          </ng-container>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 ">
-          <div class="flex flex-col ">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>UFs</mat-label>
-              <mat-select formControlName="uf" (selectionChange)="changeUfs()">
-                <mat-option [value]="uf.id" *ngFor="let uf of ufs">{{uf.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
           </div>
-          <div class="flex flex-col ">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>Comarca</mat-label>
-              <mat-select formControlName="countyId" (selectionChange)="changeCounty()">
-                <mat-option [value]="county.id" *ngFor="let county of counties">{{county.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6  my-5">
+            <div class="flex flex-col items-center justify-center">
+              <mat-label>Processo eletrônico</mat-label>
+              <mat-radio-group color="primary" formControlName="isEletronic">
+                <mat-radio-button [value]="eletronic.value"
+                  *ngFor="let eletronic of isEletronicTypes">{{eletronic.label}}</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="flex flex-col" *ngIf="form.get('isEletronic').value">
+              <mat-form-field class="flex-auto gt-xs:pl-3">
+                <mat-label>Sistema eletrônico</mat-label>
+                <mat-select formControlName="eletronicSystemId">
+                  <mat-option value="language-1">Creta</mat-option>
+                  <mat-option value="language-2">E-Proc</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
           </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 ">
-          <div class="flex flex-col ">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>Foro</mat-label>
-              <mat-select formControlName="forumId">
-                <mat-option [value]="forum.id" *ngFor="let forum of forums">{{forum.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="flex flex-col">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>Advogado responsável</mat-label>
-              <mat-select formControlName="insideLawyerId">
-                <mat-option [value]="user.id" *ngFor="let user of insideLaywers">{{user.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="flex flex-col ">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>Instância</mat-label>
-              <mat-select formControlName="instance">
-                <mat-option [value]="instance" *ngFor="let instance of instanceTypes">{{instance |
-                  titlecase}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 ">
-          <div class="flex flex-col ">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>Tipo de ação</mat-label>
-              <mat-select formControlName="actionTypeId">
-                <mat-option [value]="action.id" *ngFor="let action of actionTypes">{{action.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="flex flex-col ">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>Fase</mat-label>
-              <mat-select formControlName="phaseId">
-                <mat-option [value]="phase.id" *ngFor="let phase of phases">{{phase.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <ng-container>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 ">
             <div class="flex flex-col ">
               <mat-form-field class="flex-auto gt-xs:pl-3">
-                <mat-label>Objeto</mat-label>
-                <mat-select formControlName="objectId" (selectionChange)="changeObject()">
-                  <mat-option [value]="obj.id" *ngFor="let obj of objects">{{obj.name}}</mat-option>
+                <mat-label>Área do direito</mat-label>
+                <mat-select formControlName="lawAreaId" (selectionChange)="changeLawArea()">
+                  <mat-option [value]="area.id" *ngFor="let area of lawAreas">{{area.name}}</mat-option>
+  
                 </mat-select>
               </mat-form-field>
             </div>
             <div class="flex flex-col ">
               <mat-form-field class="flex-auto gt-xs:pl-3">
-                <mat-label>Sub objeto</mat-label>
-                <mat-select formControlName="subObjectId">
-                  <mat-option [value]="obj.id" *ngFor="let obj of subObjects">{{obj.name}}</mat-option>
+                <mat-label>Sub área do direito</mat-label>
+                <mat-select [placeholder]="'Language'" formControlName="lawSubAreaId">
+                  <mat-option [value]="subarea.id" *ngFor="let subarea of lawSubAreas">{{subarea.name}}</mat-option>
+  
                 </mat-select>
               </mat-form-field>
             </div>
-          </ng-container>
-        </div>
-
-        <div class="grid grid-cols-1">
-          <div class="flex flex-col ">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>Assunto</mat-label>
-              <mat-select formControlName="subjectId">
-                <mat-option [value]="subject.id" *ngFor="let subject of subjects">{{subject.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
           </div>
-        </div>
-      </div>
-      <div class="grid w-full mt-10 mb-10">
-        <h1 class="font-semibold tracking-wide uppercase text-blue-800">Parte Interessada</h1>
-        <hr>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          <div class="flex flex-col ">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>Cliente</mat-label>
-              <mat-select formControlName="clientId" (selectionChange)="changeClient()">
-                <mat-option [value]="client.id" *ngFor="let client of clients">{{client.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="flex flex-col ">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>Nome</mat-label>
-              <mat-select formControlName="stakeholderId">
-                <mat-option [value]="stakeholder.id"
-                  *ngFor="let stakeholder of stakeholders">{{stakeholder.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="flex flex-col ">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>Posição</mat-label>
-              <mat-select formControlName="stakeholderPosition">
-                <mat-option [value]="position" *ngFor="let position of positions">{{position}}</mat-option>,
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-      </div>
-      <div class="grid w-full mt-10 mb-10">
-        <h1 class="font-semibold tracking-wide uppercase text-blue-800">Parte adversa</h1>
-        <hr>
-        <div class="grid grid-cols-3 gap-6 ">
-          <ng-container formGroupName="adverseStakeholder">
+          <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-6 ">
             <div class="flex flex-col ">
               <mat-form-field class="flex-auto gt-xs:pl-3">
-                <mat-label>Tipo </mat-label>
-                <mat-select formControlName="type" (selectionChange)="changeAdverseType()">
-                  <mat-option [value]="type" *ngFor="let type of personTypes">{{
-                    formService.personType(type)}}</mat-option>
+                <mat-label>Origem</mat-label>
+                <mat-select formControlName="originId" (selectionChange)="changeOrigin()">
+                  <mat-option [value]="origin.id" *ngFor="let origin of origins">{{origin.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <ng-container>
+              <div class="flex flex-col ">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Órgão</mat-label>
+                  <mat-select formControlName="organId" (selectionChange)="changeOrgan()">
+                    <mat-option [value]="organ.id" *ngFor="let organ of organs">{{organ.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col ">
+                <mat-form-field class="w-full">
+                  <mat-label>Número do órgão</mat-label>
+                  <input matInput type="text" formControlName="organNumber">
+                </mat-form-field>
+              </div>
+            </ng-container>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 ">
+            <div class="flex flex-col ">
+              <mat-form-field class="flex-auto gt-xs:pl-3">
+                <mat-label>UFs</mat-label>
+                <mat-select formControlName="uf" (selectionChange)="changeUfs()">
+                  <mat-option [value]="uf.id" *ngFor="let uf of ufs">{{uf.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="flex flex-col ">
+              <mat-form-field class="flex-auto gt-xs:pl-3">
+                <mat-label>Comarca</mat-label>
+                <mat-select formControlName="countyId" (selectionChange)="changeCounty()">
+                  <mat-option [value]="county.id" *ngFor="let county of counties">{{county.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 ">
+            <div class="flex flex-col ">
+              <mat-form-field class="flex-auto gt-xs:pl-3">
+                <mat-label>Foro</mat-label>
+                <mat-select formControlName="forumId">
+                  <mat-option [value]="forum.id" *ngFor="let forum of forums">{{forum.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="flex flex-col">
+              <mat-form-field class="flex-auto gt-xs:pl-3">
+                <mat-label>Advogado responsável</mat-label>
+                <mat-select formControlName="insideLawyerId">
+                  <mat-option [value]="user.id" *ngFor="let user of insideLaywers">{{user.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="flex flex-col ">
+              <mat-form-field class="flex-auto gt-xs:pl-3">
+                <mat-label>Instância</mat-label>
+                <mat-select formControlName="instance">
+                  <mat-option [value]="instance" *ngFor="let instance of instanceTypes">{{instance |
+                    titlecase}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 ">
+            <div class="flex flex-col ">
+              <mat-form-field class="flex-auto gt-xs:pl-3">
+                <mat-label>Tipo de ação</mat-label>
+                <mat-select formControlName="actionTypeId">
+                  <mat-option [value]="action.id" *ngFor="let action of actionTypes">{{action.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="flex flex-col ">
+              <mat-form-field class="flex-auto gt-xs:pl-3">
+                <mat-label>Fase</mat-label>
+                <mat-select formControlName="phaseId">
+                  <mat-option [value]="phase.id" *ngFor="let phase of phases">{{phase.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <ng-container>
+              <div class="flex flex-col ">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Objeto</mat-label>
+                  <mat-select formControlName="objectId" (selectionChange)="changeObject()">
+                    <mat-option [value]="obj.id" *ngFor="let obj of objects">{{obj.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col ">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Sub objeto</mat-label>
+                  <mat-select formControlName="subObjectId">
+                    <mat-option [value]="obj.id" *ngFor="let obj of subObjects">{{obj.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </ng-container>
+          </div>
+  
+          <div class="grid grid-cols-1">
+            <div class="flex flex-col ">
+              <mat-form-field class="flex-auto gt-xs:pl-3">
+                <mat-label>Assunto</mat-label>
+                <mat-select formControlName="subjectId">
+                  <mat-option [value]="subject.id" *ngFor="let subject of subjects">{{subject.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="grid w-full mt-10 mb-10">
+          <h1 class="font-semibold tracking-wide uppercase text-blue-800">Parte Interessada</h1>
+          <hr>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div class="flex flex-col ">
+              <mat-form-field class="flex-auto gt-xs:pl-3">
+                <mat-label>Cliente</mat-label>
+                <mat-select formControlName="clientId" (selectionChange)="changeClient()">
+                  <mat-option [value]="client.id" *ngFor="let client of clients">{{client.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
             <div class="flex flex-col ">
               <mat-form-field class="flex-auto gt-xs:pl-3">
                 <mat-label>Nome</mat-label>
-                <input matInput type="text" formControlName="name" [matAutocomplete]="auto"
-                  (change)="adverseSelected()">
-                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="adverseSelected()">
-                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
-                    {{option.name + ' - ' + option.cpfCnpj}}
-                  </mat-option>
-                </mat-autocomplete>
+                <mat-select formControlName="stakeholderId">
+                  <mat-option [value]="stakeholder.id"
+                    *ngFor="let stakeholder of stakeholders">{{stakeholder.name}}</mat-option>
+                </mat-select>
               </mat-form-field>
             </div>
             <div class="flex flex-col ">
               <mat-form-field class="flex-auto gt-xs:pl-3">
                 <mat-label>Posição</mat-label>
-                <mat-select formControlName="position">
-                  <mat-option [value]="position" *ngFor="let position of positions">{{position}}</mat-option>
+                <mat-select formControlName="stakeholderPosition">
+                  <mat-option [value]="position" *ngFor="let position of positions">{{position}}</mat-option>,
                 </mat-select>
               </mat-form-field>
             </div>
-            <div class="flex flex-col ">
-              <mat-form-field class="flex-auto gt-xs:pl-3">
-                <mat-label>CPF/CNPJ</mat-label>
-                <input matInput type="text" formControlName="cpfCnpj" [mask]="mask">
-              </mat-form-field>
-            </div>
-            <div class="flex flex-col ">
-              <mat-form-field class="flex-auto gt-xs:pl-3">
-                <mat-label>Telefone</mat-label>
-                <input matInput type="text" formControlName="phone" mask="(00)-00000-0000">
-              </mat-form-field>
-            </div>
-            <div class="flex flex-col ">
-              <mat-form-field class="flex-auto gt-xs:pl-3">
-                <mat-label>E-mail</mat-label>
-                <input matInput type="text" formControlName="email">
-              </mat-form-field>
-            </div>
-          </ng-container>
-          <ng-container formGroupName="adverseLawyer">
-            <div class="flex flex-col ">
-              <mat-form-field class="flex-auto gt-xs:pl-3">
-                <mat-label>UF OAB advogado adverso</mat-label>
-                <mat-select formControlName="ufOab" (selectionChange)="changedUfOab()">
-                  <mat-option [value]="uf.name" *ngFor="let uf of ufs">{{uf.name}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="flex flex-col ">
-              <mat-form-field class="flex-auto gt-xs:pl-3">
-                <mat-label>Nome advogado adverso</mat-label>
-                <mat-select formControlName="name" (selectionChange)="changedLawyerOabAdverse()">
-                  <mat-option [value]="adLawyer.name" *ngFor="let adLawyer of adverseLawyers">
-                    {{adLawyer.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="flex flex-col ">
-              <mat-form-field class="flex-auto gt-xs:pl-3">
-                <mat-label>OAB advogado adverso</mat-label>
-                <input matInput type="text" formControlName="oab">
-              </mat-form-field>
-            </div>
-          </ng-container>
+          </div>
         </div>
-      </div>
-      <div class="grid w-full mt-10 ">
-        <h1 class="font-semibold tracking-wide uppercase text-blue-800">Outros</h1>
-        <hr>
-        <div class="grid grid-cols-3 gap-6">
-          <div class="flex flex-col ">
-            <mat-form-field class="w-full">
-              <mat-label>Data da distribuição</mat-label>
-              <input matInput type="text" formControlName="distributionDate" mask="d0/M0/0000"
-                [dropSpecialCharacters]="false">
-            </mat-form-field>
+        <div class="grid w-full mt-10 mb-10">
+          <h1 class="font-semibold tracking-wide uppercase text-blue-800">Parte adversa</h1>
+          <hr>
+          <div class="grid grid-cols-3 gap-6 ">
+            <ng-container formGroupName="adverseStakeholder">
+              <div class="flex flex-col ">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Tipo </mat-label>
+                  <mat-select formControlName="type" (selectionChange)="changeAdverseType()">
+                    <mat-option [value]="type" *ngFor="let type of personTypes">{{
+                      formService.personType(type)}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col ">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Nome</mat-label>
+                  <input matInput type="text" formControlName="name" [matAutocomplete]="auto"
+                    (change)="adverseSelected()">
+                  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="adverseSelected()">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+                      {{option.name + ' - ' + option.cpfCnpj}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col ">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Posição</mat-label>
+                  <mat-select formControlName="position">
+                    <mat-option [value]="position" *ngFor="let position of positions">{{position}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col ">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>CPF/CNPJ</mat-label>
+                  <input matInput type="text" formControlName="cpfCnpj" [mask]="mask">
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col ">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Telefone</mat-label>
+                  <input matInput type="text" formControlName="phone" mask="(00)-00000-0000">
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col ">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>E-mail</mat-label>
+                  <input matInput type="text" formControlName="email">
+                </mat-form-field>
+              </div>
+            </ng-container>
+            <ng-container formGroupName="adverseLawyer">
+              <div class="flex flex-col ">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>UF OAB advogado adverso</mat-label>
+                  <mat-select formControlName="ufOab" (selectionChange)="changedUfOab()">
+                    <mat-option [value]="uf.name" *ngFor="let uf of ufs">{{uf.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col ">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Nome advogado adverso</mat-label>
+                  <mat-select formControlName="name" (selectionChange)="changedLawyerOabAdverse()">
+                    <mat-option [value]="adLawyer.name" *ngFor="let adLawyer of adverseLawyers">
+                      {{adLawyer.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col ">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>OAB advogado adverso</mat-label>
+                  <input matInput type="text" formControlName="oab">
+                </mat-form-field>
+              </div>
+            </ng-container>
           </div>
-          <div class="flex flex-col ">
-            <mat-form-field class="w-full">
-              <mat-label>Data da citação</mat-label>
-              <input matInput type="text" formControlName="quoteDate" mask="d0/M0/0000" [dropSpecialCharacters]="false">
-            </mat-form-field>
-          </div>
-          <div class="flex flex-col ">
+        </div>
+        <div class="grid w-full mt-10 ">
+          <h1 class="font-semibold tracking-wide uppercase text-blue-800">Outros</h1>
+          <hr>
+          <div class="grid grid-cols-3 gap-6">
             <div class="flex flex-col ">
               <mat-form-field class="w-full">
-                <mat-label>Valor da causa</mat-label>
-                <input matInput type="text" formControlName="causeValue" prefix="R$ " mask="separator.2"
-                  thousandSeparator="." decimalMarker=",">
+                <mat-label>Data da distribuição</mat-label>
+                <input matInput type="text" formControlName="distributionDate" mask="d0/M0/0000"
+                  [dropSpecialCharacters]="false">
               </mat-form-field>
+            </div>
+            <div class="flex flex-col ">
+              <mat-form-field class="w-full">
+                <mat-label>Data da citação</mat-label>
+                <input matInput type="text" formControlName="quoteDate" mask="d0/M0/0000" [dropSpecialCharacters]="false">
+              </mat-form-field>
+            </div>
+            <div class="flex flex-col ">
+              <div class="flex flex-col ">
+                <mat-form-field class="w-full">
+                  <mat-label>Valor da causa</mat-label>
+                  <input matInput type="text" formControlName="causeValue" prefix="R$ " mask="separator.2"
+                    thousandSeparator="." decimalMarker=",">
+                </mat-form-field>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="grid grid-cols-1 w-full min-w-0">
-        <div class="flex flex-col">
-          <mat-form-field class="flex-auto">
-            <mat-label>Breve relato</mat-label>
-            <textarea matInput cdkTextareaAutosize [cdkAutosizeMinRows]="2" formControlName="description"></textarea>
-          </mat-form-field>
+        <div class="grid grid-cols-1 w-full min-w-0">
+          <div class="flex flex-col">
+            <mat-form-field class="flex-auto">
+              <mat-label>Breve relato</mat-label>
+              <textarea matInput cdkTextareaAutosize [cdkAutosizeMinRows]="2" formControlName="description"></textarea>
+            </mat-form-field>
+          </div>
         </div>
-      </div>
-      <!-- Divider -->
-      <div class="my-10 border-t"></div>
-
-      <!-- Actions -->
-      <div class="flex items-center justify-center">
-        <button mat-stroked-button type="button">
-          Apagar
-        </button>
-        <button class="ml-4" mat-flat-button type="button" [color]="'primary'" (click)="onSubmit()">
-          Salvar
-        </button>
-      </div>
-    </form>
+        <!-- Divider -->
+        <div class="my-10 border-t"></div>
+  
+        <!-- Actions -->
+        <div class="flex items-center justify-center">
+          <button mat-stroked-button type="button">
+            Apagar
+          </button>
+          <button class="ml-4" mat-flat-button type="button" [color]="'primary'" (click)="onSubmit()">
+            Salvar
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

@@ -14,7 +14,6 @@ export class CoreService {
   $obsevableCore = this._localCore$.asObservable();
 
   constructor(private _http: HttpClient) {
-    // Retrieve the object from localStorage and set it as the initial value of the BehaviorSubject
     const storedObject = localStorage.getItem(CORE);
     if (storedObject) {
       this._localCore$.next(JSON.parse(storedObject));

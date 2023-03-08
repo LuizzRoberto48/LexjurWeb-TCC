@@ -1,19 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { CoreService } from 'app/core/cores/service/core.service';
-import { GetProcess, Process } from 'app/core/process/models/process.model';
+import { GetProcess, GetProcessPageable, Process } from 'app/core/process/models/process.model';
 import { ProcessService } from 'app/core/process/process.service';
 import { configDialog } from 'app/core/process/utils';
+import { Paginator } from 'app/shared/paginator/paginator.model';
+import { Subscription } from 'rxjs';
 
+const MINWIDTH = 1024
 
 @Component({
   selector: 'app-form-process',
   templateUrl: './list-process.component.html',
 })
 export class ListProcessComponent {
+  screenWidth: string;
+  length = 0;
+  pageSize = 2;
+  pageIndex = 1
+  pageSizeOptions = [2, 6, 25];
 
+  $subsChangedCore: Subscription = new Subscription()
+  coreName: string = ''
+
+  pageEvent: PageEvent;
   recentTransactionsDataSource: MatTableDataSource<any> = new MatTableDataSource();
   recentTransactionsTableColumns: string[] = [
     'caseNumber',
@@ -30,10 +44,13 @@ export class ListProcessComponent {
     return item.id || index;
   }
 
-  constructor(private route: Router,
+  constructor(public route: Router,
     private processService: ProcessService,
     private coreService: CoreService,
-    private __confirmationService: FuseConfirmationService) { }
+    private __confirmationService: FuseConfirmationService,
+  ) {
+
+  }
 
   ngOnInit() {
     this.recentTransactionsDataSource.data = [];
@@ -41,8 +58,12 @@ export class ListProcessComponent {
   }
 
   getCore() {
-    this.coreService.$obsevableCore.subscribe(res => {
-      this.getListByCore(res.id)
+    let paginator: Paginator = { page: this.pageIndex, size: this.pageSize }
+    this.$subsChangedCore = this.coreService.$obsevableCore.subscribe(res => {
+      if (res?.id) {
+        this.coreName = res.name
+        this.getListByCore(res.id, paginator)
+      }
     })
   }
 
@@ -50,10 +71,11 @@ export class ListProcessComponent {
     this.route.navigate([`processos/edit/${process.id}`])
   }
 
-  getListByCore(id: number) {
-    this.processService.getProcessByCore(id).subscribe({
-      next: (res: GetProcess[]) => {
-        this.recentTransactionsDataSource.data = res;
+  getListByCore(id: number, paginator: Paginator) {
+    this.processService.getProcessByCore(id, paginator).subscribe({
+      next: (res: GetProcessPageable) => {
+        this.length = res.totalItems
+        this.recentTransactionsDataSource.data = res.process;
       },
       error: (error) => {
         console.log(error)
@@ -61,17 +83,25 @@ export class ListProcessComponent {
     })
   }
 
-  newProcess() {
-    this.route.navigate(['processos/new'])
+  toDetail(process) {
+    this.route.navigate(['/processos/detail'])
+  }
+
+
+  handlePageEvent(e: PageEvent) {
+    this.pageIndex = e.pageIndex + 1
+    this.pageSize = e.pageSize;
+    this.getCore()
   }
 
   removeProcessDialog(process: Process): void {
-    // Open the dialog and save the reference of it
     const dialogRef = this.__confirmationService.open(configDialog(process.caseNumber));
-
-    // Subscribe to afterClosed from the dialog reference
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
     });
+  }
+
+  ngOnDestroy() {
+    this.$subsChangedCore.unsubscribe()
   }
 }

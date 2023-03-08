@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {  Router } from '@angular/router';
 import { CoreService } from 'app/core/cores/service/core.service';
 import { Subscription } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 export class ProcessComponent implements OnInit {
   $subsChangedCore: Subscription = new Subscription()
   coreName: string = ''
-  constructor(public route: Router, public coreService: CoreService) { }
+  constructor(public route: Router, public coreService: CoreService,) { }
 
   ngOnInit() {
     this.$subsChangedCore = this.coreService.$obsevableCore.subscribe(res => {
@@ -19,6 +19,7 @@ export class ProcessComponent implements OnInit {
     })
   }
 
+  
 
   ngOnDestroy() {
     this.$subsChangedCore.unsubscribe()

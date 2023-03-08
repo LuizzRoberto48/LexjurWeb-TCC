@@ -12,16 +12,24 @@ export enum PersonType {
   JURIDICA = 'JURIDICA'
 };
 
+export interface GetProcessPageable {
+  totalItems:number,
+  process:GetProcess[]
+}
+
 export interface GetProcess {
   id?:number
+  LawyerProcess:any;
   caseNumber:string;
   oldCaseNumber:string;
   subject:string;
-  lawyer:string;
+  lawyer?:string;
   distributionDate:string;
   quoteDate:string;
   instance:string;
-  causeValue:string
+  causeValue:string;
+  insideLawyer:any,
+  outsideLawyer:any
 }
 
 export interface CreateProcess {
@@ -84,7 +92,6 @@ export interface ProcessForm {
 
 export interface Process {
   id: number
-  name: string
   createAt: Date
   updateAt: Date
   isCNJ: boolean
@@ -103,6 +110,7 @@ export interface Process {
   coreId: number
   client: Client
   adverseStakeholder: AdverseStakeholder
+  LawyerProcess?:any
   county: County
   userId: number
   distributionDate: Date

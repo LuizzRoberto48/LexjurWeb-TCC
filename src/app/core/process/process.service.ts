@@ -1,8 +1,9 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Paginator } from "app/shared/paginator/paginator.model";
 import { environment } from "environments/environment";
 import { map, Observable } from "rxjs";
-import { ActionType, AdverseStakeholder, Client, County, CreateProcess, Forum, GetProcess, LawArea, LawSubArea, Object, Organ, Origin, PersonType, Phase, Process, Stakeholder, Subject, SubObject, Ufs } from "./models/process.model";
+import { ActionType, AdverseStakeholder, Client, County, CreateProcess, Forum, GetProcess, GetProcessPageable, LawArea, LawSubArea, Object, Organ, Origin, PersonType, Phase, Process, Stakeholder, Subject, SubObject, Ufs } from "./models/process.model";
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +16,29 @@ export class ProcessService {
     return this._http.get<Process>(`${environment.apiURL}/processes/${id}`)
   }
 
-  getProcessByCore(coreId: number): Observable<GetProcess[]> {
-    return this._http.get<Process[]>(`${environment.apiURL}/processes/core/${coreId}`).pipe(
-      map(res => res.map((data: any) =>
-        ({ ...data, subject: data.Subject.name, lawyer: this.getInsideLawyerByProcess(data).name })
-      ))
+  getProcessByCore(coreId: number, paginator: Paginator): Observable<GetProcessPageable> {
+    const params = this.httpParams(paginator)
+    return this._http.get<GetProcessPageable>(`${environment.apiURL}/core/${coreId}/processes`, { params }).pipe(
+      map(res => {
+        const process = res.process.map(p => {
+          return {
+            ...p,
+            insideLawyer: this.getInsideLawyerByProcess(p),
+            outsidelawyer: this.getOutsideLawyerByProcess(p)
+          }
+        })
+        console.log(res)
+        return { process, totalItems: res.totalItems }
+      })
     )
+  }
+
+  private httpParams(params: Paginator): HttpParams {
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach(function (key) {
+      httpParams = httpParams.append(key, params[key]);
+    });
+    return httpParams;
   }
 
   getInsideLawyerByProcess(data) {
@@ -103,5 +121,5 @@ export class ProcessService {
     return this._http.get<AdverseStakeholder[]>(`${environment.apiURL}/adverse-stakeholders/${type}`)
   }
 
-  
+
 }

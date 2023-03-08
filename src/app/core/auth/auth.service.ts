@@ -7,14 +7,19 @@ import { environment } from 'environments/environment-prod';
 import jwt_decode from 'jwt-decode';
 import { TokenInfo } from './models/token-info';
 import { DateTime } from 'luxon';
+import { CORE, CoreService } from '../cores/service/core.service';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { CoreSheedList } from '../cores/core-sheet/core-sheet.component';
 
-@Injectable()
+@Injectable({
+  providedIn:'root'
+})
 export class AuthService {
   private _authenticated: boolean = false;
 
   constructor(
     private _httpClient: HttpClient,
-    private _userService: UserService
+    private _bottomSheet: MatBottomSheet
   ) {
   }
 
@@ -49,7 +54,7 @@ export class AuthService {
       switchMap((response: any) => {
         // Store the access token in the local storage
         this.accessToken = response.accessToken;
-
+        this._bottomSheet.open(CoreSheedList, { disableClose: true })
         // Set the authenticated flag to true
         this._authenticated = true;
 
@@ -62,6 +67,7 @@ export class AuthService {
 
   signOut(): Observable<any> {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem(CORE)
     this._authenticated = false;
     return of(true);
   }
