@@ -20,14 +20,12 @@ export class ProcessService {
     const params = this.httpParams(paginator)
     return this._http.get<GetProcessPageable>(`${environment.apiURL}/core/${coreId}/processes`, { params }).pipe(
       map(res => {
-        const process = res.process.map(p => {
-          return {
-            ...p,
-            insideLawyer: this.getInsideLawyerByProcess(p),
-            outsidelawyer: this.getOutsideLawyerByProcess(p)
-          }
+        const process = res.process.map(p => ({
+          ...p,
+          insideLawyer: this.getInsideLawyerByProcess(p),
+          outsidelawyer: this.getOutsideLawyerByProcess(p)
         })
-        console.log(res)
+        )
         return { process, totalItems: res.totalItems }
       })
     )

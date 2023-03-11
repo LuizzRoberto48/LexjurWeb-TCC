@@ -28,7 +28,7 @@ import {
 } from 'app/core/process/models/process.model';
 import { ProcessService } from 'app/core/process/process.service';
 import { map, Observable, startWith } from 'rxjs';
-import { FormProcessService } from '../../../../core/process/form-process-form.service';
+import { FormProcessService } from '../../../../core/process/form-process.service';
 
 @Component({
   selector: 'app-form-process',

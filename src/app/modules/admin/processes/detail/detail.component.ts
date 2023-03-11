@@ -1,12 +1,10 @@
-import { AfterContentChecked, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
+import { ActivatedRoute } from '@angular/router';
 import { FuseNavigationItem } from '@fuse/components/navigation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { LawyerService } from 'app/core/lawyer/lawyer.service';
-import { Process } from 'app/core/process/models/process.model';
-import { ProcessService } from 'app/core/process/process.service';
-import { delay, first, map, Observable, of, startWith, Subject, takeLast, takeUntil, tap } from 'rxjs';
+import { ProcessDetailService } from 'app/core/process/process-detail.service';
+import { map, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'process-detail',
@@ -21,57 +19,30 @@ export class ProcessDetailComponent {
   menuData: FuseNavigationItem[];
   panels: any[] = [];
   selectedPanel: string = 'account';
+  currentPanel: Observable<any>
+
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(private _changeDetectorRef: ChangeDetectorRef,
-    private _fuseMediaWatcherService: FuseMediaWatcherService) {
+    private _fuseMediaWatcherService: FuseMediaWatcherService,
+    private processDetailService: ProcessDetailService,
+    private activeRoute: ActivatedRoute) {
 
-    this.menuData = [
-      {
-        id: 'other-components.common',
-        title: 'Common',
-        subtitle: 'Custom made high-level components',
-        type: 'group',
-        children: [
-          {
-            id: 'other-components.common.overview',
-            title: 'Overview',
-            type: 'basic',
-            link: '/ui/other-components/common/overview'
-          },
-          {
-            id: 'other-components.common.languages',
-            title: 'Languages',
-            type: 'basic',
-            link: '/ui/other-components/common/languages'
-          },
-          {
-            id: 'other-components.common.messages',
-            title: 'Messages',
-            type: 'basic',
-            link: '/ui/other-components/common/messages'
-          },
-          {
-            id: 'other-components.common.notifications',
-            title: 'Notifications',
-            type: 'basic',
-            link: '/ui/other-components/common/notifications'
-          },
-        ]
-      },
-      {
-        id: 'other-components.divider-1',
-        type: 'divider'
-      },
-      
-    ];
+    this.menuData = this.processDetailService.topics
   }
 
-  getPanelInfo(id: string): any {
-    return this.panels.find(panel => panel.id === id);
+  changePanel() {
+    //this.processDetailService.$obsevablePanel = 
+    this.activeRoute.children
+    this.activeRoute.children[0].title.pipe(
+      switchMap(res=> of(this.processDetailService.getItemById(res)))).subscribe(console.log)
+     
   }
+
+  
 
   ngOnInit() {
+    this.changePanel()
     this.hideOrShowDrawerBySizeOfScreen()
   }
 

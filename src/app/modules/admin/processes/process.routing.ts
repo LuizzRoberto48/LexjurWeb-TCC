@@ -36,7 +36,8 @@ export const processRoutes: Route[] = [
         data: { breadcrumb: '' },
       },
       {
-        path: 'detail', loadChildren: () => import('app/modules/admin/processes/detail/process-details.module').then(m => m.ProcessDetailModule)
+        path: 'detail/:id', loadChildren: () => import('app/modules/admin/processes/detail/detail.module').then(m => m.ProcessDetailModule),
+        
       },
     ]
   }

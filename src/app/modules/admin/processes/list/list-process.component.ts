@@ -84,9 +84,9 @@ export class ListProcessComponent {
   }
 
   toDetail(process) {
-    this.route.navigate(['/processos/detail'])
+    console.log(process.id)
+    this.route.navigate([`/processos/detail/${process.id}`])
   }
-
 
   handlePageEvent(e: PageEvent) {
     this.pageIndex = e.pageIndex + 1
