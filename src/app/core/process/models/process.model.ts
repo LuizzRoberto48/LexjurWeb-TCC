@@ -95,11 +95,22 @@ export interface Process {
   createAt: Date
   updateAt: Date
   isCNJ: boolean
+  ActionType:any,
+  AdverseStakeholder:AdverseStakeholder
+  EletronicSystem:any
+  LawSubArea:any
   caseNumber: string
+  Organ:any
+  Forum:any
+  Phase:any,
+  Stakeholder:any
+  SubObject:any,
+  Subject:any
   oldCaseNumber: string
   isEletronic: boolean
   uf: string
   instance: InstanceType
+  organNumber:string | undefined
   origin: Origin
   phase: Phase
   eletronicSystem: EletronicSystem
@@ -109,7 +120,7 @@ export interface Process {
   subject: Subject
   coreId: number
   client: Client
-  adverseStakeholder: AdverseStakeholder
+  causeValue:string
   LawyerProcess?:any
   county: County
   userId: number

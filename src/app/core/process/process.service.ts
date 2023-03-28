@@ -2,14 +2,15 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Paginator } from "app/shared/paginator/paginator.model";
 import { environment } from "environments/environment";
-import { map, Observable } from "rxjs";
+import { BehaviorSubject, map, Observable } from "rxjs";
 import { ActionType, AdverseStakeholder, Client, County, CreateProcess, Forum, GetProcess, GetProcessPageable, LawArea, LawSubArea, Object, Organ, Origin, PersonType, Phase, Process, Stakeholder, Subject, SubObject, Ufs } from "./models/process.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProcessService {
-
+  private _process$: BehaviorSubject<Process> = new BehaviorSubject(null)
+  $obsevableProcess = this._process$.asObservable();
   constructor(private _http: HttpClient) { }
 
   getProcessById(id: number): Observable<Process> {
@@ -29,6 +30,10 @@ export class ProcessService {
         return { process, totalItems: res.totalItems }
       })
     )
+  }
+
+  set memoryProcess(process:Process) {
+    this._process$.next(process)
   }
 
   private httpParams(params: Paginator): HttpParams {

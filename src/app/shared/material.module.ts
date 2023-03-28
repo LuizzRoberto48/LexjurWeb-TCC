@@ -23,6 +23,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MyPaginatorIntl } from './paginator/paginator.service';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 
@@ -48,7 +49,8 @@ import { MyPaginatorIntl } from './paginator/paginator.service';
     MatInputModule,
     MatRadioModule,
     MatChipsModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatExpansionModule
     
   ],
   //providers: [{ provide: MatPaginatorIntl, useClass: PaginatorIntl }],
@@ -73,7 +75,8 @@ import { MyPaginatorIntl } from './paginator/paginator.service';
     MatInputModule,
     MatRadioModule,
     MatChipsModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatExpansionModule
   ],
   providers:[
     

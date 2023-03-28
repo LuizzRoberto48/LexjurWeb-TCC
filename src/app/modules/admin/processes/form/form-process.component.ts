@@ -74,7 +74,7 @@ export class FormProcessComponent implements OnInit {
     this.getCore()
     this.getLawyerAreas();
     this.getUfs();
-    this.getLawyersByCore(1);
+    this.getLawyersByCore(+id);
     this.getActionTypes();
     this.getPhases();
     this.getObjects();
@@ -333,14 +333,6 @@ export class FormProcessComponent implements OnInit {
     })
   }
 
-  private findInsideLawyer(uf: string) {
-    const fields: LawyerFields = { ufOab: uf }
-    this.lawyerService.findAdverseLawyerByFilter(fields).subscribe({
-      next: (res) => {
-        this.adverseLawyers = res
-      }
-    })
-  }
 
   private getObjects() {
     this.processService.findObjects().subscribe({

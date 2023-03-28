@@ -14,21 +14,21 @@ import { FuseHighlightModule } from '@fuse/components/highlight';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { FuseNavigationModule } from '@fuse/components/navigation';
 import { FuseScrollResetModule } from '@fuse/directives/scroll-reset';
-import { FormProcessResolver } from '../form/process.resolver';
 import { GENERAL, ProcessDetailService, RESOURCE } from 'app/core/process/process-detail.service';
 import { ProcessResourcesComponent } from './resources/resources.component';
 import { ProcessGeneralComponent } from './general/general.component';
+import { FormProcessResolver } from 'app/core/process/resolver/process.resolver';
 
 const routes: Route[] = [
   {
     path: '',
     component: ProcessDetailComponent,
+    resolve: {
+      data: FormProcessResolver
+    },
     
     data: {
       breadcrumb: (data: any) => `${data.data.caseNumber}`
-    },
-    resolve: {
-      data: FormProcessResolver
     },
     children: [
       {
@@ -40,11 +40,17 @@ const routes: Route[] = [
         title: GENERAL,
         path: 'general',
         component: ProcessGeneralComponent,
+        data: {
+          breadcrumb: () => 'Geral'
+        }
       },
       {
         title: RESOURCE,
         path: 'resources',
-        component: ProcessResourcesComponent
+        component: ProcessResourcesComponent,
+        data: {
+          breadcrumb: () => 'Recursos'
+        },
       }
     ]
   }

@@ -1,1 +1,178 @@
-<p>process-general works!</p>
+<div class="xl:col-span-2 flex flex-col flex-auto overflow-hidden sm:pt-4 min-h-full">
+  <div class="overflow-x-auto md:mx-0 sm:mx-2 md:px-5">
+    <mat-accordion class="m-8" multi>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <p class="text-primary-700 font-semibold">Distribuição de processos</p>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <p class="text-gray-900 font-medium">
+              Status:
+              <span class="font-light">true</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Fase atual: <span class="font-light">{{process.Phase.name}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Origem: <span class="font-light">{{process.Organ.Origin.name}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Área do direito: <span class="font-light">{{process.LawSubArea.LawArea.name}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Órgão: <span class="font-light">{{process.Organ.name}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Número órgão: <span class="font-light">{{process?.organNumber ?? ''}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Foro: <span class="font-light">{{process.Forum.name}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Comarca: <span class="font-light">{{process.Forum.County.name}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Instância: <span class="font-light">{{process.instance}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Número do processo antigo: <span class="font-light">{{process.oldCaseNumber}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Adv responsável: <span class="font-light">{{getInsideLawyer(process)}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Assunto: <span class="font-light">{{process.Subject.name}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Tipo de ação: <span class="font-light">{{process.ActionType.name}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Sub-área do direito: <span class="font-light">{{process.LawSubArea.name}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Objeto: <span class="font-light">{{process.SubObject.Object.name}}</span>
+            </p>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <p class="text-primary-700 font-semibold"> Dados do cliente e partes</p>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-gray-900 font-medium">
+              Cliente:
+              <span class="font-light">{{process.Stakeholder.Client.name}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Parte interessada: <span class="font-light">{{process.Stakeholder.name}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Parte adversa: <span class="font-light">{{process.AdverseStakeholder.name}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              CPF parte adversa: <span class="font-light">{{process.AdverseStakeholder.cpfCnpj}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Email parte adversa: <span class="font-light">{{process.AdverseStakeholder.email}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Telefone parte adversa: <span class="font-light">{{process.AdverseStakeholder.phone}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Advogado Adverso: <span class="font-light">{{getOutsideLawyer(process)}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              E-mail advogado adverso: <span class="font-light">{{process.Forum.County.name}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Telefone advogado adverso: <span class="font-light">{{process.instance}}</span>
+            </p>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <p class="text-primary-700 font-semibold"> Outras informações</p>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-gray-900 font-medium">
+              Data de distribuição:
+              <span class="font-light">{{process.distributionDate | date:'dd/MM/yyyy'}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Data de citação: <span class="font-light">{{process.quoteDate | date:'dd/MM/yyyy'}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Valor da causa: <span class="font-light">{{process.causeValue | currency:'R$'}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Breve relato: <span class="font-light">{{process.description}}</span>
+            </p>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

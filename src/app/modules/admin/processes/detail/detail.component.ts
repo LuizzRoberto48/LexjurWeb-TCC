@@ -4,7 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { FuseNavigationItem } from '@fuse/components/navigation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { ProcessDetailService } from 'app/core/process/process-detail.service';
-import { map, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { ProcessService } from 'app/core/process/process.service';
+import { BehaviorSubject, map, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'process-detail',
@@ -19,31 +20,30 @@ export class ProcessDetailComponent {
   menuData: FuseNavigationItem[];
   panels: any[] = [];
   selectedPanel: string = 'account';
-  currentPanel: Observable<any>
+  currentPanel: FuseNavigationItem = {} as FuseNavigationItem
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(private _changeDetectorRef: ChangeDetectorRef,
     private _fuseMediaWatcherService: FuseMediaWatcherService,
-    private processDetailService: ProcessDetailService,
-    private activeRoute: ActivatedRoute) {
+    public processDetailService: ProcessDetailService,
+    protected activeRoute: ActivatedRoute,
+    private processService: ProcessService) {
 
     this.menuData = this.processDetailService.topics
   }
 
-  changePanel() {
-    //this.processDetailService.$obsevablePanel = 
-    this.activeRoute.children
-    this.activeRoute.children[0].title.pipe(
-      switchMap(res=> of(this.processDetailService.getItemById(res)))).subscribe(console.log)
-     
+  ngOnInit() {
+    this.hideOrShowDrawerBySizeOfScreen();
+    this.getEditProcess()
   }
 
-  
-
-  ngOnInit() {
-    this.changePanel()
-    this.hideOrShowDrawerBySizeOfScreen()
+  getEditProcess() {
+    this.activeRoute.data.subscribe({
+      next: ({ data }) => {
+        this.processService.memoryProcess = data;
+      }
+    })
   }
 
   hideOrShowDrawerBySizeOfScreen() {
@@ -62,8 +62,14 @@ export class ProcessDetailComponent {
       });
   }
 
+  activatedRoute($event) {
+    $event.activeRoute.title.pipe(
+      switchMap((res: any) => of(this.processDetailService.getItemById(res)))
+    ).subscribe(res => this.currentPanel = res)
+  }
+
+
   ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }

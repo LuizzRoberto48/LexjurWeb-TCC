@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-processes',
@@ -6,7 +7,11 @@ import { Component } from '@angular/core';
 })
 export class ProcessComponent {
   
-  constructor() { }
+  constructor(protected activeRoute: ActivatedRoute) { }
+
+
+  ngOnInit() {
+  }
 
 
 }

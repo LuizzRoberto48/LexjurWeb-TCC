@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { FuseNavigationItem } from "@fuse/components/navigation";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable, of, switchMap } from "rxjs";
 import { ProcessService } from "./process.service";
 
 export const RESOURCE = 'process-details.resources';
@@ -12,9 +12,11 @@ export const GENERAL = 'process-details.general'
 export class ProcessDetailService {
 
   public current: FuseNavigationItem = {} as FuseNavigationItem;
-  private $currentPanel:BehaviorSubject<FuseNavigationItem> = new BehaviorSubject<FuseNavigationItem>(null);
-  $obsevablePanel = this.$currentPanel.asObservable();
-  constructor(private processService: ProcessService) { }
+  public $currentPanel: BehaviorSubject<FuseNavigationItem> = new BehaviorSubject<FuseNavigationItem>(null);
+ 
+
+  constructor(private processService: ProcessService) {
+  }
 
 
   get topics(): FuseNavigationItem[] {
@@ -35,14 +37,15 @@ export class ProcessDetailService {
           type: 'basic',
           link: 'resources'
         },
-
       ]
-    },]
+    }]
   }
 
   getItemById(id: string): FuseNavigationItem {
     this.$currentPanel.next(this.topics[0].children.find(topic => topic.id === id))
     return this.topics[0].children.find(topic => topic.id === id)
   }
+
+
 
 }
