@@ -109,6 +109,7 @@ export class FormProcessService {
   }
 
   objToForm(form: FormGroup, obj: any): FormGroup<any> {
+    console.log(this.processService.getOutsideLawyerByProcess(obj))
     let process: ProcessForm = {
       ...obj,
       lawAreaId: obj.LawSubArea.lawAreaId,
@@ -132,9 +133,9 @@ export class FormProcessService {
         position: obj.adversePosition,
       },
       adverseLawyer: {
-        ufOab: this.processService.getOutsideLawyerByProcess(obj).lawyer.ufOab,
-        name: this.processService.getOutsideLawyerByProcess(obj).lawyer.person.name,
-        oab:this.processService.getOutsideLawyerByProcess(obj).lawyer.oab
+        ufOab: this.processService.getOutsideLawyerByProcess(obj).ufOab,
+        name: this.processService.getOutsideLawyerByProcess(obj).name,
+        oab:this.processService.getOutsideLawyerByProcess(obj).oab
       }
     };
     form.patchValue(process)

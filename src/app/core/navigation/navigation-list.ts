@@ -3,16 +3,16 @@ import { FuseNavigationItem } from "@fuse/components/navigation";
 export const NavigationList: FuseNavigationItem[] = [
   {
       id   : 'dashboard',
-      title: 'Dashboard',
+      title: 'Informações Gerais',
       type : 'basic',
-      icon : 'heroicons_outline:chart-pie',
+      icon : 'heroicons_outline:library',
       link : '/dashboard'
   },
   {
     id   : 'processes',
     title: 'Processos',
     type : 'basic',
-    icon : 'heroicons_outline:chart-pie',
+    icon : 'heroicons_outline:collection',
     link : '/processos'
 }
 ];

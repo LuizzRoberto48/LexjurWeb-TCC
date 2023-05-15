@@ -18,6 +18,7 @@ import { GENERAL, ProcessDetailService, RESOURCE } from 'app/core/process/proces
 import { ProcessResourcesComponent } from './resources/resources.component';
 import { ProcessGeneralComponent } from './general/general.component';
 import { FormProcessResolver } from 'app/core/process/resolver/process.resolver';
+import { ResourceFormComponent } from './resources/form/resource-form.component';
 
 const routes: Route[] = [
   {
@@ -60,7 +61,8 @@ const routes: Route[] = [
   declarations: [
     ProcessDetailComponent,
     ProcessResourcesComponent,
-    ProcessGeneralComponent
+    ProcessGeneralComponent,
+    ResourceFormComponent
   ],
   imports: [
     CommonModule,

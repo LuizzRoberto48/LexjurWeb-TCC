@@ -84,7 +84,6 @@ export class ListProcessComponent {
   }
 
   toDetail(process) {
-    console.log(process.id)
     this.route.navigate([`/processos/detail/${process.id}`])
   }
 

@@ -16,9 +16,9 @@ export class LawyerService {
     return this._http.get<GetLawyer[]>(`${environment.apiURL}/lawyers/outside`, { params })
   }
 
-  findInsideLaywerByFilter(fields: LawyerFields): Observable<GetLawyer[]> {
+  findInsideLaywerByFilter(coreId:number,fields: LawyerFields): Observable<GetLawyer[]> {
     const params = this.httpParams(fields)
-    return this._http.get<GetLawyer[]>(`${environment.apiURL}/lawyers/inside`, { params })
+    return this._http.get<GetLawyer[]>(`${environment.apiURL}/lawyers/inside/${coreId}`, { params })
   }
 
   private httpParams(params: LawyerFields): HttpParams {

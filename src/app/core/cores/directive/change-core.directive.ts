@@ -1,8 +1,6 @@
 import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { CoreSheedList } from '../core-sheet/core-sheet.component';
-import { CoreService } from '../service/core.service';
-
 @Directive({
   selector: '[changeCore]'
 })

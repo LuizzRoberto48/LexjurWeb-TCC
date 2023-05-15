@@ -15,7 +15,7 @@ export class ProcessGeneralComponent {
   process:Process = {} as Process
 
   constructor(private processService: ProcessService,
-    protected activeRoute: ActivatedRoute,) { }
+    protected _activatedRoute: ActivatedRoute,) { }
 
   ngOnInit() {
     this.getEditProcess()
@@ -23,7 +23,6 @@ export class ProcessGeneralComponent {
 
   getEditProcess() {
     this.processService.$obsevableProcess.subscribe(res => {
-      console.log(res)
       this.process = res
     })
   }
@@ -33,6 +32,6 @@ export class ProcessGeneralComponent {
   }
 
   getOutsideLawyer(data) {
-    return this.processService.getOutsideLawyerByProcess(data)?.lawyer.person.name
+    return this.processService.getOutsideLawyerByProcess(data)?.name
   }
 }

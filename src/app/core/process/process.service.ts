@@ -45,11 +45,11 @@ export class ProcessService {
   }
 
   getInsideLawyerByProcess(data) {
-    return data.LawyerProcess.filter(lp => lp.Lawyer.userId).map(res => ({ name: res.Lawyer.person.name, id: res.Lawyer.id }))[0]
+    return data.LawyerProcess.filter(lp => lp.Lawyer.userId).map(res => ({ name: res.Lawyer.name, id: res.Lawyer.id }))[0]
   }
 
   getOutsideLawyerByProcess(data) {
-    return data.LawyerProcess.filter(lp => !lp.Lawyer.userId).map(res => ({ lawyer: res.Lawyer }))[0]
+    return data.LawyerProcess.filter(lp => !lp.Lawyer.userId).map(res => ( res.Lawyer ))[0]
   }
 
   create(process: CreateProcess): Observable<CreateProcess> {

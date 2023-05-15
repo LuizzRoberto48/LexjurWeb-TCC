@@ -351,8 +351,8 @@
   
         <!-- Actions -->
         <div class="flex items-center justify-center">
-          <button mat-stroked-button type="button">
-            Apagar
+          <button mat-stroked-button type="button" [routerLink]="'/processos'">
+            Cancelar
           </button>
           <button class="ml-4" mat-flat-button type="button" [color]="'primary'" (click)="onSubmit()">
             Salvar

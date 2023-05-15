@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { CoreService } from 'app/core/cores/service/core.service';
 import { LawyerService } from 'app/core/lawyer/lawyer.service';
@@ -66,7 +66,8 @@ export class FormProcessComponent implements OnInit {
     private notification: NotificationService,
     private lawyerService: LawyerService,
     private route: ActivatedRoute,
-    private coreService:CoreService) { }
+    private coreService:CoreService,
+    private _router: Router) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id')
@@ -211,12 +212,13 @@ export class FormProcessComponent implements OnInit {
   private createProcess(obj: CreateProcess): void {
     this.processService.create(obj).subscribe({
       next: (resp) => {
-        this.notification.success('Enviado com sucesso')
+        this.notification.success('Enviado com sucesso');
+        this._router.navigateByUrl('/processos');
       },
       error: (erro) => {
         console.log(erro);
         this.notification.danger('Formulário incorreto')
-      }
+      },
     })
   }
 
@@ -224,7 +226,8 @@ export class FormProcessComponent implements OnInit {
     const id = this.route.params['id'];
     this.processService.update(id, obj).subscribe({
       next: (resp) => {
-        this.notification.success('Editado com sucesso')
+        this.notification.success('Editado com sucesso');
+
       },
       error: (erro) => {
         console.log(erro);
@@ -292,7 +295,7 @@ export class FormProcessComponent implements OnInit {
 
   private getLawyersByCore(coreId: number) {
     const fields: LawyerFields = { coreId }
-    this.lawyerService.findInsideLaywerByFilter(fields).subscribe({
+    this.lawyerService.findInsideLaywerByFilter(coreId, fields).subscribe({
       next: (res) => {
         this.insideLaywers = res
       }
@@ -328,6 +331,7 @@ export class FormProcessComponent implements OnInit {
     const fields: LawyerFields = { ufOab: uf }
     this.lawyerService.findAdverseLawyerByFilter(fields).subscribe({
       next: (res) => {
+        console.log(res)
         this.adverseLawyers = res
       }
     })
