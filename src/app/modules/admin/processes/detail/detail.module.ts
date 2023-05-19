@@ -19,6 +19,7 @@ import { ProcessResourcesComponent } from './resources/resources.component';
 import { ProcessGeneralComponent } from './general/general.component';
 import { FormProcessResolver } from 'app/core/process/resolver/process.resolver';
 import { ResourceFormComponent } from './resources/form/resource-form.component';
+import { GlDialogModule } from '@components/gl-dialog/gl-dialog.module';
 
 const routes: Route[] = [
   {
@@ -74,6 +75,7 @@ const routes: Route[] = [
     FuseAlertModule,
     FuseNavigationModule,
     FuseScrollResetModule,
+    GlDialogModule
   ],
   providers: [
     BreadcrumbService,

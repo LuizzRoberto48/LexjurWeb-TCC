@@ -1,0 +1,24 @@
+.container {
+  min-width: 50vw;
+}
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  padding: 0 !important;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--fuse-primary-500);
+  }
+}
+
+.content {
+  min-height: 30vh;
+}
