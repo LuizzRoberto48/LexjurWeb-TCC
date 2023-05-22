@@ -14,12 +14,16 @@ export class GlDialogComponent implements OnInit {
   @Input() isDisableClose:boolean = false
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogFields,
-  private mdDialogRef: MatDialogRef<GlDialogComponent>) {
-    mdDialogRef.disableClose = this.isDisableClose;
-  }
+  
+  private mdDialogRef: MatDialogRef<GlDialogComponent>) {}
 
   ngOnInit(): void {
-    this.checkIfDataExists()
+    this.checkIfDataExists();
+    this.disableClose();
+  }
+
+  disableClose() {
+    this.mdDialogRef.disableClose = this.isDisableClose;
   }
 
   public cancel() {

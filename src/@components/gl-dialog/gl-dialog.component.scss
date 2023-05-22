@@ -13,12 +13,13 @@
   padding: 0;
 
   h2 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--fuse-primary-500);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--fuse-primary-800);
   }
 }
 
 .content {
   min-height: 30vh;
+  padding: 20px;
 }

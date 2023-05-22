@@ -2,11 +2,11 @@
   <div class="header bg-gray-50 dark:bg-black dark:bg-opacity-10" mat-dialog-title>
     <h2 *ngIf="title">{{title}}</h2>
     <ng-container *ngIf="!title">
-      <ng-content select="header"></ng-content>
+      <ng-content select="[header]"></ng-content>
     </ng-container>
   </div>
   <div class="content" mat-dialog-content>
-    <ng-content select="content"></ng-content>
+    <ng-content select="[body]"></ng-content>
   </div>
   <div mat-dialog-actions
     class="flex items-center justify-center sm:justify-end px-6 py-4 space-x-3 bg-gray-50 dark:bg-black dark:bg-opacity-10">
