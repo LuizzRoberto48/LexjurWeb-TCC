@@ -12,22 +12,22 @@ export const CORE = 'CORE';
 export class ResourceService {
   constructor(private http: HttpClient) {}
 
-  getResourceByProcess(processId: number) {
+  getResourcesByProcess(processId: number) {
     let params = new HttpParams();
     params = params.append('processId', processId);
-    return this.http.get(`${environment.apiURL}/resources`, { params }).pipe(
-      map((resources: any[]) => {
-        return this.formatReqToResource(resources);
-      }),
-    );
+    return this.http
+      .get(`${environment.apiURL}/resources`, { params })
+      .pipe(map((resources: any[]) => this.formatReqToResource(resources)));
   }
 
-  formatReqToResource(list: any[]) {
+  formatReqToResource(list: any[]): GetResource[] {
+    console.log(list)
     return list.map((l) => ({
       number: l.number,
-      origin: l.origin.name,
-      uf: l.forum.County.UF.name,
+      origin: l.organ.Origin.name,
+      uf: l.forum.County.uf,
       county: l.forum.County.name,
+      organ: l.organ.name,
       forum: l.forum.name,
       instance: l.instance,
       status: l.status,

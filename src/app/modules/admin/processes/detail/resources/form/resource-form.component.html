@@ -1,3 +1,83 @@
-<gl-dialog>
-  
+<gl-dialog [title]="dialogTitle" [isDisableClose]="'true'">
+  <ng-container body>
+    <div class="inset-0 flex flex-col min-w-0 overflow-hidden w-full">
+      <div class="xl:col-span-2 flex flex-col flex-auto overflow-hidden pt-4">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="grid w-full">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+              <div class="flex flex-col">
+                <mat-form-field class="w-full">
+                  <mat-label>Número do recurso</mat-label>
+                  <input matInput type="text" formControlName="number">
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col" >
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Origem</mat-label>
+                  <mat-select formControlName="origin">
+                    <mat-option value="language-1">Creta</mat-option>
+                    <mat-option value="language-2">E-Proc</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col ">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>UFs</mat-label>
+                  <mat-select formControlName="uf" (selectionChange)="changeUfs()">
+                    <mat-option [value]="uf" *ngFor="let uf of ufs">{{uf}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col" >
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Comarca</mat-label>
+                  <mat-select formControlName="county" (selectionChange)="changeCounty()">
+                    <mat-option [value]="county.id" *ngFor="let county of counties">{{county.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col" >
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Foro</mat-label>
+                  <mat-select formControlName="forum">
+                    <mat-option value="language-1">Creta</mat-option>
+                    <mat-option value="language-2">E-Proc</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col" >
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Orgão</mat-label>
+                  <mat-select formControlName="organ">
+                    <mat-option value="language-1">Creta</mat-option>
+                    <mat-option value="language-2">E-Proc</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col" >
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Instância</mat-label>
+                  <mat-select formControlName="instance">
+                    <mat-option value="language-1">Creta</mat-option>
+                    <mat-option value="language-2">E-Proc</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="grid grid-cols gap-4">
+                <div class="flex flex-col" >
+                  <div class="flex flex-col">
+                    <mat-form-field class="w-full" >
+                      <mat-label>Tipo do recurso</mat-label>
+                      <input matInput type="text" formControlName="resourceType">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-container>
 </gl-dialog>

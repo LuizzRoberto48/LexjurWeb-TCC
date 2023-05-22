@@ -3,11 +3,11 @@ import { County, Forum, InstanceType, Organ, Origin } from "app/core/process/mod
 export interface GetResource {
   id?:number;
   number: string;
-  origin:Origin;
+  origin:string;
   uf:string;
-  county:County;
-  forum:Forum;
-  organ:Organ;
+  county:string;
+  forum:string;
+  organ:string;
   instance:InstanceType;
   status:boolean;
   resourceType:string

@@ -33,7 +33,7 @@ export class ProcessResourcesComponent {
     'instance',
     'status',
     'resourceType',
-    'actions'
+    'actions',
   ];
 
   drawerMode: 'side' | 'over';
@@ -41,12 +41,13 @@ export class ProcessResourcesComponent {
 
   dataSource = new MatTableDataSource([]);
 
+  processId!: number;
+
   @ViewChild(MatPaginator) paginator: MatPaginator = {} as MatPaginator;
-	@ViewChild(MatSort) sort: MatSort = {} as MatSort;
+  @ViewChild(MatSort) sort: MatSort = {} as MatSort;
 
   constructor(
     public _activatedRoute: ActivatedRoute,
-    private _changeDetectorRef: ChangeDetectorRef,
     public dialog: MatDialog,
     private processService: ProcessService,
     private resourceService: ResourceService,
@@ -64,28 +65,24 @@ export class ProcessResourcesComponent {
     this.$process
       .pipe(
         switchMap((process: Process) => {
-          return this.resourceService.getResourceByProcess(process.id);
+          this.processId = process.id;
+          return this.resourceService.getResourcesByProcess(process.id);
         }),
       )
-      .subscribe((resources:GetResource[]) => {
+      .subscribe((resources: GetResource[]) => {
         this.dataSource.data = resources;
         this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator
+        this.dataSource.paginator = this.paginator;
       });
   }
 
-  dialogResource() {
-    const dialogRef = this.dialog.open(ResourceFormComponent, {});
+  newResource() {
+    const dialogRef = this.dialog.open(ResourceFormComponent, {
+      data: { processId: this.processId },
+    });
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
     });
-  }
-
-
-
-  onBackdropClicked(): void {
-    // Mark for check
-    this._changeDetectorRef.markForCheck();
   }
 
   ngOnDestroy(): void {

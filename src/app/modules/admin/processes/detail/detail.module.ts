@@ -63,7 +63,6 @@ const routes: Route[] = [
   ],
   imports: [
     CommonModule,
-    ReactiveFormsModule,
     RouterModule.forChild(routes),
     BreadCrumbModule,
     SharedModule,
