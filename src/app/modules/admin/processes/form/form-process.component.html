@@ -52,9 +52,8 @@
             <div class="flex flex-col" *ngIf="form.get('isEletronic').value">
               <mat-form-field class="flex-auto gt-xs:pl-3">
                 <mat-label>Sistema eletrônico</mat-label>
-                <mat-select formControlName="eletronicSystemId">
-                  <mat-option value="language-1">Creta</mat-option>
-                  <mat-option value="language-2">E-Proc</mat-option>
+                <mat-select formControlName="eletronicSystemId" >
+                  <mat-option [value]="es.id" *ngFor="let es of eletronicSystems">{{es.name | titlecase}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -110,7 +109,7 @@
               <mat-form-field class="flex-auto gt-xs:pl-3">
                 <mat-label>UFs</mat-label>
                 <mat-select formControlName="uf" (selectionChange)="changeUfs()">
-                  <mat-option [value]="uf.id" *ngFor="let uf of ufs">{{uf.name}}</mat-option>
+                  <mat-option [value]="uf" *ngFor="let uf of ufs">{{uf}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>

@@ -11,6 +11,7 @@ import {
   Client,
   County,
   CreateProcess,
+  EletronicSystem,
   Forum,
   InstanceType,
   IsEletronic,
@@ -24,7 +25,7 @@ import {
   Stakeholder,
   Subject,
   SubObject,
-  Ufs
+  Ufs,
 } from 'app/core/process/models/process.model';
 import { ProcessService } from 'app/core/process/process.service';
 import { map, Observable, startWith } from 'rxjs';
@@ -33,20 +34,19 @@ import { FormProcessService } from '../../../../core/process/form-process.servic
 @Component({
   selector: 'app-form-process',
   templateUrl: './form-process.component.html',
-  styleUrls: ['./form-process.component.scss']
+  styleUrls: ['./form-process.component.scss'],
 })
 export class FormProcessComponent implements OnInit {
-
   form: FormGroup = this.formService.init();
   isEletronicTypes: IsEletronic[] = this.formService.eletronicTypes;
   personTypes = this.formService.adverseType;
   lawAreas: LawArea[] = [];
   lawSubAreas: LawSubArea[] = [];
   origins: Origin[] = [];
-  organs: Organ[] = []
-  ufs: Ufs[] = [];
+  organs: Organ[] = [];
+  ufs: string[] = [];
   counties: County[] = [];
-  forums: Forum[] = []
+  forums: Forum[] = [];
   insideLaywers: GetLawyer[] = [];
   actionTypes: ActionType[] = [];
   phases: Phase[] = [];
@@ -55,24 +55,28 @@ export class FormProcessComponent implements OnInit {
   subObjects: SubObject[] = [];
   clients: Client[] = [];
   stakeholders: Stakeholder[] = [];
+  eletronicSystems:EletronicSystem[] = []
   positions: string[] = [];
   subjects: Subject[] = [];
-  adverseLawyers: GetLawyer[] = []
+  adverseLawyers: GetLawyer[] = [];
   filteredOptions: Observable<AdverseStakeholder[]>;
+  processId!:number
   isEdit: boolean = false;
 
-  constructor(public formService: FormProcessService,
+  constructor(
+    public formService: FormProcessService,
     private processService: ProcessService,
     private notification: NotificationService,
     private lawyerService: LawyerService,
     private route: ActivatedRoute,
-    private coreService:CoreService,
-    private _router: Router) { }
+    private coreService: CoreService,
+    private _router: Router,
+  ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id')
-    
-    this.getCore()
+    const id = this.route.snapshot.paramMap.get('id');
+
+    this.getCore();
     this.getLawyerAreas();
     this.getUfs();
     this.getLawyersByCore(+id);
@@ -83,22 +87,24 @@ export class FormProcessComponent implements OnInit {
     this.getStakeholderPositions();
     this.getSubjects();
     this.observeChangeAdverseName();
+    this.getEletronicSystems()
 
     if (id) {
       this.isEdit = true;
-      this.getEditProcess()
+      this.getEditProcess();
     }
   }
 
   getCore() {
-    this.coreService.$obsevableCore.subscribe(res => {
-      this.form.get('coreId').setValue(res.id)
-    })
+    this.coreService.$obsevableCore.subscribe((res) => {
+      this.form.get('coreId').setValue(res.id);
+    });
   }
 
   getEditProcess() {
     this.route.data.subscribe({
       next: ({ data }) => {
+        this.processId = data.id;
         this.form = this.formService.objToForm(this.form, data);
         this.changeLawArea();
         this.changeOrigin();
@@ -107,8 +113,8 @@ export class FormProcessComponent implements OnInit {
         this.changeObject();
         this.changeClient();
         this.changedUfOab();
-      }
-    })
+      },
+    });
   }
 
   changeLawArea() {
@@ -119,14 +125,16 @@ export class FormProcessComponent implements OnInit {
 
   changeOrigin() {
     const originId = this.form.get('originId').value;
-    this.getOrgans(originId)
+    this.getOrgans(originId);
   }
 
   adverseSelected() {
     const option = this.form.get('adverseStakeholder.name').value;
-    const found = this.adverseStakeholders.find(adv => adv.name.toLowerCase() === option.toLowerCase());
+    const found = this.adverseStakeholders.find(
+      (adv) => adv.name.toLowerCase() === option.toLowerCase(),
+    );
     if (!found) {
-      this.form.get('adverseStakeholder.name').setValue('')
+      this.form.get('adverseStakeholder.name').setValue('');
       return;
     }
     this.form.get('adverseStakeholder.id').setValue(found.id ?? null);
@@ -136,46 +144,54 @@ export class FormProcessComponent implements OnInit {
   }
 
   changeOrgan() {
-    const organId = this.form.get('organId').value
-    const foundOrgan = this.organs.find(organ => organ.id === organId);
+    const organId = this.form.get('organId').value;
+    const foundOrgan = this.organs.find((organ) => organ.id === organId);
     if (foundOrgan)
-      this.form.get('organNumber').setValue(foundOrgan.organNumber)
+      this.form.get('organNumber').setValue(foundOrgan.organNumber);
+  }
+
+  private getEletronicSystems() {
+    this.processService.findEletronicSystems().subscribe((res) => {
+      this.eletronicSystems = res
+    });
   }
 
   changeUfs() {
-    const ufId = this.form.get('uf').value;
-    this.getCountyByUf(ufId);
+    const ufName = this.form.get('uf').value;
+    this.getCountyByUf(ufName);
   }
 
   changeCounty() {
     const countyId = this.form.get('countyId').value;
-    this.getForumsByCounty(countyId)
+    this.getForumsByCounty(countyId);
   }
 
   changeObject() {
     const objectId = this.form.get('objectId').value;
-    this.getSubObjects(objectId)
+    this.getSubObjects(objectId);
   }
 
   changeClient() {
     const clientId = this.form.get('clientId').value;
-    this.getStakeholders(clientId)
+    this.getStakeholders(clientId);
   }
 
   changeAdverseType() {
-    const type = this.form.get('adverseStakeholder.type').value
+    const type = this.form.get('adverseStakeholder.type').value;
     this.form.get('adverseStakeholder.cpfCnpj').setValue('');
-    this.findAdverseStakeholders(type)
+    this.findAdverseStakeholders(type);
   }
 
   changedUfOab() {
     const uf = this.form.get('adverseLawyer.ufOab').value;
-    this.findAdverseLawyerByUf(uf)
+    this.findAdverseLawyerByUf(uf);
   }
 
   changedLawyerOabAdverse() {
     const lawyerName = this.form.get('adverseLawyer.name').value;
-    const found = this.adverseLawyers.find(lawyer => lawyer.name === lawyerName);
+    const found = this.adverseLawyers.find(
+      (lawyer) => lawyer.name === lawyerName,
+    );
     if (found) {
       this.form.get('adverseLawyer.oab').setValue(found.oab);
       this.form.get('adverseLawyer.id').setValue(found.id);
@@ -183,27 +199,34 @@ export class FormProcessComponent implements OnInit {
   }
 
   get instanceTypes() {
-    return Object.values(InstanceType)
+    return Object.values(InstanceType);
   }
 
   get mask() {
-    const personType: PersonType = this.form.get('adverseStakeholder.type').value;
-    return personType === PersonType.FISICA ? '000.000.000-00' : '00.000.000/0000-00'
+    const personType: PersonType = this.form.get(
+      'adverseStakeholder.type',
+    ).value;
+    return personType === PersonType.FISICA
+      ? '000.000.000-00'
+      : '00.000.000/0000-00';
   }
 
   onSubmit() {
-    if(!this.validateError()) return
-    const obj = this.formService.formToObj(this.form.value)
+    if (!this.validateError()) return;
+    const obj = this.formService.formToObj(this.form.value);
     if (this.isEdit) {
-      this.updateProcess(obj)
-      return
+      this.updateProcess(obj);
+      return;
     }
-    this.createProcess(obj)
+    this.createProcess(obj);
   }
 
   validateError() {
+    console.log(this.form.value)
     if (!this.form.valid) {
-      this.notification.danger('Formulário inválido. Preencha os campos corretamente')
+      this.notification.danger(
+        'Formulário inválido. Preencha os campos corretamente',
+      );
       return false;
     }
     return true;
@@ -217,185 +240,181 @@ export class FormProcessComponent implements OnInit {
       },
       error: (erro) => {
         console.log(erro);
-        this.notification.danger('Formulário incorreto')
+        this.notification.danger('Formulário incorreto');
       },
-    })
+    });
   }
 
   private updateProcess(obj: CreateProcess): void {
-    const id = this.route.params['id'];
-    this.processService.update(id, obj).subscribe({
+    
+    console.log(this.processId)
+    this.processService.update(this.processId, obj).subscribe({
       next: (resp) => {
         this.notification.success('Editado com sucesso');
-
       },
       error: (erro) => {
         console.log(erro);
-        this.notification.danger('Formulário incorreto')
-      }
-    })
+        this.notification.danger('Formulário incorreto');
+      },
+    });
   }
-
 
   private getLawyerAreas() {
     this.processService.findLawAreas().subscribe({
       next: (res: LawArea[]) => {
         this.lawAreas = res;
-      }
-    })
+      },
+    });
   }
 
   private getSubLawyerAreas(lawAreaId: number) {
     this.processService.findSubLawAreas(lawAreaId).subscribe({
       next: (res) => {
-        this.lawSubAreas = res
-      }
-    })
+        this.lawSubAreas = res;
+      },
+    });
   }
 
   private getOrigins(lawAreaId: number) {
-    this.processService.findOrigins(lawAreaId).subscribe({
+    this.processService.findOriginByLawArea(lawAreaId).subscribe({
       next: (res) => {
-        this.origins = res
-      }
-    })
+        this.origins = res;
+      },
+    });
   }
 
   private getOrgans(originId: number) {
     this.processService.findOrgans(originId).subscribe({
       next: (res) => {
-        this.organs = res
-      }
-    })
+        this.organs = res;
+      },
+    });
   }
 
   private getUfs() {
-    this.processService.findUfs().subscribe({
-      next: (res) => {
-        this.ufs = res;
-      }
-    })
+    this.ufs = ['RIO DE JANEIRO', 'SÂO PAULO'];
   }
 
-  private getCountyByUf(ufId: number) {
+  private getCountyByUf(ufId: string) {
     this.processService.findCountiesByUf(ufId).subscribe({
       next: (res) => {
-        this.counties = res
-      }
-    })
+        this.counties = res;
+      },
+    });
   }
 
   private getForumsByCounty(countyId: number) {
     this.processService.findForumByCountyId(countyId).subscribe({
       next: (res) => {
-        this.forums = res
-      }
-    })
+        this.forums = res;
+      },
+    });
   }
 
   private getLawyersByCore(coreId: number) {
-    const fields: LawyerFields = { coreId }
+    const fields: LawyerFields = { coreId };
     this.lawyerService.findInsideLaywerByFilter(coreId, fields).subscribe({
       next: (res) => {
-        this.insideLaywers = res
-      }
-    })
+        this.insideLaywers = res;
+      },
+    });
   }
 
   private getActionTypes() {
     this.processService.findActiontypes().subscribe({
       next: (res) => {
-        this.actionTypes = res
-      }
-    })
+        this.actionTypes = res;
+      },
+    });
   }
 
   private getPhases() {
     this.processService.findPhases().subscribe({
       next: (res) => {
-        this.phases = res
-      }
-    })
+        this.phases = res;
+      },
+    });
   }
 
   private findAdverseStakeholders(type: string) {
     this.processService.findAdverseStakeholdersByType(type).subscribe({
       next: (res) => {
         this.adverseStakeholders = res;
-        this.observeChangeAdverseName()
-      }
-    })
+        this.observeChangeAdverseName();
+      },
+    });
   }
 
   private findAdverseLawyerByUf(uf: string) {
-    const fields: LawyerFields = { ufOab: uf }
+    const fields: LawyerFields = { ufOab: uf };
     this.lawyerService.findAdverseLawyerByFilter(fields).subscribe({
       next: (res) => {
-        console.log(res)
-        this.adverseLawyers = res
-      }
-    })
+        this.adverseLawyers = res;
+      },
+    });
   }
-
 
   private getObjects() {
     this.processService.findObjects().subscribe({
       next: (res) => {
-        this.objects = res
-      }
-    })
+        this.objects = res;
+      },
+    });
   }
 
   private getSubObjects(objectId: number) {
     this.processService.findSubObjects(objectId).subscribe({
       next: (res) => {
-        this.subObjects = res
-      }
-    })
+        this.subObjects = res;
+      },
+    });
   }
 
   private getClients() {
     this.processService.findClients().subscribe({
       next: (res) => {
-        this.clients = res
-      }
-    })
+        this.clients = res;
+      },
+    });
   }
 
   private getStakeholders(clientId: number) {
     this.processService.findStakeholders(clientId).subscribe({
       next: (res) => {
-        this.stakeholders = res
-      }
-    })
+        this.stakeholders = res;
+      },
+    });
   }
 
   private getStakeholderPositions() {
     this.processService.findStakeholdersPositions().subscribe({
       next: (res) => {
-        this.positions = res
-      }
-    })
+        this.positions = res;
+      },
+    });
   }
 
   private getSubjects() {
     this.processService.findSubjects().subscribe({
       next: (res) => {
-        this.subjects = res
-      }
-    })
+        this.subjects = res;
+      },
+    });
   }
 
   observeChangeAdverseName() {
-    this.filteredOptions = this.form.get('adverseStakeholder.name').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
+    this.filteredOptions = this.form
+      .get('adverseStakeholder.name')
+      .valueChanges.pipe(
+        startWith(''),
+        map((value) => this._filter(value || '')),
+      );
   }
 
   private _filter(value: string): AdverseStakeholder[] {
     const filterValue = value.toLowerCase();
-    return this.adverseStakeholders.filter(option => option.name.toLowerCase().includes(filterValue));
+    return this.adverseStakeholders.filter((option) =>
+      option.name.toLowerCase().includes(filterValue),
+    );
   }
-
 }

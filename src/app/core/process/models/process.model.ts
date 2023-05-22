@@ -58,6 +58,7 @@ export interface CreateProcess {
 }
 
 export interface ProcessForm {
+  id?:number
   actionTypeId: number
   adverseLawyer: GetLawyer
   adverseStakeholder: AdverseStakeholder

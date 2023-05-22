@@ -109,22 +109,23 @@ export class FormProcessService {
   }
 
   objToForm(form: FormGroup, obj: any): FormGroup<any> {
-    console.log(this.processService.getOutsideLawyerByProcess(obj))
     let process: ProcessForm = {
       ...obj,
       lawAreaId: obj.LawSubArea.lawAreaId,
       lawSubAreaId: obj.LawSubArea.id,
       originId: obj.Organ.originId,
+      eletronicSystemId: obj.EletronicSystem.id,
       clientId: obj.Stakeholder.clientId,
       stakeholderId: obj.Stakeholder.id,
       objectId: obj.SubObject.objectId,
       subjectId: obj.SubObject.id,
       insideLawyerId: this.processService.getInsideLawyerByProcess(obj).id,
-      uf: obj.Forum.County.ufId,
+      uf: obj.Forum.County.uf,
       countyId: obj.Forum.countyId,
       distributionDate: DateTime.fromISO(obj.distributionDate).toFormat('dd/MM/yyyy'),
       quoteDate: DateTime.fromISO(obj.distributionDate).toFormat('dd/MM/yyyy'),
       adverseStakeholder: {
+        id: obj.AdverseStakeholder.id,
         type: obj.AdverseStakeholder.type,
         cpfCnpj: obj.AdverseStakeholder.cpfCnpj,
         phone: obj.AdverseStakeholder.phone,
@@ -133,6 +134,7 @@ export class FormProcessService {
         position: obj.adversePosition,
       },
       adverseLawyer: {
+        id:this.processService.getOutsideLawyerByProcess(obj).id,
         ufOab: this.processService.getOutsideLawyerByProcess(obj).ufOab,
         name: this.processService.getOutsideLawyerByProcess(obj).name,
         oab:this.processService.getOutsideLawyerByProcess(obj).oab

@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Paginator } from "app/shared/paginator/paginator.model";
 import { environment } from "environments/environment";
 import { BehaviorSubject, map, Observable } from "rxjs";
-import { ActionType, AdverseStakeholder, Client, County, CreateProcess, Forum, GetProcess, GetProcessPageable, LawArea, LawSubArea, Object, Organ, Origin, PersonType, Phase, Process, Stakeholder, Subject, SubObject, Ufs } from "./models/process.model";
+import { ActionType, AdverseStakeholder, Client, County, CreateProcess, EletronicSystem, Forum, GetProcess, GetProcessPageable, LawArea, LawSubArea, Object, Organ, Origin, PersonType, Phase, Process, Stakeholder, Subject, SubObject, Ufs } from "./models/process.model";
 
 @Injectable({
   providedIn: 'root'
@@ -76,8 +76,12 @@ export class ProcessService {
     return this._http.get<SubObject[]>(`${environment.apiURL}/sub_objects/${objId}`)
   }
 
-  findOrigins(lawAreaId: number): Observable<Origin[]> {
+  findOriginByLawArea(lawAreaId: number): Observable<Origin[]> {
     return this._http.get<Origin[]>(`${environment.apiURL}/origins/${lawAreaId}`)
+  }
+
+  findOrigins(): Observable<Origin[]> {
+    return this._http.get<Origin[]>(`${environment.apiURL}/origins`)
   }
 
   findOrgans(originId: number): Observable<Organ[]> {
@@ -92,8 +96,8 @@ export class ProcessService {
     return this._http.get<Ufs[]>(`${environment.apiURL}/ufs`)
   }
 
-  findCountiesByUf(ufId: number): Observable<County[]> {
-    return this._http.get<County[]>(`${environment.apiURL}/counties/${ufId}`)
+  findCountiesByUf(ufName: string): Observable<County[]> {
+    return this._http.get<County[]>(`${environment.apiURL}/counties/${ufName}`)
   }
 
   findForumByCountyId(countyId: number): Observable<Forum[]> {
@@ -124,5 +128,7 @@ export class ProcessService {
     return this._http.get<AdverseStakeholder[]>(`${environment.apiURL}/adverse-stakeholders/${type}`)
   }
 
-
+  findEletronicSystems(): Observable<EletronicSystem[]> {
+    return this._http.get<EletronicSystem[]>(`${environment.apiURL}/eletronic-systems`)
+  }
 }
