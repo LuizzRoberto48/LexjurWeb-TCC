@@ -2,10 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Route, RouterModule } from '@angular/router';
-import { MaterialModule } from 'app/shared/material.module';
-import { NgxMaskDirective, provideNgxMask } from 'ngx-mask'
-import { NotificationModule } from '@fuse/components/notification/notification.module';
-import { LawyerService } from 'app/core/lawyer/lawyer.service';
 import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
 import { BreadcrumbService } from '@components/breadcrumb/breadcrumb.service';
 import { SharedModule } from 'app/shared/shared.module';
@@ -20,6 +16,7 @@ import { ProcessGeneralComponent } from './general/general.component';
 import { FormProcessResolver } from 'app/core/process/resolver/process.resolver';
 import { ResourceFormComponent } from './resources/form/resource-form.component';
 import { GlDialogModule } from '@components/gl-dialog/gl-dialog.module';
+import { ResourceService } from 'app/core/resource/resource.service';
 
 const routes: Route[] = [
   {
@@ -28,7 +25,6 @@ const routes: Route[] = [
     resolve: {
       data: FormProcessResolver
     },
-    
     data: {
       breadcrumb: (data: any) => `${data.data.caseNumber}`
     },
@@ -79,7 +75,8 @@ const routes: Route[] = [
   ],
   providers: [
     BreadcrumbService,
-    ProcessDetailService
+    ProcessDetailService,
+    ResourceService
   ]
 })
 export class ProcessDetailModule {
