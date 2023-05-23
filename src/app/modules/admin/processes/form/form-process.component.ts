@@ -157,7 +157,6 @@ export class FormProcessComponent implements OnInit {
     /* Enable fields to create adverse stakeholder with process */
     if (!found) {
       Object.keys(valuesToPatch).forEach((vl: string) => {
-        console.log(vl)
         group.get(vl).setValue('');
       });
       group.enable();
