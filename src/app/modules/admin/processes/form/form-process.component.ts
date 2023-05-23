@@ -25,11 +25,20 @@ import {
   Stakeholder,
   Subject,
   SubObject,
-  Ufs,
 } from 'app/core/process/models/process.model';
 import { ProcessService } from 'app/core/process/process.service';
-import { map, Observable, startWith } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  Observable,
+  of,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { FormProcessService } from '../../../../core/process/form-process.service';
+import { Ufs, UfsModel } from 'app/shared/utils/get-ufs';
 
 @Component({
   selector: 'app-form-process',
@@ -44,7 +53,7 @@ export class FormProcessComponent implements OnInit {
   lawSubAreas: LawSubArea[] = [];
   origins: Origin[] = [];
   organs: Organ[] = [];
-  ufs: string[] = [];
+  ufs: UfsModel[] = [];
   counties: County[] = [];
   forums: Forum[] = [];
   insideLaywers: GetLawyer[] = [];
@@ -55,12 +64,12 @@ export class FormProcessComponent implements OnInit {
   subObjects: SubObject[] = [];
   clients: Client[] = [];
   stakeholders: Stakeholder[] = [];
-  eletronicSystems:EletronicSystem[] = []
+  eletronicSystems: EletronicSystem[] = [];
   positions: string[] = [];
   subjects: Subject[] = [];
   adverseLawyers: GetLawyer[] = [];
   filteredOptions: Observable<AdverseStakeholder[]>;
-  processId!:number
+  processId!: number;
   isEdit: boolean = false;
 
   constructor(
@@ -86,8 +95,9 @@ export class FormProcessComponent implements OnInit {
     this.getClients();
     this.getStakeholderPositions();
     this.getSubjects();
+
     this.observeChangeAdverseName();
-    this.getEletronicSystems()
+    this.getEletronicSystems();
 
     if (id) {
       this.isEdit = true;
@@ -128,31 +138,49 @@ export class FormProcessComponent implements OnInit {
     this.getOrgans(originId);
   }
 
+  createAdverseStakeHolder() {}
+
   adverseSelected() {
-    const option = this.form.get('adverseStakeholder.name').value;
+    const group = this.form.get('adverseStakeholder') as FormGroup;
     const found = this.adverseStakeholders.find(
-      (adv) => adv.name.toLowerCase() === option.toLowerCase(),
+      (adv) => adv.name.toLowerCase() === group.get('name').value.toLowerCase(),
     );
+
+    const valuesToPatch = {
+      id: found?.id,
+      email: found?.email || '',
+      phone: found?.phone || '',
+      cpfCnpj: found?.cpfCnpj || '',
+      type: found?.type || '',
+    };
+
+    /* Enable fields to create adverse stakeholder with process */
     if (!found) {
-      this.form.get('adverseStakeholder.name').setValue('');
+      Object.keys(valuesToPatch).forEach((vl: string) => {
+        console.log(vl)
+        group.get(vl).setValue('');
+      });
+      group.enable();
       return;
     }
-    this.form.get('adverseStakeholder.id').setValue(found.id ?? null);
-    this.form.get('adverseStakeholder.email').setValue(found.email ?? '');
-    this.form.get('adverseStakeholder.phone').setValue(found.phone ?? '');
-    this.form.get('adverseStakeholder.cpfCnpj').setValue(found.cpfCnpj ?? '');
+
+    Object.keys(valuesToPatch).forEach((vl: string) => {
+      group.get(vl).disable();
+    });
+    group.patchValue(valuesToPatch, { emitEvent: false });
   }
 
   changeOrgan() {
     const organId = this.form.get('organId').value;
     const foundOrgan = this.organs.find((organ) => organ.id === organId);
+
     if (foundOrgan)
       this.form.get('organNumber').setValue(foundOrgan.organNumber);
   }
 
   private getEletronicSystems() {
     this.processService.findEletronicSystems().subscribe((res) => {
-      this.eletronicSystems = res
+      this.eletronicSystems = res;
     });
   }
 
@@ -174,12 +202,6 @@ export class FormProcessComponent implements OnInit {
   changeClient() {
     const clientId = this.form.get('clientId').value;
     this.getStakeholders(clientId);
-  }
-
-  changeAdverseType() {
-    const type = this.form.get('adverseStakeholder.type').value;
-    this.form.get('adverseStakeholder.cpfCnpj').setValue('');
-    this.findAdverseStakeholders(type);
   }
 
   changedUfOab() {
@@ -222,7 +244,7 @@ export class FormProcessComponent implements OnInit {
   }
 
   validateError() {
-    console.log(this.form.value)
+    console.log(this.form.value);
     if (!this.form.valid) {
       this.notification.danger(
         'Formulário inválido. Preencha os campos corretamente',
@@ -246,8 +268,7 @@ export class FormProcessComponent implements OnInit {
   }
 
   private updateProcess(obj: CreateProcess): void {
-    
-    console.log(this.processId)
+    console.log(this.processId);
     this.processService.update(this.processId, obj).subscribe({
       next: (resp) => {
         this.notification.success('Editado com sucesso');
@@ -292,7 +313,7 @@ export class FormProcessComponent implements OnInit {
   }
 
   private getUfs() {
-    this.ufs = ['RIO DE JANEIRO', 'SÂO PAULO'];
+    this.ufs = Ufs;
   }
 
   private getCountyByUf(ufId: string) {
@@ -336,10 +357,10 @@ export class FormProcessComponent implements OnInit {
     });
   }
 
-  private findAdverseStakeholders(type: string) {
-    this.processService.findAdverseStakeholdersByType(type).subscribe({
+  private findAdverseStakeholders(name: string) {
+    console.log(name);
+    this.processService.findAdverseStakeholdersByName(name).subscribe({
       next: (res) => {
-        this.adverseStakeholders = res;
         this.observeChangeAdverseName();
       },
     });
@@ -402,19 +423,45 @@ export class FormProcessComponent implements OnInit {
     });
   }
 
+  onKeyDown(event: KeyboardEvent) {
+    const inputControl = this.form.get('adverseStakeholder.name');
+    if (event.key === 'Backspace') {
+      inputControl.setValue('');
+    }
+  }
+
   observeChangeAdverseName() {
     this.filteredOptions = this.form
       .get('adverseStakeholder.name')
       .valueChanges.pipe(
         startWith(''),
-        map((value) => this._filter(value || '')),
+        debounceTime(400),
+        distinctUntilChanged(),
+        switchMap((val) => {
+          console.log(val);
+          if (val && val.length > 1) {
+            return this._filter(val || '');
+          } else {
+            return of([]);
+          }
+        }),
+        tap((res) => {
+          this.adverseStakeholders = res;
+        }),
       );
   }
 
-  private _filter(value: string): AdverseStakeholder[] {
-    const filterValue = value.toLowerCase();
-    return this.adverseStakeholders.filter((option) =>
-      option.name.toLowerCase().includes(filterValue),
-    );
+  _filter(val: string): Observable<any[]> {
+    // call the service which makes the http-request
+    return this.processService
+      .findAdverseStakeholdersByName(val)
+      .pipe(
+        map((response) =>
+          response.filter(
+            (option) =>
+              option.name.toLowerCase().indexOf(val.toLowerCase()) === 0,
+          ),
+        ),
+      );
   }
 }

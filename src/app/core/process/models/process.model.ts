@@ -85,6 +85,7 @@ export interface ProcessForm {
   quoteDate: string
   stakeholderId: number
   stakeholderPosition: string
+  adversePosition:string
   subObjectId: number
   subjectId: number
   uf: string,
@@ -244,8 +245,5 @@ export interface IsEletronic {
   value: boolean
 }
 
-export interface Ufs {
-  id: number;
-  name: string
-}
+
 

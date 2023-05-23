@@ -21,7 +21,6 @@ export class ResourceService {
   }
 
   formatReqToResource(list: any[]): GetResource[] {
-    console.log(list)
     return list.map((l) => ({
       number: l.number,
       origin: l.organ.Origin.name,

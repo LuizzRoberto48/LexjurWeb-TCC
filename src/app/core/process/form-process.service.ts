@@ -44,15 +44,15 @@ export class FormProcessService {
         ufOab: new FormControl('', { validators: [Validators.required] }),
       }),
       adverseStakeholder: new FormGroup({
-        position: new FormControl('', { validators: [Validators.required] }),
         id: new FormControl('', { validators: [Validators.required] }),
-        type: new FormControl('', { validators: [Validators.required] }),
+        type: new FormControl({value: '', disabled: true}, { validators: [Validators.required] }),
         name: new FormControl('', { validators: [Validators.required] }),
-        email: new FormControl('', { validators: [Validators.email] }),
-        cpfCnpj: new FormControl(''),
-        phone: new FormControl(''),
+        email: new FormControl({value: '', disabled: true}, { validators: [Validators.email] }),
+        cpfCnpj: new FormControl({value: '', disabled: true}),
+        phone: new FormControl({value: '', disabled: true}),
 
       }),
+      adversePosition: new FormControl('', { validators: [Validators.required] }),
       distributionDate: new FormControl('', { validators: [Validators.required] }),
       quoteDate: new FormControl('', { validators: [Validators.required] }),
       causeValue: new FormControl('', { validators: [Validators.required] }),
@@ -98,7 +98,6 @@ export class FormProcessService {
     const obj: CreateProcess = {
       ...process,
       adverseStakeholderId: adverseStakeholder.id,
-      adversePosition: adverseStakeholder.position,
       lawyerProcess: [insideLawyerId, adverseLawyer.id],
       distributionDate: DateTime.fromFormat(distributionDate, 'dd/MM/yyyy').toISO(),
       quoteDate: DateTime.fromFormat(quoteDate, 'dd/MM/yyyy').toISO(),
@@ -131,7 +130,7 @@ export class FormProcessService {
         phone: obj.AdverseStakeholder.phone,
         email: obj.AdverseStakeholder.email,
         name: obj.AdverseStakeholder.name,
-        position: obj.adversePosition,
+
       },
       adverseLawyer: {
         id:this.processService.getOutsideLawyerByProcess(obj).id,

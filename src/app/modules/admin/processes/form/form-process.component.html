@@ -12,12 +12,12 @@
             </h2>
           </div>
         </div>
-        
+
       </div>
     </div>
   </div>
   <div class="xl:col-span-2 flex flex-col flex-auto overflow-hidden pt-4">
-    <div class="mb-10 px-10 " >
+    <div class="mb-10 px-10 ">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="grid w-full mt-10 ">
           <div class="grid grid-cols-1 ">
@@ -52,7 +52,7 @@
             <div class="flex flex-col" *ngIf="form.get('isEletronic').value">
               <mat-form-field class="flex-auto gt-xs:pl-3">
                 <mat-label>Sistema eletrônico</mat-label>
-                <mat-select formControlName="eletronicSystemId" >
+                <mat-select formControlName="eletronicSystemId">
                   <mat-option [value]="es.id" *ngFor="let es of eletronicSystems">{{es.name | titlecase}}</mat-option>
                 </mat-select>
               </mat-form-field>
@@ -64,7 +64,7 @@
                 <mat-label>Área do direito</mat-label>
                 <mat-select formControlName="lawAreaId" (selectionChange)="changeLawArea()">
                   <mat-option [value]="area.id" *ngFor="let area of lawAreas">{{area.name}}</mat-option>
-  
+
                 </mat-select>
               </mat-form-field>
             </div>
@@ -73,7 +73,7 @@
                 <mat-label>Sub área do direito</mat-label>
                 <mat-select [placeholder]="'Language'" formControlName="lawSubAreaId">
                   <mat-option [value]="subarea.id" *ngFor="let subarea of lawSubAreas">{{subarea.name}}</mat-option>
-  
+
                 </mat-select>
               </mat-form-field>
             </div>
@@ -109,7 +109,7 @@
               <mat-form-field class="flex-auto gt-xs:pl-3">
                 <mat-label>UFs</mat-label>
                 <mat-select formControlName="uf" (selectionChange)="changeUfs()">
-                  <mat-option [value]="uf" *ngFor="let uf of ufs">{{uf}}</mat-option>
+                  <mat-option [value]="uf.name" *ngFor="let uf of ufs">{{uf.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -117,7 +117,8 @@
               <mat-form-field class="flex-auto gt-xs:pl-3">
                 <mat-label>Comarca</mat-label>
                 <mat-select formControlName="countyId" (selectionChange)="changeCounty()">
-                  <mat-option [value]="county.id" *ngFor="let county of counties">{{county.name}}</mat-option>
+                  <mat-option [value]="county.id" *ngFor="let county of counties">{{county.name |
+                    titlecase}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -185,7 +186,7 @@
               </div>
             </ng-container>
           </div>
-  
+
           <div class="grid grid-cols-1">
             <div class="flex flex-col ">
               <mat-form-field class="flex-auto gt-xs:pl-3">
@@ -235,18 +236,9 @@
             <ng-container formGroupName="adverseStakeholder">
               <div class="flex flex-col ">
                 <mat-form-field class="flex-auto gt-xs:pl-3">
-                  <mat-label>Tipo </mat-label>
-                  <mat-select formControlName="type" (selectionChange)="changeAdverseType()">
-                    <mat-option [value]="type" *ngFor="let type of personTypes">{{
-                      formService.personType(type)}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="flex flex-col ">
-                <mat-form-field class="flex-auto gt-xs:pl-3">
                   <mat-label>Nome</mat-label>
                   <input matInput type="text" formControlName="name" [matAutocomplete]="auto"
-                    (change)="adverseSelected()">
+                    (change)="adverseSelected()" (keydown)="onKeyDown($event)">
                   <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="adverseSelected()">
                     <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
                       {{option.name + ' - ' + option.cpfCnpj}}
@@ -256,12 +248,15 @@
               </div>
               <div class="flex flex-col ">
                 <mat-form-field class="flex-auto gt-xs:pl-3">
-                  <mat-label>Posição</mat-label>
-                  <mat-select formControlName="position">
-                    <mat-option [value]="position" *ngFor="let position of positions">{{position}}</mat-option>
+                  <mat-label>Tipo </mat-label>
+                  <mat-select formControlName="type">
+                    <mat-option [value]="type" *ngFor="let type of personTypes">{{
+                      formService.personType(type)}}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
+
+
               <div class="flex flex-col ">
                 <mat-form-field class="flex-auto gt-xs:pl-3">
                   <mat-label>CPF/CNPJ</mat-label>
@@ -281,12 +276,21 @@
                 </mat-form-field>
               </div>
             </ng-container>
+            <div class="flex flex-col ">
+              <mat-form-field class="flex-auto gt-xs:pl-3">
+                <mat-label>Posição</mat-label>
+                <mat-select formControlName="adversePosition">
+                  <mat-option [value]="position" *ngFor="let position of positions">{{position}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
             <ng-container formGroupName="adverseLawyer">
               <div class="flex flex-col ">
                 <mat-form-field class="flex-auto gt-xs:pl-3">
                   <mat-label>UF OAB advogado adverso</mat-label>
                   <mat-select formControlName="ufOab" (selectionChange)="changedUfOab()">
-                    <mat-option [value]="uf.name" *ngFor="let uf of ufs">{{uf.name}}</mat-option>
+                    <mat-option [value]="uf.name" *ngFor="let uf of ufs">{{uf.name }}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -323,7 +327,8 @@
             <div class="flex flex-col ">
               <mat-form-field class="w-full">
                 <mat-label>Data da citação</mat-label>
-                <input matInput type="text" formControlName="quoteDate" mask="d0/M0/0000" [dropSpecialCharacters]="false">
+                <input matInput type="text" formControlName="quoteDate" mask="d0/M0/0000"
+                  [dropSpecialCharacters]="false">
               </mat-form-field>
             </div>
             <div class="flex flex-col ">
@@ -347,7 +352,7 @@
         </div>
         <!-- Divider -->
         <div class="my-10 border-t"></div>
-  
+
         <!-- Actions -->
         <div class="flex items-center justify-center">
           <button mat-stroked-button type="button" [routerLink]="'/processos'">
