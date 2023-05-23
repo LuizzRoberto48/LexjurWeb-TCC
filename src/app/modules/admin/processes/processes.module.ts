@@ -22,8 +22,6 @@ import { processRoutes } from './process.routing';
     ListProcessComponent,
   ],
   imports: [
-    CommonModule,
-    ReactiveFormsModule,
     RouterModule.forChild(processRoutes),
     NgxMaskDirective,
     NotificationModule,
