@@ -30,6 +30,7 @@ import { ProcessService } from 'app/core/process/process.service';
 import {
   debounceTime,
   distinctUntilChanged,
+  filter,
   map,
   Observable,
   of,
@@ -71,6 +72,7 @@ export class FormProcessComponent implements OnInit {
   filteredOptions: Observable<AdverseStakeholder[]>;
   processId!: number;
   isEdit: boolean = false;
+  adverseNameFilter:string =''
 
   constructor(
     public formService: FormProcessService,
@@ -141,32 +143,28 @@ export class FormProcessComponent implements OnInit {
   createAdverseStakeHolder() {}
 
   adverseSelected() {
-    const group = this.form.get('adverseStakeholder') as FormGroup;
+    const group = this.form.get('adverseStakeholder');
+    
     const found = this.adverseStakeholders.find(
       (adv) => adv.name.toLowerCase() === group.get('name').value.toLowerCase(),
     );
-
-    const valuesToPatch = {
-      id: found?.id,
-      email: found?.email || '',
-      phone: found?.phone || '',
-      cpfCnpj: found?.cpfCnpj || '',
-      type: found?.type || '',
-    };
-
     /* Enable fields to create adverse stakeholder with process */
+    this.form.controls['adverseStakeholder'].get('email');
     if (!found) {
-      Object.keys(valuesToPatch).forEach((vl: string) => {
-        group.get(vl).setValue('');
-      });
+      this.form.get('adverseStakeholder.id').setValue(null);
       group.enable();
       return;
     }
 
-    Object.keys(valuesToPatch).forEach((vl: string) => {
-      group.get(vl).disable();
-    });
-    group.patchValue(valuesToPatch, { emitEvent: false });
+    const valuesToPatch = {
+      id: found?.id,
+      email: found?.email == '' ? undefined : found.email,
+      phone: found?.phone == '' ? undefined : found.phone,
+      cpfCnpj: found?.cpfCnpj == '' ? undefined : found.cpfCnpj,
+      type: found?.type || '',
+    };
+    this.form.get('adverseStakeholder.type').disable();
+    group.patchValue(valuesToPatch);
   }
 
   changeOrgan() {
@@ -233,8 +231,12 @@ export class FormProcessComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.form.getRawValue());
     if (!this.validateError()) return;
-    const obj = this.formService.formToObj(this.form.value);
+
+    /* GetRawValue recovery object that was disabled in the reactive form */
+    const obj = this.formService.formToObj(this.form.getRawValue());
+
     if (this.isEdit) {
       this.updateProcess(obj);
       return;
@@ -243,7 +245,6 @@ export class FormProcessComponent implements OnInit {
   }
 
   validateError() {
-    console.log(this.form.value);
     if (!this.form.valid) {
       this.notification.danger(
         'Formulário inválido. Preencha os campos corretamente',
@@ -267,10 +268,10 @@ export class FormProcessComponent implements OnInit {
   }
 
   private updateProcess(obj: CreateProcess): void {
-    console.log(this.processId);
     this.processService.update(this.processId, obj).subscribe({
       next: (resp) => {
         this.notification.success('Editado com sucesso');
+        this._router.navigateByUrl('/processos');
       },
       error: (erro) => {
         console.log(erro);
@@ -356,15 +357,6 @@ export class FormProcessComponent implements OnInit {
     });
   }
 
-  private findAdverseStakeholders(name: string) {
-    console.log(name);
-    this.processService.findAdverseStakeholdersByName(name).subscribe({
-      next: (res) => {
-        this.observeChangeAdverseName();
-      },
-    });
-  }
-
   private findAdverseLawyerByUf(uf: string) {
     const fields: LawyerFields = { ufOab: uf };
     this.lawyerService.findAdverseLawyerByFilter(fields).subscribe({
@@ -422,13 +414,6 @@ export class FormProcessComponent implements OnInit {
     });
   }
 
-  onKeyDown(event: KeyboardEvent) {
-    const inputControl = this.form.get('adverseStakeholder.name');
-    if (event.key === 'Backspace') {
-      inputControl.setValue('');
-    }
-  }
-
   observeChangeAdverseName() {
     this.filteredOptions = this.form
       .get('adverseStakeholder.name')
@@ -437,17 +422,28 @@ export class FormProcessComponent implements OnInit {
         debounceTime(400),
         distinctUntilChanged(),
         switchMap((val) => {
-          console.log(val);
+          /* not make search if user click to erase value*/
+          if(!this._isBackspaceKeyPressed(val)){
+            return of([])
+          }
+          this.adverseNameFilter = val
           if (val && val.length > 1) {
             return this._filter(val || '');
           } else {
             return of([]);
           }
+          
         }),
         tap((res) => {
           this.adverseStakeholders = res;
-        }),
+        })
       );
+  }
+
+  _isBackspaceKeyPressed(val:string) {
+    const isBack = this.adverseNameFilter.length < val.length;
+    this.adverseNameFilter = val;
+    return isBack;
   }
 
   _filter(val: string): Observable<any[]> {

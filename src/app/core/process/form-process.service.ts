@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { CreateProcess, PersonType, Process, ProcessForm } from "app/core/process/models/process.model";
+import { AdverseStakeholder, CreateProcess, PersonType, Process, ProcessForm } from "app/core/process/models/process.model";
 import { DateTime } from "luxon";
 import { ProcessService } from "./process.service";
 
@@ -44,12 +44,12 @@ export class FormProcessService {
         ufOab: new FormControl('', { validators: [Validators.required] }),
       }),
       adverseStakeholder: new FormGroup({
-        id: new FormControl('', { validators: [Validators.required] }),
-        type: new FormControl({value: '', disabled: true}, { validators: [Validators.required] }),
+        id: new FormControl(null),
+        type: new FormControl({value:'', disabled:true}, { validators: [Validators.required] }),
         name: new FormControl('', { validators: [Validators.required] }),
-        email: new FormControl({value: '', disabled: true}, { validators: [Validators.email] }),
-        cpfCnpj: new FormControl({value: '', disabled: true}),
-        phone: new FormControl({value: '', disabled: true}),
+        email: new FormControl( null, { validators: [Validators.email] }),
+        cpfCnpj: new FormControl(null),
+        phone: new FormControl(null),
 
       }),
       adversePosition: new FormControl('', { validators: [Validators.required] }),
@@ -79,6 +79,13 @@ export class FormProcessService {
     return type === PersonType.FISICA ? 'Física' : 'Jurídica'
   }
 
+  createAdverseStakeholder(adverse:AdverseStakeholder):AdverseStakeholder {
+    adverse.email == '' ? adverse.email = undefined : adverse.email;
+    adverse.phone == '' ? adverse.phone = undefined : adverse.phone;
+    adverse.cpfCnpj == '' ? adverse.cpfCnpj = undefined : adverse.cpfCnpj;
+    return adverse
+  }
+
   formToObj(form: ProcessForm): CreateProcess {
     const {
       uf,
@@ -91,18 +98,19 @@ export class FormProcessService {
       objectId,
       insideLawyerId,
       adverseLawyer,
-      adverseStakeholder,
       causeValue,
+      adverseStakeholder,
       ...process } = form
 
     const obj: CreateProcess = {
       ...process,
-      adverseStakeholderId: adverseStakeholder.id,
+      adverseStakeholder: this.createAdverseStakeholder(adverseStakeholder),
       lawyerProcess: [insideLawyerId, adverseLawyer.id],
       distributionDate: DateTime.fromFormat(distributionDate, 'dd/MM/yyyy').toISO(),
       quoteDate: DateTime.fromFormat(quoteDate, 'dd/MM/yyyy').toISO(),
       causeValue: causeValue.toString()
     }
+    console.log(obj)
     process.isEletronic ? obj.eletronicSystemId : delete obj.eletronicSystemId;
     return obj;
   }

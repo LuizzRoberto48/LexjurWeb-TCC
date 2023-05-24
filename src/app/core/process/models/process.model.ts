@@ -46,7 +46,7 @@ export interface CreateProcess {
   subObjectId: number
   subjectId: number
   coreId: number
-  adverseStakeholderId: number
+  adverseStakeholder: AdverseStakeholder
   stakeholderId: number,
   distributionDate: string
   quoteDate: string
@@ -155,16 +155,13 @@ export interface StakeholderPosition {
 }
 
 export interface AdverseStakeholder {
-  id?: number
-  type: string
+  id?: number;
+  name:string;
+  type: string;
   cpfCnpj: string;
   email: string;
-  lawyerName: string;
-  oabLawyer: string;
-  phone: string;
-  position: string;
-  ufOab: string;
-  name: string
+  phone:string;
+
 }
 
 export interface EletronicSystem {

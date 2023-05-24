@@ -238,7 +238,7 @@
                 <mat-form-field class="flex-auto gt-xs:pl-3">
                   <mat-label>Nome</mat-label>
                   <input matInput type="text" formControlName="name" [matAutocomplete]="auto"
-                    (change)="adverseSelected()" (keydown)="onKeyDown($event)">
+                    (change)="adverseSelected()">
                   <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="adverseSelected()">
                     <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
                       {{option.name + ' - ' + option.cpfCnpj}}
