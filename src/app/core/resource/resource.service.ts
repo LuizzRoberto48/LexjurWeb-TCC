@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
-import { map } from 'rxjs';
-import { GetResource } from './model/resource.model';
+import { Observable, map } from 'rxjs';
+import { CreateResource, GetResource } from './model/resource.model';
 
 export const CORE = 'CORE';
 
@@ -11,6 +11,10 @@ export const CORE = 'CORE';
 })
 export class ResourceService {
   constructor(private http: HttpClient) {}
+
+  create(data: CreateResource): Observable<GetResource> {
+    return this.http.post<GetResource>(`${environment.apiURL}/resources`, data);
+  }
 
   getResourcesByProcess(processId: number) {
     let params = new HttpParams();
@@ -32,5 +36,17 @@ export class ResourceService {
       status: l.status,
       resourceType: l.type,
     }));
+  }
+
+  formToObj(form, processId:number):CreateResource {
+    return {
+      forumId: form.forum,
+      number: form.number,
+      organId: form.organ,
+      processId,
+      instance: form.instance,
+      type: form.resourceType,
+      
+    }
   }
 }

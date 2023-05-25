@@ -10,6 +10,15 @@ export interface GetResource {
   organ:string;
   instance:InstanceType;
   status:boolean;
-  resourceType:string
+  resourceType:string;
+}
 
+export interface CreateResource {
+  id?:number;
+  number: string;
+  type: string;
+  instance: InstanceType;
+  processId: number;
+  organId: number;
+  forumId: number;
 }

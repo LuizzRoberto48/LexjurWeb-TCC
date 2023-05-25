@@ -38,9 +38,7 @@ export class ProcessResourcesComponent {
 
   drawerMode: 'side' | 'over';
   searchInputControl: any = new UntypedFormControl();
-
   dataSource = new MatTableDataSource([]);
-
   processId!: number;
 
   @ViewChild(MatPaginator) paginator: MatPaginator = {} as MatPaginator;
@@ -81,7 +79,7 @@ export class ProcessResourcesComponent {
       data: { processId: this.processId },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+      this.getResourcesByProcess()
     });
   }
 

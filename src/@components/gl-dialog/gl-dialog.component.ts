@@ -1,4 +1,4 @@
-import { Component, HostListener, Inject, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, Inject, Input, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogFields } from './model/dialog.model';
 
@@ -11,7 +11,9 @@ export class GlDialogComponent implements OnInit {
   @Input() title!: string;
   @Input() confirmText: string = "Confirmar";
   @Input() cancelText: string = "Cancelar"
-  @Input() isDisableClose:boolean = false
+  @Input() isDisableClose:boolean = false;
+
+  @Output() emitClick:EventEmitter<any> = new EventEmitter()
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogFields,
   
@@ -27,11 +29,13 @@ export class GlDialogComponent implements OnInit {
   }
 
   public cancel() {
-    this.close(false);
+    this.isDisableClose = false;
+    this.emitClick.emit(false)
+    this.close(true);
   }
 
   public confirm() {
-    this.close(true);
+    this.emitClick.emit(true)
   }
 
   public close(value) {

@@ -55,28 +55,28 @@ const routes: Route[] = [
 ];
 
 @NgModule({
-  declarations: [
-    ProcessDetailComponent,
-    ProcessResourcesComponent,
-    ProcessGeneralComponent,
-    ResourceFormComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    BreadCrumbModule,
-    SharedModule,
-    FuseHighlightModule,
-    FuseAlertModule,
-    FuseNavigationModule,
-    FuseScrollResetModule,
-    GlDialogModule
-  ],
-  providers: [
-    BreadcrumbService,
-    ProcessDetailService,
-    ResourceService
-  ]
+    declarations: [
+        ProcessDetailComponent,
+        ProcessResourcesComponent,
+        ProcessGeneralComponent,
+        ResourceFormComponent
+    ],
+    providers: [
+        BreadcrumbService,
+        ProcessDetailService,
+        ResourceService
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        BreadCrumbModule,
+        SharedModule,
+        FuseHighlightModule,
+        FuseAlertModule,
+        FuseNavigationModule,
+        FuseScrollResetModule,
+        GlDialogModule,
+    ]
 })
 export class ProcessDetailModule {
 }
