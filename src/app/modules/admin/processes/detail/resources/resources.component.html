@@ -16,61 +16,61 @@
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-    <!-- Name Column -->
+    <!-- Number Column -->
     <ng-container matColumnDef="resourceNumber">
       <th mat-header-cell *matHeaderCellDef> Número do recurso </th>
       <td mat-cell *matCellDef="let element"> {{element.number}} </td>
     </ng-container>
 
-    <!-- Weight Column -->
+    <!-- Origin Column -->
     <ng-container matColumnDef="origin">
       <th mat-header-cell *matHeaderCellDef> Origem </th>
-      <td mat-cell *matCellDef="let element"> {{element.origin}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.origin | titlecase}} </td>
     </ng-container>
 
-    <!-- Symbol Column -->
+    <!-- Uf Column -->
     <ng-container matColumnDef="uf">
       <th mat-header-cell *matHeaderCellDef> Estado </th>
       <td mat-cell *matCellDef="let element"> {{element.uf}} </td>
     </ng-container>
 
-    <!-- Symbol Column -->
+    <!-- County Column -->
     <ng-container matColumnDef="county">
       <th mat-header-cell *matHeaderCellDef> Comarca </th>
-      <td mat-cell *matCellDef="let element"> {{element.county}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.county | titlecase}} </td>
     </ng-container>
 
-    <!-- Symbol Column -->
+    <!-- Forum Column -->
     <ng-container matColumnDef="forum">
       <th mat-header-cell *matHeaderCellDef> Foro </th>
-      <td mat-cell *matCellDef="let element"> {{element.forum}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.forum | titlecase}} </td>
     </ng-container>
 
-    <!-- Symbol Column -->
+    <!-- Organ Column -->
     <ng-container matColumnDef="organ">
       <th mat-header-cell *matHeaderCellDef> Orgão </th>
-      <td mat-cell *matCellDef="let element"> {{element.forum}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.organ | titlecase}} </td>
     </ng-container>
 
-    <!-- Symbol Column -->
+    <!-- InstanceType Column -->
     <ng-container matColumnDef="instance">
       <th mat-header-cell *matHeaderCellDef> Instância </th>
-      <td mat-cell *matCellDef="let element"> {{element.instance}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.instance | titlecase}} </td>
     </ng-container>
 
-    <!-- Symbol Column -->
+    <!-- Status Column -->
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef> Status </th>
-      <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.status | activeCase}} </td>
     </ng-container>
 
-    <!-- Symbol Column -->
+    <!-- Resource type Column -->
     <ng-container matColumnDef="resourceType">
       <th mat-header-cell *matHeaderCellDef> Tipo do recurso </th>
       <td mat-cell *matCellDef="let element"> {{element.resourceType}} </td>
     </ng-container>
 
-    <!-- Symbol Column -->
+    <!-- Action Column -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> </th>
       <td mat-cell *matCellDef="let element">
@@ -78,11 +78,11 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item>
+          <button mat-menu-item (click)="editResource(element)">
             <mat-icon class="icon-size-4 text-gray-600" svgIcon="edit"></mat-icon>
             <span>Editar</span>
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item (click)="removeDialog(element)">
             <mat-icon class="icon-size-4 text-gray-600" svgIcon="remove_circle_outline"></mat-icon>
             <span>Remover</span>
           </button>

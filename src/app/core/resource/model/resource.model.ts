@@ -22,3 +22,15 @@ export interface CreateResource {
   organId: number;
   forumId: number;
 }
+
+export interface FormResource {
+  id?:number;
+  number: string;
+  origin:number;
+  uf: string;
+  county: number;
+  forum:number;
+  organ:number;
+  instance:string;
+  resourceType:string;
+}

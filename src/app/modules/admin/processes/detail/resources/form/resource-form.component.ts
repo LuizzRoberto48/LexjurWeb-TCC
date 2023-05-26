@@ -1,7 +1,11 @@
 import { ChangeDetectionStrategy, Inject, ViewChild } from '@angular/core';
 import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { GlDialogComponent } from '@components/gl-dialog/gl-dialog.component';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import {
@@ -12,6 +16,10 @@ import {
   Origin,
 } from 'app/core/process/models/process.model';
 import { ProcessService } from 'app/core/process/process.service';
+import {
+  CreateResource,
+  GetResource,
+} from 'app/core/resource/model/resource.model';
 import { ResourceService } from 'app/core/resource/resource.service';
 import { Ufs, UfsModel } from 'app/shared/utils/get-ufs';
 
@@ -30,6 +38,7 @@ export class ResourceFormComponent implements AfterViewInit {
   @ViewChild(GlDialogComponent) dialog: GlDialogComponent;
 
   form: FormGroup = new FormGroup({
+    id: new FormControl(null),
     number: new FormControl('', { validators: [Validators.required] }),
     origin: new FormControl('', { validators: [Validators.required] }),
     uf: new FormControl('', { validators: [Validators.required] }),
@@ -42,25 +51,56 @@ export class ResourceFormComponent implements AfterViewInit {
   constructor(
     private processService: ProcessService,
     private mdDialogRef: MatDialogRef<GlDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:{processId:number},
+    @Inject(MAT_DIALOG_DATA)
+    public data: { processId: number; id: number; resource?: GetResource },
     private resourceService: ResourceService,
     private notification: NotificationService,
   ) {}
 
   ngAfterViewInit() {
     setTimeout(() => {
-      console.log(this.data.processId)
       this.getOrigins();
       this.getUfs();
+      if (this.data.resource) {
+        this.populateForm();
+      }
     }, 0);
   }
 
+  populateForm() {
+    this.form = this.resourceService.objToForm(this.form, this.data.resource);
+    this.changeOrigin();
+    this.changeUfs();
+    this.changeCounty();
+  }
+
   onSubmit() {
-    const obj = this.resourceService.formToObj(this.form.value, this.data.processId);
+    const obj = this.resourceService.formToObj(
+      this.form.value,
+      this.data.processId,
+    );
+    this.data.id ? this.update(obj) : this.create(obj)
+  }
+
+  create(obj: CreateResource) {
+    delete obj.id;
     this.resourceService.create(obj).subscribe({
-      next: (res) => {
+      next: () => {
         this.mdDialogRef.close(true);
-        this.notification.success('Recurso criado com sucesso')
+        this.notification.success('Recurso criado com sucesso');
+      },
+      error: (error) => {
+        this.mdDialogRef.close(false);
+        console.log(error);
+      },
+    });
+  }
+
+  update(obj: CreateResource) {
+    this.resourceService.update(obj).subscribe({
+      next: () => {
+        this.mdDialogRef.close(true);
+        this.notification.success('Recurso modificado com sucesso');
       },
       error: (error) => {
         this.mdDialogRef.close(false);
