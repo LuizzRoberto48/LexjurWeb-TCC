@@ -116,12 +116,13 @@ export class FormProcessService {
   }
 
   objToForm(form: FormGroup, obj: any): FormGroup<any> {
+    console.log(obj)
     let process: ProcessForm = {
       ...obj,
       lawAreaId: obj.LawSubArea.lawAreaId,
       lawSubAreaId: obj.LawSubArea.id,
       originId: obj.Organ.originId,
-      eletronicSystemId: obj.EletronicSystem.id,
+      eletronicSystemId: obj.eletronicSystemId,
       clientId: obj.Stakeholder.clientId,
       stakeholderId: obj.Stakeholder.id,
       objectId: obj.SubObject.objectId,

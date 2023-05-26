@@ -140,8 +140,6 @@ export class FormProcessComponent implements OnInit {
     this.getOrgans(originId);
   }
 
-  createAdverseStakeHolder() {}
-
   adverseSelected() {
     const group = this.form.get('adverseStakeholder');
     
@@ -245,6 +243,7 @@ export class FormProcessComponent implements OnInit {
   }
 
   validateError() {
+    console.log(this.form)
     if (!this.form.valid) {
       this.notification.danger(
         'Formulário inválido. Preencha os campos corretamente',

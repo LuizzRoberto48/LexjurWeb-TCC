@@ -109,6 +109,10 @@ export class ProcessService {
     );
   }
 
+  getProcessCount() {
+    return this._http.get<number>(`${environment.apiURL}/count/processes`);
+  }
+
   findObjects(): Observable<Object[]> {
     return this._http.get<Object[]>(`${environment.apiURL}/objects`);
   }

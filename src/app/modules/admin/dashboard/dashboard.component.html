@@ -4,7 +4,7 @@
     <!-- Title and action buttons -->
     <div class="flex items-center justify-between w-full">
       <div>
-        <div class="text-3xl font-semibold tracking-tight leading-8">Analytics dashboard</div>
+        <div class="text-3xl font-semibold tracking-tight leading-8">Informações Gerais</div>
         <div class="font-medium tracking-tight text-secondary">Monitorar métricas para tomar melhor decisão
         </div>
       </div>
@@ -20,16 +20,15 @@
               <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:dots-vertical'"></mat-icon>
             </button>
             <mat-menu #summaryMenu="matMenu">
-              <button mat-menu-item>Ver mais</button>
+              <button mat-menu-item routerLink="/processos">Ver mais</button>
             </mat-menu>
           </div>
         </div>
         <div class="flex flex-col items-center mt-2">
-          <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">21</div>
-          <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Totais</div>
+          <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{$countProcess | async}}</div>
+          <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Finalizado: 0</div>
           <div class="flex items-baseline justify-center w-full mt-5 text-secondary">
-            <div class="text-md font-medium truncate">Finalizado:</div>
-            <div class="ml-1.5 text-lg font-semibold">13</div>
+            <div class="ml-1.5 text-lg font-semibold"></div>
           </div>
         </div>
       </div>
