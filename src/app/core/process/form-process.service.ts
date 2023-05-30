@@ -110,13 +110,11 @@ export class FormProcessService {
       quoteDate: DateTime.fromFormat(quoteDate, 'dd/MM/yyyy').toISO(),
       causeValue: causeValue.toString()
     }
-    console.log(obj)
     process.isEletronic ? obj.eletronicSystemId : delete obj.eletronicSystemId;
     return obj;
   }
 
   objToForm(form: FormGroup, obj: any): FormGroup<any> {
-    console.log(obj)
     let process: ProcessForm = {
       ...obj,
       lawAreaId: obj.LawSubArea.lawAreaId,

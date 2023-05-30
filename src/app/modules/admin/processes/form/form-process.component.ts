@@ -229,7 +229,6 @@ export class FormProcessComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.form.getRawValue());
     if (!this.validateError()) return;
 
     /* GetRawValue recovery object that was disabled in the reactive form */
@@ -243,7 +242,6 @@ export class FormProcessComponent implements OnInit {
   }
 
   validateError() {
-    console.log(this.form)
     if (!this.form.valid) {
       this.notification.danger(
         'Formulário inválido. Preencha os campos corretamente',
