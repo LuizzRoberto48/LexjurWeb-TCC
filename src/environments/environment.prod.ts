@@ -1,7 +1,7 @@
 export const environment = {
-  production: false,
+  production: true,
   STORAGE_KEYS: {
     local_user: "LOCAL_USER"
   },
-  apiURL: "http://localhost:3000/api"
+  apiURL: "https://lexjur-backend.herokuapp.com/api"
 };
