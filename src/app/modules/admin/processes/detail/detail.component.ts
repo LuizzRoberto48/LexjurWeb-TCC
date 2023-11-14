@@ -65,7 +65,9 @@ export class ProcessDetailComponent {
   activatedRoute($event) {
     $event._activatedRoute.title.pipe(
       switchMap((res: any) => of(this.processDetailService.getItemById(res)))
-    ).subscribe(res => this.currentPanel = res)
+    ).subscribe(res => {
+      this.currentPanel = res
+    })
   }
 
 

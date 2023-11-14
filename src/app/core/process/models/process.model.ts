@@ -27,7 +27,7 @@ export interface GetProcess {
   distributionDate:string;
   quoteDate:string;
   instance:string;
-  causeValue:string;
+  causeValue:number;
   insideLawyer:any,
   outsideLawyer:any
 }

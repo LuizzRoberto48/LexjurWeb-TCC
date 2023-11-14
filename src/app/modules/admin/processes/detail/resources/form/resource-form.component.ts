@@ -16,11 +16,9 @@ import {
   Origin,
 } from 'app/core/process/models/process.model';
 import { ProcessService } from 'app/core/process/process.service';
-import {
-  CreateResource,
-  GetResource,
-} from 'app/core/resource/model/resource.model';
-import { ResourceService } from 'app/core/resource/resource.service';
+import { CreateResource, GetResource } from 'app/core/process/resource/model/resource.model';
+import { ResourceService } from 'app/core/process/resource/resource.service';
+
 import { Ufs, UfsModel } from 'app/shared/utils/get-ufs';
 
 @Component({

@@ -4,7 +4,7 @@ import { finalize } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
-import { LJError } from 'app/core/errors/error.model';
+import { LJError } from 'app/core/global/errors/error.model';
 
 @Component({
   selector: 'auth-forgot-password',

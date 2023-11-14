@@ -14,6 +14,7 @@ export class ProcessGeneralComponent {
 
   process:Process = {} as Process
 
+  /* This activatedRoute must be here to detail component see title of this component */
   constructor(private processService: ProcessService,
     protected _activatedRoute: ActivatedRoute,) { }
 

@@ -1,26 +1,24 @@
 import { Component, ViewChild } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatDrawer } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, switchMap, tap } from 'rxjs';
 import { ResourceFormComponent } from '../resources/form/resource-form.component';
 import { ProcessService } from 'app/core/process/process.service';
 import { Process } from 'app/core/process/models/process.model';
-import { ResourceService } from 'app/core/resource/resource.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { GetResource } from 'app/core/resource/model/resource.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { configDialogResource } from 'app/core/process/utils';
 import { NotificationService } from '@fuse/components/notification/notification.service';
+import { ResourceService } from 'app/core/process/resource/resource.service';
+import { GetResource } from 'app/core/process/resource/model/resource.model';
 @Component({
   selector: 'app-process-resources',
   templateUrl: './resources.component.html',
 })
 export class ProcessResourcesComponent {
-  @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
 
   columns: string[] = [
     'resourceNumber',
@@ -45,7 +43,8 @@ export class ProcessResourcesComponent {
 
   @ViewChild(MatPaginator) paginator: MatPaginator = {} as MatPaginator;
   @ViewChild(MatSort) sort: MatSort = {} as MatSort;
-
+  
+/* This activatedRoute must be here to detail component see title of this component */
   constructor(
     public _activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
@@ -133,7 +132,7 @@ export class ProcessResourcesComponent {
   }
 
   ngOnDestroy(): void {
-    this.$subs.unsubscribe();
     // Unsubscribe from all subscriptions
+    this.$subs.unsubscribe();
   }
 }

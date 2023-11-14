@@ -5,6 +5,7 @@ import { ProcessService } from "./process.service";
 
 export const RESOURCE = 'process-details.resources';
 export const GENERAL = 'process-details.general'
+export const SCHEDULE = 'process-details.schedule'
 
 @Injectable({
   providedIn: 'any'
@@ -36,6 +37,12 @@ export class ProcessDetailService {
           title: 'Recursos/Incidentes',
           type: 'basic',
           link: 'resources'
+        },
+        {
+          id: SCHEDULE,
+          title: 'Agendamento',
+          type: 'basic',
+          link: 'schedule'
         },
       ]
     }]

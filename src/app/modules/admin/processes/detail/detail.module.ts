@@ -10,13 +10,15 @@ import { FuseHighlightModule } from '@fuse/components/highlight';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { FuseNavigationModule } from '@fuse/components/navigation';
 import { FuseScrollResetModule } from '@fuse/directives/scroll-reset';
-import { GENERAL, ProcessDetailService, RESOURCE } from 'app/core/process/process-detail.service';
+import { GENERAL, ProcessDetailService, RESOURCE, SCHEDULE } from 'app/core/process/process-detail.service';
 import { ProcessResourcesComponent } from './resources/resources.component';
 import { ProcessGeneralComponent } from './general/general.component';
 import { FormProcessResolver } from 'app/core/process/resolver/process.resolver';
 import { ResourceFormComponent } from './resources/form/resource-form.component';
 import { GlDialogModule } from '@components/gl-dialog/gl-dialog.module';
-import { ResourceService } from 'app/core/resource/resource.service';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { ResourceService } from 'app/core/process/resource/resource.service';
+import { ScheduleService } from 'app/core/process/schedule/schedule.service';
 
 const routes: Route[] = [
   {
@@ -49,6 +51,14 @@ const routes: Route[] = [
         data: {
           breadcrumb: () => 'Recursos'
         },
+      },
+      {
+        title: SCHEDULE,
+        path: 'schedule',
+        component: ScheduleComponent,
+        data: {
+          breadcrumb: () => 'Agendamento'
+        },
       }
     ]
   }
@@ -59,12 +69,14 @@ const routes: Route[] = [
         ProcessDetailComponent,
         ProcessResourcesComponent,
         ProcessGeneralComponent,
-        ResourceFormComponent
+        ResourceFormComponent,
+        ScheduleComponent
     ],
     providers: [
         BreadcrumbService,
         ProcessDetailService,
-        ResourceService
+        ResourceService,
+        ScheduleService
     ],
     imports: [
         CommonModule,
