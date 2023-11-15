@@ -16,9 +16,10 @@ import { ProcessGeneralComponent } from './general/general.component';
 import { FormProcessResolver } from 'app/core/process/resolver/process.resolver';
 import { ResourceFormComponent } from './resources/form/resource-form.component';
 import { GlDialogModule } from '@components/gl-dialog/gl-dialog.module';
-import { ScheduleComponent } from './schedule/schedule.component';
+import { SchedulesComponent } from './schedule/schedules.component';
 import { ResourceService } from 'app/core/process/resource/resource.service';
 import { ScheduleService } from 'app/core/process/schedule/schedule.service';
+import { ScheduleFormComponent } from './schedule/form/schedule-form.component';
 
 const routes: Route[] = [
   {
@@ -55,7 +56,7 @@ const routes: Route[] = [
       {
         title: SCHEDULE,
         path: 'schedule',
-        component: ScheduleComponent,
+        component: SchedulesComponent,
         data: {
           breadcrumb: () => 'Agendamento'
         },
@@ -70,7 +71,8 @@ const routes: Route[] = [
         ProcessResourcesComponent,
         ProcessGeneralComponent,
         ResourceFormComponent,
-        ScheduleComponent
+        SchedulesComponent,
+        ScheduleFormComponent
     ],
     providers: [
         BreadcrumbService,

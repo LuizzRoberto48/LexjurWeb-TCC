@@ -73,7 +73,6 @@ export class ListProcessComponent {
   getListByCore(id: number, paginator: Paginator) {
     this.processService.getProcessByCore(id, paginator).subscribe({
       next: (res: GetProcessPageable) => {
-        console.log(res)
         this.length = res.totalItems
         this.recentTransactionsDataSource.data = res.process;
       },

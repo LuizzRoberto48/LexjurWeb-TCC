@@ -1,20 +1,22 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { ParamsModel } from 'app/core/global/models/base-http.model';
+import { NotificationService } from '@fuse/components/notification/notification.service';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Process } from 'app/core/process/models/process.model';
 import { ProcessService } from 'app/core/process/process.service';
 import { ScheduleService } from 'app/core/process/schedule/schedule.service';
 import { Subscription, switchMap } from 'rxjs';
+import { ScheduleFormComponent } from './form/schedule-form.component';
 
 @Component({
   selector: 'app-schedule',
-  templateUrl: './schedule.component.html',
-  styleUrls: ['./schedule.component.scss'],
+  templateUrl: './schedules.component.html'
 })
-export class ScheduleComponent implements OnInit {
+export class SchedulesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator = {} as MatPaginator;
   @ViewChild(MatSort) sort: MatSort = {} as MatSort;
 
@@ -38,11 +40,14 @@ export class ScheduleComponent implements OnInit {
     protected _activatedRoute: ActivatedRoute,
     private scheduleService: ScheduleService,
     private processService: ProcessService,
-  ) {}
+    public dialog: MatDialog,
+    private __confirmationService: FuseConfirmationService,
+    private notification: NotificationService,
+  ) {
+    this.dataSource.data = [];
+  }
 
   ngOnInit() {
-    this.dataSource.data = [];
-    //this.scheduleService.getHttpParams([params])
     this.getScheduleByProcess();
   }
 
@@ -59,10 +64,22 @@ export class ScheduleComponent implements OnInit {
         }),
       )
       .subscribe((resources: any[]) => {
-        console.log(resources);
-        /* this.dataSource.data = resources;
+        this.dataSource.data = resources;
         this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator; */
+        this.dataSource.paginator = this.paginator;
       });
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(ScheduleFormComponent, {
+      disableClose:false
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+    });
+  }
+
+  ngOnDestroy() {
+    this.$subs.unsubscribe();
   }
 }
