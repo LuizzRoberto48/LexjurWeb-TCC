@@ -13,6 +13,23 @@ const customPalettes = {
     brand: generatePalette('#2196F3')
 };
 
+const customPrimary = {
+    '50': '#fdf2f8',
+    '100': '#fce7f3',
+    '200': '#fbcfe8',
+    '300': '#f9a8d4',
+    '400': '#f472b6',
+    '500': '#005eb8',
+    '600': '#db2777',
+    '700': '#be185d',
+    '800': '#9d174d',
+    '900': '#831843',
+}
+
+const customDefault = {
+    '500': '#005eb8',
+}
+
 /**
  * Themes
  */
@@ -20,8 +37,8 @@ const themes = {
     // Default theme is required for theming system to work correctly!
     'default': {
         primary  : {
-            ...colors.indigo,
-            DEFAULT: colors.indigo[600]
+            ...customPrimary,
+            DEFAULT: customDefault.default,
         },
         accent   : {
             ...colors.slate,
