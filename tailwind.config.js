@@ -14,16 +14,16 @@ const customPalettes = {
 };
 
 const customPrimary = {
-    '50': '#fdf2f8',
-    '100': '#fce7f3',
-    '200': '#fbcfe8',
-    '300': '#f9a8d4',
-    '400': '#f472b6',
-    '500': '#005eb8',
-    '600': '#db2777',
-    '700': '#be185d',
-    '800': '#9d174d',
-    '900': '#831843',
+    '50': '#d5e4f3',
+    '100': '#aac9e7',
+    '200': '#80afdc',
+    '300': '#5594d0',
+    '400': '#2a79c4',
+    '500': '#005eb8',//Destaques principais
+    '600': '#004E99',//Itens de dropdowns/menus
+    '700': '#003F7B',//Dentro de processos
+    '800': '#002F5C',
+    '900': '#001F3D',
 }
 
 const customDefault = {
