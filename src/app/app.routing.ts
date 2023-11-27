@@ -1,8 +1,7 @@
 import { Route } from '@angular/router';
-import { AuthGuard } from 'app/core/auth/guards/auth.guard';
-import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
-import { LayoutComponent } from 'app/layout/layout.component';
-
+import { AuthGuard } from 'app/modules/auth/guards/auth.guard';
+import { NoAuthGuard } from 'app/modules/auth/guards/noAuth.guard';
+import { LayoutComponent } from './layouts/layout.component';
 
 export const appRoutes: Route[] = [
   {
@@ -10,14 +9,32 @@ export const appRoutes: Route[] = [
     component: LayoutComponent,
     canMatch: [NoAuthGuard],
     data: {
-      layout: 'empty'
+      layout: 'empty',
     },
     //canMatch: [NoAuthGuard],
     children: [
-      { path: 'reset-password/:token', loadChildren: () => import('app/modules/auth/reset-password/reset-password.module').then(m => m.AuthResetPasswordModule) },
-      { path: 'forgot', loadChildren: () => import('app/modules/auth/forgot-password/forgot-password.module').then(m => m.AuthForgotPasswordModule) },
-      { path: '', loadChildren: () => import('app/modules/auth/sign-in/sign-in.module').then(m => m.AuthSignInModule) }
-    ]
+      {
+        path: 'reset-password/:token',
+        loadChildren: () =>
+          import('app/pages/auth/reset-password/reset-password.module').then(
+            (m) => m.AuthResetPasswordModule,
+          ),
+      },
+      {
+        path: 'forgot',
+        loadChildren: () =>
+          import('app/pages/auth/forgot-password/forgot-password.module').then(
+            (m) => m.AuthForgotPasswordModule,
+          ),
+      },
+      {
+        path: '',
+        loadChildren: () =>
+          import('app/pages/auth/sign-in/sign-in.module').then(
+            (m) => m.AuthSignInModule,
+          ),
+      },
+    ],
   },
   {
     path: '',
@@ -29,10 +46,27 @@ export const appRoutes: Route[] = [
     canMatch: [AuthGuard],
     component: LayoutComponent,
     children: [
-      { path: 'dashboard', loadChildren: () => import('app/modules/admin/dashboard/dashboard.module').then(m => m.DashboardModule) },
-      { path: 'processos', loadChildren: () => import('app/modules/admin/processes/processes.module').then(m => m.ProcessesModule) },
-      { path: 'profile', loadChildren: () => import('app/modules/admin/settings/settings.module').then(m => m.SettingsModule) },
-    ]
+      {
+        path: 'dashboard',
+        loadChildren: () =>
+          import('app/pages/dashboard/dashboard.module').then(
+            (m) => m.DashboardModule,
+          ),
+      },
+      {
+        path: 'processos',
+        loadChildren: () =>
+          import('app/pages/processes/processes.module').then(
+            (m) => m.ProcessesModule,
+          ),
+      },
+      {
+        path: 'profile',
+        loadChildren: () =>
+          import('app/pages/settings/settings.module').then(
+            (m) => m.SettingsModule,
+          ),
+      },
+    ],
   },
-  
 ];
