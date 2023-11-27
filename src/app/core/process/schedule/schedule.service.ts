@@ -7,6 +7,6 @@ import { Schedule } from './model/schedule.model';
 })
 export class ScheduleService extends BaseHttpService<any> {
   constructor(protected injector: Injector) {
-    super('/scheduling', injector, Schedule.fromJson);
+    super('/deadline_trackers', injector, Schedule.fromJson);
   }
 }
