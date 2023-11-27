@@ -16,10 +16,11 @@ import { ProcessGeneralComponent } from './general/general.component';
 import { FormProcessResolver } from 'app/core/process/resolver/process.resolver';
 import { ResourceFormComponent } from './resources/form/resource-form.component';
 import { GlDialogModule } from '@components/gl-dialog/gl-dialog.module';
-import { SchedulesComponent } from './schedule/schedules.component';
+
 import { ResourceService } from 'app/core/process/resource/resource.service';
 import { ScheduleService } from 'app/core/process/schedule/schedule.service';
-import { ScheduleFormComponent } from './schedule/form/schedule-form.component';
+import { DeadlineTrackerFormComponent } from './deadline-tracker/form/deadline-tracker-form.component';
+import { DeadLineTrackerComponent } from './deadline-tracker/deadline-tracker.component';
 
 const routes: Route[] = [
   {
@@ -56,7 +57,7 @@ const routes: Route[] = [
       {
         title: SCHEDULE,
         path: 'schedule',
-        component: SchedulesComponent,
+        component: DeadLineTrackerComponent,
         data: {
           breadcrumb: () => 'Agendamento'
         },
@@ -71,8 +72,8 @@ const routes: Route[] = [
         ProcessResourcesComponent,
         ProcessGeneralComponent,
         ResourceFormComponent,
-        SchedulesComponent,
-        ScheduleFormComponent
+        DeadLineTrackerComponent,
+        DeadlineTrackerFormComponent
     ],
     providers: [
         BreadcrumbService,

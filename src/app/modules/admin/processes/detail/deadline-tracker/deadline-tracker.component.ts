@@ -10,13 +10,13 @@ import { Process } from 'app/core/process/models/process.model';
 import { ProcessService } from 'app/core/process/process.service';
 import { ScheduleService } from 'app/core/process/schedule/schedule.service';
 import { Subscription, switchMap } from 'rxjs';
-import { ScheduleFormComponent } from './form/schedule-form.component';
+import { DeadlineTrackerFormComponent } from './form/deadline-tracker-form.component';
 
 @Component({
-  selector: 'app-schedule',
-  templateUrl: './schedules.component.html'
+  selector: 'deadline-tracker',
+  templateUrl: './deadline-tracker.component.html'
 })
-export class SchedulesComponent implements OnInit {
+export class DeadLineTrackerComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator = {} as MatPaginator;
   @ViewChild(MatSort) sort: MatSort = {} as MatSort;
 
@@ -71,7 +71,7 @@ export class SchedulesComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(ScheduleFormComponent, {
+    const dialogRef = this.dialog.open(DeadlineTrackerFormComponent, {
       disableClose:false
     });
     dialogRef.afterClosed().subscribe((result) => {

@@ -20,7 +20,7 @@
       <span class="ml-2 mr-1">Novo Agendamento</span>
     </button>
   </div>
-  <ng-container *ngIf="dataSource.data.length > 0">
+  <ng-container >
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
       <ng-container matColumnDef="processNumber">
         <th mat-header-cell *matHeaderCellDef>Número do processo</th>
@@ -76,9 +76,9 @@
     >
     </mat-paginator>
   </ng-container>
-  <ng-container *ngIf="dataSource.data.length == 0">
+  <!-- <ng-container *ngIf="dataSource.data.length == 0">
     <div class="sm:mt-0 py-8 px-3 md:px-6 m-5 bg-card rounded-3xl">
       <p class="text-amber-500 font-medium">Não existe nenhum agendamento programado</p>
     </div>
-  </ng-container>
+  </ng-container> -->
 </div>

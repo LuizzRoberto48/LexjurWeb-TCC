@@ -3,9 +3,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'schedule-form',
-  templateUrl: './schedule-form.component.html',
+  templateUrl: './deadline-tracker-form.component.html',
 })
-export class ScheduleFormComponent {
+export class DeadlineTrackerFormComponent {
   dialogTitle: string = 'Cadastre um agendamento para o seu processo';
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
