@@ -19,6 +19,14 @@ export abstract class BaseHttpService<T extends BaseResourceModel> {
     this.http = injector.get(HttpClient);
   }
 
+  private getExtPath(extPath?: string) {
+    return extPath ? `/${extPath}` : '';
+  }
+
+  private getParamId(id?: number) {
+    return id ? `/${id}` : '';
+  }
+
   getHttpParams(params?: Array<ParamsModel>): HttpParams {
     let paramsObj = new HttpParams();
     if (!params || params.length === 0) return paramsObj;
@@ -33,10 +41,19 @@ export abstract class BaseHttpService<T extends BaseResourceModel> {
     this._httpParams = params;
   }
 
-  findAll(params?:Array<ParamsModel>): Observable<T[]> {
-    this.getHttpParams(params)
+  findAll(
+    params?: Array<ParamsModel>,
+    extPath?: string,
+    id?: number,
+  ): Observable<T[]> {
+    this.getHttpParams(params);
     return this.http
-      .get<T[]>(this.path, { params: this.getHttpParams(params) })
+      .get<T[]>(
+        `${this.path}${this.getExtPath(extPath)}${this.getParamId(id)}`,
+        {
+          params: this.getHttpParams(params),
+        },
+      )
       .pipe(map(this.jsonDataToResources.bind(this)));
   }
 

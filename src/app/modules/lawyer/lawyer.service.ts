@@ -1,24 +1,32 @@
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { environment } from "environments/environment";
-import { Observable } from "rxjs";
-import { GetLawyer, LawyerFields } from "./model/lawyer.model";
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { environment } from 'environments/environment';
+import { Observable } from 'rxjs';
+import { BasicLawyer, GetLawyer, LawyerFields } from './model/lawyer.model';
 
 @Injectable({
-  providedIn: 'any'
+  providedIn: 'root',
 })
 export class LawyerService {
-
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient) {}
 
   findAdverseLawyerByFilter(fields: LawyerFields): Observable<GetLawyer[]> {
-    const params = this.httpParams(fields)
-    return this._http.get<GetLawyer[]>(`${environment.apiURL}/lawyers/outside`, { params })
+    const params = this.httpParams(fields);
+    return this._http.get<GetLawyer[]>(
+      `${environment.apiURL}/lawyers/outside`,
+      { params },
+    );
   }
 
-  findInsideLaywerByFilter(coreId:number,fields: LawyerFields): Observable<GetLawyer[]> {
-    const params = this.httpParams(fields)
-    return this._http.get<GetLawyer[]>(`${environment.apiURL}/lawyers/inside/${coreId}`, { params })
+  findInsideLaywerByFilter(
+    coreId: number,
+    fields: LawyerFields,
+  ): Observable<GetLawyer[]> {
+    const params = this.httpParams(fields);
+    return this._http.get<GetLawyer[]>(
+      `${environment.apiURL}/lawyers/inside/${coreId}`,
+      { params },
+    );
   }
 
   private httpParams(params: LawyerFields): HttpParams {
@@ -29,4 +37,9 @@ export class LawyerService {
     return httpParams;
   }
 
+  findLawyersByCore(coreId: number) {
+    return this._http.get<BasicLawyer[]>(
+      `${environment.apiURL}/lawyers/core/${coreId}`,
+    );
+  }
 }

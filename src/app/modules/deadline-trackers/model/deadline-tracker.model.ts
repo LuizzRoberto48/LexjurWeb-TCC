@@ -1,6 +1,10 @@
-
 import { BaseResourceModel } from 'app/global/base-http/base-http.model';
-import { SmallResource } from 'app/modules/process/resource/model/resource.model';
+import { SmallResource } from 'app/modules/resource/model/resource.model';
+
+export interface DeadlineProcessWithResources {
+  name: string;
+  number: string;
+}
 
 export enum Status {
   INPROGRESS,

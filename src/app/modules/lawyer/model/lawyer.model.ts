@@ -5,9 +5,15 @@ export interface GetLawyer {
   name?: string;
 }
 
+export interface BasicLawyer {
+  id: number;
+  oab: string;
+  name: string;
+}
+
 export interface LawyerFields {
   oab?: string;
   ufOab?: string;
   name?: string;
-  coreId?:number
+  coreId?: number;
 }

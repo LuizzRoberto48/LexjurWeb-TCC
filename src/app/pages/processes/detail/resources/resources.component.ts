@@ -12,8 +12,8 @@ import { MatSort } from '@angular/material/sort';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { configDialogResource } from 'app/modules/process/utils';
 import { NotificationService } from '@fuse/components/notification/notification.service';
-import { ResourceService } from 'app/modules/process/resource/resource.service';
-import { GetResource } from 'app/modules/process/resource/model/resource.model';
+import { ResourceService } from 'app/modules/resource/resource.service';
+import { GetResource } from 'app/modules/resource/model/resource.model';
 @Component({
   selector: 'app-process-resources',
   templateUrl: './resources.component.html',

@@ -17,12 +17,14 @@ import { FormProcessResolver } from 'app/modules/process/resolver/process.resolv
 import { ResourceFormComponent } from './resources/form/resource-form.component';
 import { GlDialogModule } from '@components/gl-dialog/gl-dialog.module';
 
-import { ResourceService } from 'app/modules/process/resource/resource.service';
+import { ResourceService } from 'app/modules/resource/resource.service';
 
 import { DeadlineTrackerFormComponent } from './deadline-tracker/form/deadline-tracker-form.component';
 import { DeadLineTrackerComponent } from './deadline-tracker/deadline-tracker.component';
 import { DeadlineTrackerService } from 'app/modules/deadline-trackers/deadline-tracker.service';
 import { GlobalModule } from 'app/shared/global.module';
+import { DeadlineTrackerTypeService } from 'app/modules/deadline-trackers/deadline-tracker-types.service';
+import { DeadlineTrackerSubTypeService } from 'app/modules/deadline-trackers/deadline-tracker-subtypes.service';
 
 
 const routes: Route[] = [
@@ -82,7 +84,9 @@ const routes: Route[] = [
         BreadcrumbService,
         ProcessDetailService,
         ResourceService,
-        DeadlineTrackerService
+        DeadlineTrackerService,
+        DeadlineTrackerTypeService,
+        DeadlineTrackerSubTypeService
     ],
     imports: [
         CommonModule,

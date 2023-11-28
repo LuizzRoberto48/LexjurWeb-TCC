@@ -16,8 +16,8 @@ import {
   Origin,
 } from 'app/modules/process/models/process.model';
 import { ProcessService } from 'app/modules/process/process.service';
-import { CreateResource, GetResource } from 'app/modules/process/resource/model/resource.model';
-import { ResourceService } from 'app/modules/process/resource/resource.service';
+import { CreateResource, GetResource } from 'app/modules/resource/model/resource.model';
+import { ResourceService } from 'app/modules/resource/resource.service';
 
 import { Ufs, UfsModel } from 'app/global/utils/get-ufs';
 
