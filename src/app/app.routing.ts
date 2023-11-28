@@ -11,7 +11,6 @@ export const appRoutes: Route[] = [
     data: {
       layout: 'empty',
     },
-    //canMatch: [NoAuthGuard],
     children: [
       {
         path: 'reset-password/:token',
