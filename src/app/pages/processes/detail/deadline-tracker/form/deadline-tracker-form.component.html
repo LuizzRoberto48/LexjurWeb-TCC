@@ -8,11 +8,88 @@
       <div class="xl:col-span-2 flex flex-col flex-auto overflow-hidden pt-4">
         <form [formGroup]="form">
           <div class="grid w-full">
+            <div class="flex flex-col">
+              <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Processo</mat-label>
+                  <mat-select formControlName="processNumber">
+                    <mat-option *ngFor="let process of []">tt</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="flex flex-col">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Tipo</mat-label>
+                  <mat-select>
+                    <mat-option *ngFor="let type of []">tt</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Subtipo</mat-label>
+                  <mat-select formControlName="subtype">
+                    <mat-option *ngFor="let subtype of []">tt</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
+              <div class="flex flex-col">
+                <mat-form-field class="flex-auto gt-xs:pl-3">
+                  <mat-label>Responsável</mat-label>
+                  <mat-select formControlName="manager">
+                    <mat-option
+                      [value]="manager.id"
+                      *ngFor="let manager of []"
+                      >{{ origin.name }}</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <!--TODO: NGCLASS to resized column by the type of deadline -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="flex flex-col">
                 <mat-form-field class="w-full">
-                  <mat-label>Name</mat-label>
-                  <input matInput type="text" formControlName="name" />
+                  <mat-label>Prazo interno</mat-label>
+                  <input
+                    matInput
+                    type="date"
+                    formControlName="internDeadline"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col">
+                <mat-form-field class="w-full">
+                  <mat-label>Prazo crítico</mat-label>
+                  <input
+                    matInput
+                    type="date"
+                    formControlName="criticalDeadline"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col">
+                <mat-form-field class="w-full">
+                  <mat-label>Hora</mat-label>
+                  <input matInput type="time" formControlName="hour" />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
+              <div class="flex flex-col">
+                <mat-form-field class="w-full">
+                  <mat-label>Local</mat-label>
+                  <input matInput type="date" formControlName="local" />
+                </mat-form-field>
+              </div>
+              <div class="flex flex-col">
+                <mat-form-field class="w-full">
+                  <mat-label>Anotações</mat-label>
+                  <input matInput type="text" formControlName="note" />
                 </mat-form-field>
               </div>
             </div>

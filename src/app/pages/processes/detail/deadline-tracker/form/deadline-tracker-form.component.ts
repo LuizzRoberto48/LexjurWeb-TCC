@@ -6,14 +6,21 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   templateUrl: './deadline-tracker-form.component.html',
 })
 export class DeadlineTrackerFormComponent {
-  dialogTitle: string = 'Cadastre um agendamento para o seu processo';
+  dialogTitle: string = 'Cadastre um prazo para o seu processo';
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
-    name: new FormControl('', { validators: [Validators.required] }),
+    processNumber: new FormControl('', { validators: [Validators.required] }),
+    subtype: new FormControl('', { validators: [Validators.required] }),
+    manager: new FormControl('', { validators: [Validators.required] }),
+    internDeadline: new FormControl('', { validators: [Validators.required] }),
+    criticalDeadline: new FormControl(''),
+    hour:new FormControl(''),
+    local:new FormControl(''),
+    note:new FormControl('')
   });
   constructor() {}
 
   btnClicked(event: any) {
-    console.log(event)
+    console.log(event);
   }
 }
