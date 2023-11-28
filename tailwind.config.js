@@ -19,9 +19,9 @@ const customPrimary = {
     '200': '#80afdc',
     '300': '#5594d0',
     '400': '#2a79c4',
-    '500': '#005eb8',//Destaques principais
-    '600': '#004E99',//Itens de dropdowns/menus
-    '700': '#003F7B',//Dentro de processos
+    '500': '#005eb8',
+    '600': '#004E99',
+    '700': '#003F7B',
     '800': '#002F5C',
     '900': '#001F3D',
 }
