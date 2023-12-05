@@ -1,5 +1,5 @@
 <div class="flex flex-wrap items-center font-medium">
   <div *ngFor="let breadcrumb of (breadcrumbs$ | async)">
-    <a class="whitespace-nowrap text-primary-500" (click)="changeItem(breadcrumb.url)" >{{ breadcrumb.label }}</a>
+    <a class="whitespace-nowrap" (click)="changeItem(breadcrumb.url)" >{{ breadcrumb.label }}</a>
   </div>
 </div>
