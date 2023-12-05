@@ -1,0 +1,67 @@
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseAlertType } from '@fuse/components/alert';
+import { AuthService } from 'app/modules/auth/auth.service';
+
+@Component({
+  selector: 'auth-sign-in',
+  templateUrl: './sign-in.component.html',
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
+})
+export class AuthSignInComponent implements OnInit {
+
+  @ViewChild('signInNgForm') signInNgForm: NgForm;
+
+  alert: { type: FuseAlertType; message: string } = {
+    type: 'success',
+    message: ''
+  };
+  signInForm: UntypedFormGroup;
+  showAlert: boolean = false;
+
+  constructor(
+    private _activatedRoute: ActivatedRoute,
+    private _authService: AuthService,
+    private _formBuilder: UntypedFormBuilder,
+    private _router: Router
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.signInForm = this._formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      rememberMe: [true]
+    });
+  }
+
+  signIn(): void {
+    if (this.signInForm.invalid) {
+      return;
+    }
+
+    this.signInForm.disable();
+    this.showAlert = false;
+
+    this._authService.signIn(this.signInForm.value).subscribe({
+      next: (res: any) => {
+        const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('dashboard') || '/dashboard';
+        this._router.navigateByUrl(redirectURL);
+        this.signInForm.enable();
+        this.signInNgForm.resetForm();
+      },
+      error: (err: any) => {
+        this.alert = {
+          type: 'error',
+          message: 'E-mail ou senha incorretos'
+        };
+        this.showAlert = true;
+        this.signInForm.enable();
+        this.signInNgForm.resetForm();
+      }
+    })
+  }
+}

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { CoreSheedList } from './core/cores/core-sheet/core-sheet.component';
-import { CoreService } from './core/cores/service/core.service';
-import { AuthService } from './core/auth/auth.service'
+import { CoreSheedList } from './modules/cores/core-sheet/core-sheet.component';
+import { CoreService } from './modules/cores/service/core.service';
+import { AuthService } from './modules/auth/auth.service'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
