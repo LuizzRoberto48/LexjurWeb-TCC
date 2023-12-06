@@ -17,6 +17,6 @@ export class BreadcrumbComponent {
 
   changeItem(selected: SelectTab) {
     this.route.navigate([selected])
-
+    
   }
 } 
