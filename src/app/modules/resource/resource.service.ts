@@ -85,7 +85,6 @@ export class ResourceService {
       resourceType: obj.type,
       forum: obj.forumId,
     };
-    console.log(resource);
     form.patchValue(resource);
     return form;
   }

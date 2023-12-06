@@ -1,4 +1,5 @@
 import { BaseResourceModel } from 'app/global/base-http/base-http.model';
+import { ProgressStatus } from 'app/global/pipes/steps-progress.pipe';
 import { SmallResource } from 'app/modules/resource/model/resource.model';
 
 type NameTypes = 'recurso' | 'processo';
@@ -38,7 +39,7 @@ export interface IDeadlineTracker {
   criticalDeadline: string;
   internalDeadline: string;
   manager: IManager;
-  status: Status;
+  status: ProgressStatus;
   local?: string;
   note?: string;
 }

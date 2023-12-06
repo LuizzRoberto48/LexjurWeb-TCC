@@ -1,13 +1,24 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-export type Status = 'CANCELED' | 'INPROGRESS' | 'COMPLETED';
+export type ProgressStatus = 'CANCELED' | 'INPROGRESS' | 'COMPLETED';
+
+export function stepProgress(type: ProgressStatus):string {
+  switch (type) {
+    case 'CANCELED':
+      return 'Cancelado';
+    case 'INPROGRESS':
+      return 'Em Progresso'
+    case 'COMPLETED':
+      return 'Completo'
+  }
+}
 
 interface StatusClass {
   label: string;
   cssClass: { [key: string]: boolean };
 }
 
-const statusClassMappings: { [key in Status]: StatusClass } = {
+const statusClassMappings: { [key in ProgressStatus]: StatusClass } = {
   CANCELED: {
     label: 'Cancelado',
     cssClass: {
