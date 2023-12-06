@@ -5,6 +5,7 @@ import { ParamsModel } from 'app/global/base-http/base-http.model';
 import { ProcessService } from '../process/process.service';
 import { Observable, switchMap } from 'rxjs';
 import { Process } from '../process/models/process.model';
+import { DateTime } from 'luxon';
 
 @Injectable({
   providedIn: 'any',
@@ -29,5 +30,15 @@ export class DeadlineTrackerService extends BaseHttpService<any> {
         return this.findAll(params, 'process_resources');
       }),
     );
+  }
+
+  internalDateWithHour(date: string, time?: string): string {
+    const [hour, minute] = (time ?? '00:00').split(':');
+    return DateTime.fromFormat(date, 'yyyy-MM-dd')
+      .set({
+        hour: +hour ?? 0,
+        minute: +minute ?? 0,
+      })
+      .toISO();
   }
 }

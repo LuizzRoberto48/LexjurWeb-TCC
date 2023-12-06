@@ -134,5 +134,6 @@ export class ProcessResourcesComponent {
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
     this.$subs.unsubscribe();
+    this.$searchSubs.unsubscribe();
   }
 }
