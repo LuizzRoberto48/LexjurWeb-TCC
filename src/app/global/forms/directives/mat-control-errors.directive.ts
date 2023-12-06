@@ -46,7 +46,6 @@ export class MatControlErrorsDirective implements AfterViewInit {
 
   ngAfterViewInit() {
     this.control = this.getNgControl(this.formField);
-    console.log(this.control)
     if(!this.control?.statusChanges) return;
     merge(this.control.statusChanges.pipe(startWith(null)), this.submit$)
     .pipe(takeUntil(this.destroy$))

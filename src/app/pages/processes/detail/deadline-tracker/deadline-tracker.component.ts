@@ -11,11 +11,11 @@ import { ProcessService } from 'app/modules/process/process.service';
 import { Subscription, switchMap } from 'rxjs';
 import { DeadlineTrackerFormComponent } from './form/deadline-tracker-form.component';
 import { DeadlineTrackerService } from 'app/modules/deadline-trackers/deadline-tracker.service';
-
+import { IDeadlineTracker } from 'app/modules/deadline-trackers/model/deadline-tracker.model';
 
 @Component({
   selector: 'deadline-tracker',
-  templateUrl: './deadline-tracker.component.html'
+  templateUrl: './deadline-tracker.component.html',
 })
 export class DeadLineTrackerComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator = {} as MatPaginator;
@@ -60,12 +60,13 @@ export class DeadLineTrackerComponent implements OnInit {
     this.$subs = this.$process
       .pipe(
         switchMap((process: Process) => {
+          this.processId = process.id;
           const param = { name: 'processId', value: process.id };
           return this.deadlineTrackerService.findAll([param]);
         }),
       )
-      .subscribe((resources: any[]) => {
-        this.dataSource.data = resources;
+      .subscribe((deadlineTrackers: IDeadlineTracker[]) => {
+        this.dataSource.data = deadlineTrackers;
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
       });
@@ -73,12 +74,27 @@ export class DeadLineTrackerComponent implements OnInit {
 
   openDialog() {
     const dialogRef = this.dialog.open(DeadlineTrackerFormComponent, {
-      disableClose:false
+      data: { processId: this.processId },
+      disableClose: false,
     });
+    this.afterCloseDialog(dialogRef);
+  }
+
+  afterCloseDialog(dialogRef) {
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
+      if (result) this.getScheduleByProcess();
     });
   }
+
+  edit(element: IDeadlineTracker) {
+    const dialogRef = this.dialog.open(DeadlineTrackerFormComponent, {
+      data: { processId: this.processId, editObj: element },
+      disableClose: false,
+    });
+    this.afterCloseDialog(dialogRef);
+  }
+
+  remove(id: number) {}
 
   ngOnDestroy() {
     this.$subs.unsubscribe();
