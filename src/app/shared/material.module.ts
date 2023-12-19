@@ -17,15 +17,13 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {MatRadioModule} from '@angular/material/radio';
-import {MatChipsModule} from '@angular/material/chips';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import { MyPaginatorIntl } from './paginator/paginator.service';
-import {MatExpansionModule} from '@angular/material/expansion';
-
-
+import { MatRadioModule } from '@angular/material/radio';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MyPaginatorIntl } from '../global/paginator/paginator.service';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   imports: [
@@ -50,8 +48,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatRadioModule,
     MatChipsModule,
     MatAutocompleteModule,
-    MatExpansionModule
-    
+    MatExpansionModule,
   ],
   //providers: [{ provide: MatPaginatorIntl, useClass: PaginatorIntl }],
   exports: [
@@ -76,11 +73,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatRadioModule,
     MatChipsModule,
     MatAutocompleteModule,
-    MatExpansionModule
+    MatExpansionModule,
   ],
-  providers:[
-    
-    { provide: MatPaginatorIntl, useClass: MyPaginatorIntl }
-  ]
+  providers: [{ provide: MatPaginatorIntl, useClass: MyPaginatorIntl }],
 })
 export class MaterialModule {}
