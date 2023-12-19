@@ -19,15 +19,22 @@ export class SettingsAccountComponent implements OnInit {
   ngOnInit(): void {
     // Create the form
     this.accountForm = this._formBuilder.group({
-      name: ['Brian Hughes'],
-      username: ['brianh'],
-      title: ['Senior Frontend Developer'],
-      company: ['YXZ Software'],
-      about: ['Hey! This is Brian; husband, father and gamer. I\'m mostly passionate about bleeding edge tech and chocolate! 🍫'],
-      email: ['hughes.brian@mail.com', Validators.email],
-      phone: ['121-490-33-12'],
-      country: ['usa'],
-      language: ['english']
+      name: ['Brian Hughes', Validators.required],
+      oab: ['YXZ Software', Validators.required],
+      email: ['hughes.brian@mail.com', [Validators.email, Validators.required]],
+      postal_code: ['20543012', Validators.required],
+      city: ['Rio de Janeiro', Validators.required],
+      district: ['Tijuca', Validators.required],
+      street: ['Rua Afonso Pena', Validators.required],
+      number: ['12', Validators.required],
+      complement: ['403', Validators.required],
+      uf: ['RJ', [Validators.required, Validators.minLength(2)]],
+      uf_oab: ['RJ', Validators.required],
+      role_enum: ['LEXJUR', Validators.required]
+      //LEXJUR
+      //ADMIN
+      //LAWYER
+      //INTERN
     });
   }
 }
