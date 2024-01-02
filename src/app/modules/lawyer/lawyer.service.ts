@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
-import { BasicLawyer, GetLawyer, LawyerFields } from './model/lawyer.model';
+import { BasicLawyer, CreateLawyer, GetLawyer, LawyerFields, UpdateLawyer } from './model/lawyer.model';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +40,12 @@ export class LawyerService {
   findLawyersByCore(coreId: number) {
     return this._http.get<BasicLawyer[]>(
       `${environment.apiURL}/lawyers/core/${coreId}`,
+    );
+  }
+
+  update(id: number, info: CreateLawyer){
+    return this._http.put(
+      `${environment.apiURL}/lawyers/${id}`, info
     );
   }
 }

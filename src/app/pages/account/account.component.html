@@ -10,17 +10,8 @@
           <mat-label>Nome</mat-label>
           <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:user'" matPrefix></mat-icon>
           <input [formControlName]="'name'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
-
-        <!--Validation-->
-        <div *ngIf="accountForm.get('name').invalid && 
-          accountForm.get('name').errors && 
-          (accountForm.get('name').dirty || accountForm.get('name').touched)">
-          <small class="text-warn"
-            *ngIf="accountForm.get('name').hasError('required')">
-            Este campo é obrigatório.
-          </small>
-        </div>
       </div>
 
       <!--Email-->
@@ -28,21 +19,8 @@
         <mat-form-field class="fuse-mat-emphasized-affix w-full" [subscriptSizing]="'dynamic'">
           <mat-label>E-mail</mat-label>
           <input [formControlName]="'email'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
-
-        <!--Validation-->
-        <div *ngIf="accountForm.get('email').invalid && 
-          accountForm.get('email').errors && 
-          (accountForm.get('email').dirty || accountForm.get('email').touched)">
-          <small class="text-warn"
-          *ngIf="accountForm.get('email').hasError('required')">
-          Este campo é obrigatório.
-          </small>
-          <small class="text-warn"
-            *ngIf="accountForm.get('email').hasError('email')">
-            Insira um email válido.
-          </small>
-        </div>
       </div>
       <!-- LOGIN INFO END-->
 
@@ -51,18 +29,9 @@
       <div class="sm:col-span-2">
         <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
           <mat-label>CEP</mat-label>
-          <input [formControlName]="'postal_code'" matInput>
+          <input [formControlName]="'postalCode'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
-
-        <!--Validation-->
-        <div *ngIf="accountForm.get('postal_code').invalid && 
-          accountForm.get('postal_code').errors && 
-          (accountForm.get('postal_code').dirty || accountForm.get('postal_code').touched)">
-          <small class="text-warn"
-            *ngIf="accountForm.get('postal_code').hasError('required')">
-            Este campo é obrigatório.
-          </small>
-        </div>
       </div>
 
       <!--UF-->
@@ -71,21 +40,8 @@
           <mat-label>UF</mat-label>
           <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:briefcase'" matPrefix></mat-icon>
           <input [formControlName]="'uf'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
-
-        <!--Validation-->
-        <div *ngIf="accountForm.get('uf').invalid && 
-          accountForm.get('uf').errors && 
-          (accountForm.get('uf').dirty || accountForm.get('uf').touched)">
-          <small class="text-warn"
-            *ngIf="accountForm.get('uf').hasError('required')">
-            Este campo é obrigatório.
-          </small>
-          <small class="text-warn"
-            *ngIf="accountForm.get('uf').hasError('minlength')">
-            Mínimo de 2 caracteres.
-          </small>
-        </div>
       </div>
 
       <!--City-->
@@ -93,17 +49,8 @@
         <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
           <mat-label>Cidade</mat-label>
           <input [formControlName]="'city'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
-
-        <!--Validation-->
-        <div *ngIf="accountForm.get('city').invalid && 
-          accountForm.get('city').errors && 
-          (accountForm.get('city').dirty || accountForm.get('city').touched)">
-          <small class="text-warn"
-            *ngIf="accountForm.get('city').hasError('required')">
-            Este campo é obrigatório.
-          </small>
-        </div>
       </div>
 
       <!--District-->
@@ -111,17 +58,8 @@
         <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
           <mat-label>Bairro</mat-label>
           <input [formControlName]="'district'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
-
-        <!--Validation-->
-        <div *ngIf="accountForm.get('district').invalid && 
-          accountForm.get('district').errors && 
-          (accountForm.get('district').dirty || accountForm.get('district').touched)">
-          <small class="text-warn"
-            *ngIf="accountForm.get('district').hasError('required')">
-            Este campo é obrigatório.
-          </small>
-        </div>
       </div>
 
       <!--Street-->
@@ -129,17 +67,8 @@
         <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
           <mat-label>Rua</mat-label>
           <input [formControlName]="'street'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
-
-        <!--Validation-->
-        <div *ngIf="accountForm.get('street').invalid && 
-          accountForm.get('street').errors && 
-          (accountForm.get('street').dirty || accountForm.get('street').touched)">
-          <small class="text-warn"
-            *ngIf="accountForm.get('street').hasError('required')">
-            Este campo é obrigatório.
-          </small>
-        </div>
       </div>
 
       <!--Street number-->
@@ -147,17 +76,8 @@
         <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
           <mat-label>Número da rua</mat-label>
           <input [formControlName]="'number'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
-
-        <!--Validation-->
-        <div *ngIf="accountForm.get('number').invalid && 
-          accountForm.get('number').errors && 
-          (accountForm.get('number').dirty || accountForm.get('number').touched)">
-          <small class="text-warn"
-            *ngIf="accountForm.get('number').hasError('required')">
-            Este campo é obrigatório.
-          </small>
-        </div>
       </div>
 
       <!--Complement-->
@@ -165,17 +85,8 @@
         <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
           <mat-label>Complemento</mat-label>
           <input [formControlName]="'complement'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
-
-        <!--Validation-->
-        <div *ngIf="accountForm.get('complement').invalid && 
-          accountForm.get('complement').errors && 
-          (accountForm.get('complement').dirty || accountForm.get('complement').touched)">
-          <small class="text-warn"
-            *ngIf="accountForm.get('complement').hasError('required')">
-            Este campo é obrigatório.
-          </small>
-        </div>
       </div>
       <!-- ADRESS INFO END -->
 
@@ -186,55 +97,19 @@
           <mat-label>OAB</mat-label>
           <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:office-building'" matPrefix></mat-icon>
           <input [formControlName]="'oab'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
-
-        <!--Validation-->
-        <div *ngIf="accountForm.get('oab').invalid && 
-          accountForm.get('oab').errors && 
-          (accountForm.get('oab').dirty || accountForm.get('oab').touched)">
-          <small class="text-warn"
-            *ngIf="accountForm.get('oab').hasError('required')">
-            Este campo é obrigatório.
-          </small>
-        </div>
       </div>
 
       <!--UF OAB-->
       <div class="sm:col-span-2">
         <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
           <mat-label>UF OAB</mat-label>
-          <input [formControlName]="'uf_oab'" matInput>
+          <input [formControlName]="'ufOab'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
-
-        <!--Validation-->
-        <div *ngIf="accountForm.get('uf_oab').invalid && 
-          accountForm.get('uf_oab').errors && 
-          (accountForm.get('uf_oab').dirty || accountForm.get('uf_oab').touched)">
-          <small class="text-warn"
-            *ngIf="accountForm.get('uf_oab').hasError('required')">
-            Este campo é obrigatório.
-          </small>
-        </div>
       </div>
-
-      <!--System Role-->
-      <div class="sm:col-span-4">
-        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
-          <mat-label>Permissão</mat-label>
-          <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:office-building'" matPrefix></mat-icon>
-          <input [formControlName]="'role_enum'" matInput>
-        </mat-form-field>
-
-        <!--Validation-->
-        <div *ngIf="accountForm.get('role_enum').invalid && 
-          accountForm.get('role_enum').errors && 
-          (accountForm.get('role_enum').dirty || accountForm.get('role_enum').touched)">
-          <small class="text-warn"
-            *ngIf="accountForm.get('role_enum').hasError('required')">
-            Este campo é obrigatório.
-          </small>
-        </div>
-      </div>
+      
       <!-- COMPANY INFO END -->
     </div>
 
@@ -243,7 +118,7 @@
 
     <!-- Actions -->
     <div class="flex items-center justify-end">
-      <button class="ml-4" mat-flat-button type="button" [color]="'primary'" >
+      <button class="ml-4" mat-flat-button type="button" [color]="'primary'" (click)="update()">
         Salvar
       </button>
     </div>
