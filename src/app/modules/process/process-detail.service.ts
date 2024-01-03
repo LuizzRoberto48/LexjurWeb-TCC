@@ -44,6 +44,12 @@ export class ProcessDetailService {
           type: 'basic',
           link: 'schedule'
         },
+        {
+          id: 'arquivos',
+          title: 'Arquivos',
+          type: 'basic',
+          link: 'files'
+        },
       ]
     }]
   }

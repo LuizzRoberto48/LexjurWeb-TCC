@@ -7,13 +7,13 @@ import { FuseConfigModule } from '@fuse/services/config';
 import { CoreModule } from 'app/modules/core.module';
 import { appConfig } from 'app/global/config/app.config';
 import { LuxonModule } from 'luxon-angular';
-
 import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import { CommonModule } from '@angular/common';
 import { GlobalModule } from './shared/global.module';
 import { LayoutModule } from './layouts/layout.module';
-
+import { ErrorInterceptorsProvider } from './global/errors/errors.interceptors';
+import { AuthInterceptorsProvider } from './modules/auth/auth.interceptor';
 
 const routerConfig: ExtraOptions = {
   preloadingStrategy: PreloadAllModules,
@@ -33,6 +33,10 @@ const routerConfig: ExtraOptions = {
     LayoutModule,
     LuxonModule,
     GlobalModule,
+  ],
+  providers:[
+    AuthInterceptorsProvider,
+    ErrorInterceptorsProvider,
   ],
   bootstrap: [AppComponent],
 })

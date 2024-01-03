@@ -41,43 +41,4 @@ export class NotificationService {
     });
   }
 
-  /* success({ msg }: Message) {
-    
-    this._snackBar.openFromComponent(ResponseNotificationComponent, {
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      duration: 11115000,
-    });
-  }
-
-  warning({ msg }: Message) {
-    this._snackBar.openFromComponent(ResponseNotificationComponent, {
-      data: { msg, type: 'warning' },
-      panelClass: ['warning'],
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      duration: 5000,
-    });
-  }
-
-  error({ msg }: Message) {
-    const snackBarRef = this._snackBar.openFromComponent(
-      ResponseNotificationComponent,
-      {
-        data: { msg, type: 'error' },
-        panelClass: 'error',
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-        duration: 5000,
-      }
-    );
-    snackBarRef
-      .onAction()
-      .pipe(take(1))
-      .subscribe(() => {
-        snackBarRef.dismiss();
-      });
-  } */
-
- 
 }

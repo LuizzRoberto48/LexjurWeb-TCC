@@ -46,7 +46,6 @@ export abstract class BaseHttpService<T extends BaseResourceModel> {
     extPath?: string,
     id?: number,
   ): Observable<T[]> {
-    this.getHttpParams(params);
     return this.http
       .get<T[]>(
         `${this.path}${this.getExtPath(extPath)}${this.getParamId(id)}`,
@@ -78,12 +77,16 @@ export abstract class BaseHttpService<T extends BaseResourceModel> {
 
   update(resource: T): Observable<T> {
     const url = `${this.path}/${resource.id}`;
-    return this.http.put(url, resource).pipe(map(() => resource));
+    return this.http.put(url, resource)
+    .pipe(map(this.jsonDataToResource.bind(this)));
   }
 
-  delete(id: number): Observable<any> {
+  delete(id: number, params?:Array<ParamsModel>): Observable<any> {
+    this.getHttpParams(params);
     const url = `${this.path}/${id}`;
-    return this.http.delete(url).pipe(map(() => null));
+    return this.http.delete(url,{
+      params: this.getHttpParams(params),
+    }).pipe(map(() => null));
   }
 
   // PROTECTED METHODS

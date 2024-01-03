@@ -257,11 +257,7 @@ export class FormProcessComponent implements OnInit {
       next: (resp) => {
         this.notification.success('Enviado com sucesso');
         this._router.navigateByUrl('/processos');
-      },
-      error: (erro) => {
-        console.log(erro);
-        this.notification.danger('Formulário incorreto');
-      },
+      }
     });
   }
 
@@ -270,11 +266,7 @@ export class FormProcessComponent implements OnInit {
       next: (resp) => {
         this.notification.success('Editado com sucesso');
         this._router.navigateByUrl('/processos');
-      },
-      error: (erro) => {
-        console.log(erro);
-        this.notification.danger('Formulário incorreto');
-      },
+      }
     });
   }
 
