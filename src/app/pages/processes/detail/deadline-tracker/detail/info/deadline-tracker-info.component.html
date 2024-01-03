@@ -1,0 +1,81 @@
+<div class="grid grid-cols-1 md:grid-cols-1 my-4">
+  <h1 class="font-semibold tracking-wide uppercase text-blue-800">
+    Informações gerais
+    <span
+      [ngClass]="(info.status | stepProgress).cssClass"
+      style="font-size: 10px; padding: 5px; border-radius: 10px"
+      >{{ (info.status | stepProgress).label }}</span
+    >
+  </h1>
+</div>
+<div class="grid grid-cols-3 gap-4">
+  <div>
+    <p class="text-gray-900 font-bold">
+      Advogado:
+      <span class="font-light">{{ info.manager.name }}</span>
+    </p>
+  </div>
+  <div>
+    <p class="text-gray-900 font-bold">
+      oab: <span class="font-light">{{ info.manager.oab }}</span>
+    </p>
+  </div>
+</div>
+<div class="grid grid-cols-3 gap-4 mt-4">
+  <div>
+    <p class="text-gray-900 font-bold">
+      {{ info?.resource ? 'Recurso' : 'Processo' }}:
+      <span class="font-light">{{
+        info?.resource ? info.resource.number : info.process.caseNumber
+      }}</span>
+    </p>
+  </div>
+  <div>
+    <p class="text-gray-900 font-bold">
+      Tipo:
+      <span class="font-light">{{
+        info.deadlineTrackerSubType.deadlineTrackerType.label
+      }}</span>
+    </p>
+  </div>
+  <div>
+    <p class="text-gray-900 font-bold">
+      Subtipo:
+      <span class="font-light">{{ info.deadlineTrackerSubType.label }}</span>
+    </p>
+  </div>
+  <div>
+    <p class="text-gray-900 font-bold">
+      Prazo interno:
+      <span class="font-light">{{
+        info.internalDeadline | date : 'dd/MM/yyyy'
+      }}</span>
+    </p>
+  </div>
+  <div>
+    <p class="text-gray-900 font-bold">
+      Local: <span class="font-light">{{ info.local }}</span>
+    </p>
+  </div>
+  <div>
+    <p class="text-gray-900 font-medium" *ngIf="info.criticalDeadline">
+      Prazo fatal:
+      <span class="font-light">{{
+        info.criticalDeadline | date : 'dd/MM/yyyy'
+      }}</span>
+    </p>
+  </div>
+</div>
+<div class="grid grid-cols-3 gap-4 mt-4">
+  <div>
+    <p class="text-gray-900 font-bold">
+      Notas: <span class="font-light">{{ info.note }}</span>
+    </p>
+  </div>
+</div>
+
+<div class="flex items-center justify-end">
+  <button mat-stroked-button type="button" [color]="'secondary'" (click)="back()">
+    Voltar
+  </button>
+</div>

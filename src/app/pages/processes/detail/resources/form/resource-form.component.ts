@@ -16,7 +16,10 @@ import {
   Origin,
 } from 'app/modules/process/models/process.model';
 import { ProcessService } from 'app/modules/process/process.service';
-import { CreateResource, GetResource } from 'app/modules/resource/model/resource.model';
+import {
+  CreateResource,
+  GetResource,
+} from 'app/modules/resource/model/resource.model';
 import { ResourceService } from 'app/modules/resource/resource.service';
 
 import { Ufs, UfsModel } from 'app/global/utils/get-ufs';
@@ -77,7 +80,7 @@ export class ResourceFormComponent implements AfterViewInit {
       this.form.value,
       this.data.processId,
     );
-    this.data.id ? this.update(obj) : this.create(obj)
+    this.data.id ? this.update(obj) : this.create(obj);
   }
 
   create(obj: CreateResource) {
@@ -87,9 +90,8 @@ export class ResourceFormComponent implements AfterViewInit {
         this.mdDialogRef.close(true);
         this.notification.success('Recurso criado com sucesso');
       },
-      error: (error) => {
+      error: () => {
         this.mdDialogRef.close(false);
-        console.log(error);
       },
     });
   }
@@ -100,9 +102,8 @@ export class ResourceFormComponent implements AfterViewInit {
         this.mdDialogRef.close(true);
         this.notification.success('Recurso modificado com sucesso');
       },
-      error: (error) => {
+      error: () => {
         this.mdDialogRef.close(false);
-        console.log(error);
       },
     });
   }

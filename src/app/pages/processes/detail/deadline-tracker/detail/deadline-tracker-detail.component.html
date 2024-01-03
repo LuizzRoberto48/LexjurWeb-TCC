@@ -1,0 +1,32 @@
+<div
+  class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden mx-6 my-8"
+>
+  <div class="inset-0 flex flex-col min-w-0 overflow-hidden w-full p-5">
+    <mat-horizontal-stepper [linear]="!isEdit" #horizontalStepper>
+     
+      <mat-step [stepControl]="register.form" #horizontalStepperStep2>
+        <ng-template matStepLabel>Cadastro</ng-template>
+        <deadline-tracker-form
+          #register
+          [editId]="id"
+          (onUpdate)="onUpdate($event)"
+        ></deadline-tracker-form>
+      </mat-step>
+      <mat-step #horizontalStepperStep3>
+        <ng-template matStepLabel>Arquivos</ng-template>
+        <files-list
+          [isFilterTarget]="false"
+          [target]="target"
+          [$processNumber]="$processNumber "
+          [isCreated]="!isEdit"
+        ></files-list>
+      </mat-step>
+      <mat-step #horizontalStepperStep1 >
+        <ng-template matStepLabel>Detalhes</ng-template>
+        <ng-container *ngIf="deadline?.id">
+          <deadline-tracker-info [info]="deadline"></deadline-tracker-info>
+        </ng-container>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+</div>

@@ -1,5 +1,12 @@
+import { TargetFiles } from 'app/modules/process-files/models/upload-process-files';
 import { InstanceType } from 'app/modules/process/models/process.model';
 
+type NameTypes = TargetFiles.RECURSO | TargetFiles.PROCESSO;
+export interface DeadlineProcessWithResources {
+  id:number;
+  name: NameTypes;
+  number: string;
+}
 export interface SmallResource {
   id: number;
   number: string;

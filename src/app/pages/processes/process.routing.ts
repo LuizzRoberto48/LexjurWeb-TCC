@@ -37,7 +37,6 @@ export const processRoutes: Route[] = [
       },
       {
         path: 'detail/:id', loadChildren: () => import('app/pages/processes/detail/detail.module').then(m => m.ProcessDetailModule),
-        
       },
     ]
   }

@@ -1,9 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GlDialogComponent } from '@components/gl-dialog/gl-dialog.component';
 import { NotificationService } from '@fuse/components/notification/notification.service';
-import { CustomValidators } from 'app/global/forms/custom-validators';
 import { LocalCore } from 'app/modules/cores/model/get-core';
 import { CoreService } from 'app/modules/cores/service/core.service';
 import { DeadlineTrackerSubTypeService } from 'app/modules/deadline-trackers/deadline-tracker-subtypes.service';
@@ -13,31 +17,27 @@ import { IDeadlineTrackerSubTypes } from 'app/modules/deadline-trackers/model/de
 import { IDeadlineTrackerTypes } from 'app/modules/deadline-trackers/model/deadline-tracker-type.model';
 import {
   CreateDeadlineTracker,
-  DeadlineProcessWithResources,
   IDeadlineTracker,
 } from 'app/modules/deadline-trackers/model/deadline-tracker.model';
 import { LawyerService } from 'app/modules/lawyer/lawyer.service';
 import { BasicLawyer } from 'app/modules/lawyer/model/lawyer.model';
 import { DateTime } from 'luxon';
-import { switchMap } from 'rxjs';
+import { Subscription, switchMap, tap } from 'rxjs';
+import { Location } from '@angular/common';
+import { ProcessService } from 'app/modules/process/process.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DeadlineProcessWithResources } from 'app/modules/resource/model/resource.model';
 
 const DEADLINE = 'Prazo';
 const AUDIENCE = 'Audiência';
+
 @Component({
-  selector: 'schedule-form',
+  selector: 'deadline-tracker-form',
   templateUrl: './deadline-tracker-form.component.html',
 })
-export class DeadlineTrackerFormComponent implements OnInit {
-  dialogTitle: string = 'Cadastre um prazo para o seu processo';
-  types: IDeadlineTrackerTypes[] = [];
-  subTypes: IDeadlineTrackerSubTypes[] = [];
-  processWithResources: DeadlineProcessWithResources[] = [];
-  coreId: number;
-  laywers: BasicLawyer[] = [];
-  isDeadline = false;
-  isAudience = false;
-
-  /* internDateMessage!: string; */
+export class DeadlineTrackerFormComponent implements OnInit, OnDestroy {
+  @Input() editId: number;
+  @Output() onUpdate: EventEmitter<IDeadlineTracker> = new EventEmitter();
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
     processId: new FormControl(null),
@@ -56,6 +56,16 @@ export class DeadlineTrackerFormComponent implements OnInit {
     note: new FormControl(''),
   });
 
+  types: IDeadlineTrackerTypes[] = [];
+  subTypes: IDeadlineTrackerSubTypes[] = [];
+  processWithResources: DeadlineProcessWithResources[] = [];
+  coreId: number;
+  laywers: BasicLawyer[] = [];
+  isDeadline = false;
+  isAudience = false;
+  processId:number
+  $subs: Subscription = new Subscription();
+
   constructor(
     private typeService: DeadlineTrackerTypeService,
     private dTrackerService: DeadlineTrackerService,
@@ -63,34 +73,55 @@ export class DeadlineTrackerFormComponent implements OnInit {
     private lawyerService: LawyerService,
     private coreService: CoreService,
     private notification: NotificationService,
-    private mdDialogRef: MatDialogRef<GlDialogComponent>,
-    @Inject(MAT_DIALOG_DATA)
-    public data: { processId; editObj: IDeadlineTracker },
+    private location: Location,
+    private processService: ProcessService,
+    private _activatedRoute: ActivatedRoute,
+    private route:Router
   ) {
     this.findTypes();
     this.findProcessResources();
     this.findLawyersByCore();
   }
 
-  isEdit(): boolean {
-    return this.data?.editObj?.id ? true : false;
-  }
-
-  ngOnInit() {
-    this.form.get('processId').setValue(this.data.processId);
-    if (this.isEdit()) this.populateForm();
-  }
-
-  private findTypes() {
-    this.typeService.findAll().subscribe((res: IDeadlineTrackerTypes[]) => {
-      this.types = res;
+  getEditProcess() {
+    this._activatedRoute.data.subscribe({
+      next: ({ data }) => {
+        this.populateForm(data);
+      },
     });
   }
 
-  populateForm() {
-    const type = this.data?.editObj.deadlineTrackerSubType.deadlineTrackerType;
-    this.form.get('id').setValue(this.data.editObj?.id ?? null);
-    this.objToForm(this.data?.editObj);
+  edit() {
+    if (this.editId) {
+      this.form.get('id').setValue(this.editId);
+      this.getEditProcess();
+    }
+  }
+
+  back() {
+    this.location.back();
+  }
+
+  ngOnInit() {
+    this.$getProcess();
+    this.edit();
+  }
+
+  $getProcess() {
+    this.$subs = this.processService.$obsevableProcess
+      .pipe(
+        tap((process) => {
+          this.processId = process.id
+          this.form.get('processId').setValue(process.id);
+          
+        }),
+      )
+      .subscribe();
+  }
+
+  populateForm(data) {
+    const type = data.deadlineTrackerSubType.deadlineTrackerType;
+    this.objToForm(data);
     this.selectDeadline(type);
     this.selectAudience(type);
     this.findSubTypesByType(type.id);
@@ -105,28 +136,6 @@ export class DeadlineTrackerFormComponent implements OnInit {
     this.selectDeadline(deadlineOpt);
     this.selectAudience(audienceOpt);
     this.findSubTypesByType(typeId);
-  }
-
-  selectDeadline(deadlineOpt: IDeadlineTrackerTypes) {
-    if (deadlineOpt?.label == DEADLINE) {
-      this.isDeadline = true;
-      this.deadlineValidator();
-    }
-  }
-
-  selectAudience(deadlineOpt: IDeadlineTrackerTypes) {
-    if (deadlineOpt?.label == AUDIENCE) {
-      this.isAudience = true;
-      this.audienceValidator();
-    }
-  }
-
-  private clear() {
-    this.isDeadline = false;
-    this.isAudience = false;
-    this.form.get('criticalDeadline')?.clearValidators();
-    this.form.get('hour')?.clearValidators();
-    this.updateValidatorDeadlineDates();
   }
 
   getInternErrorMessage() {
@@ -155,6 +164,20 @@ export class DeadlineTrackerFormComponent implements OnInit {
     this.form.get('internalDeadline').setErrors(null);
   }
 
+  selectDeadline(deadlineOpt: IDeadlineTrackerTypes) {
+    if (deadlineOpt?.label == DEADLINE) {
+      this.isDeadline = true;
+      this.deadlineValidator();
+    }
+  }
+
+  selectAudience(deadlineOpt: IDeadlineTrackerTypes) {
+    if (deadlineOpt?.label == AUDIENCE) {
+      this.isAudience = true;
+      this.audienceValidator();
+    }
+  }
+
   private deadlineValidator() {
     this.form.get('criticalDeadline')?.setValidators([Validators.required]);
     this.updateValidatorDeadlineDates();
@@ -168,6 +191,20 @@ export class DeadlineTrackerFormComponent implements OnInit {
 
   private audienceValidator() {
     this.form.get('hour')?.setValidators([Validators.required]);
+  }
+
+  private clear() {
+    this.isDeadline = false;
+    this.isAudience = false;
+    this.form.get('criticalDeadline')?.clearValidators();
+    this.form.get('hour')?.clearValidators();
+    this.updateValidatorDeadlineDates();
+  }
+
+  private findTypes() {
+    this.typeService.findAll().subscribe((res: IDeadlineTrackerTypes[]) => {
+      this.types = res;
+    });
   }
 
   private findProcessResources() {
@@ -198,8 +235,7 @@ export class DeadlineTrackerFormComponent implements OnInit {
       });
   }
 
-  btnClicked(event: any) {
-    if (!event) return;
+  onSubmit() {
     const id = this.form.value['id'];
     if (this.form.invalid) {
       this.notification.danger(
@@ -207,20 +243,34 @@ export class DeadlineTrackerFormComponent implements OnInit {
       );
       return;
     }
-    if (event) id ? this.updateDeadlineTracker() : this.createDeadlineTracker();
+    id ? this.updateDeadlineTracker() : this.createDeadlineTracker();
   }
 
   private createDeadlineTracker() {
     const { id, ...obj } = this.form.value;
     const createObj = this.formToObj(obj);
     this.dTrackerService.create(createObj).subscribe({
-      next: () => {
-        this.mdDialogRef.close(true);
+      next: (deadline: IDeadlineTracker) => {
+        this.navigateToEdit(deadline)
         this.notification.success('Prazo criado com sucesso');
       },
-      error: (e) => {
-        this.notification.danger('Formulário incorreto');
-        console.error(e);
+    });
+  }
+
+  navigateToEdit(element:IDeadlineTracker) {
+    this.route.navigate(['edit/' + element.id], {
+      relativeTo: this._activatedRoute.parent,
+      queryParams: { processId: this.processId },
+    });
+  }
+
+  private updateDeadlineTracker() {
+    const obj = this.form.value;
+    const updatedObj = this.formToObj(obj);
+    this.dTrackerService.update(updatedObj).subscribe({
+      next: (deadline: IDeadlineTracker) => {
+        this.onUpdate.emit(deadline);
+        this.notification.success('Prazo alterado com sucesso');
       },
     });
   }
@@ -274,18 +324,7 @@ export class DeadlineTrackerFormComponent implements OnInit {
     });
   }
 
-  private updateDeadlineTracker() {
-    const obj = this.form.value;
-    const updatedObj = this.formToObj(obj);
-    this.dTrackerService.update(updatedObj).subscribe({
-      next: () => {
-        this.mdDialogRef.close(true);
-        this.notification.success('Prazo criado com sucesso');
-      },
-      error: (e) => {
-        this.notification.danger('Formulário incorreto');
-        console.error(e);
-      },
-    });
+  ngOnDestroy() {
+    this.$subs.unsubscribe();
   }
 }

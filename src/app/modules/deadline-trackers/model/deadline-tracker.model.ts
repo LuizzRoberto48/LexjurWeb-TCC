@@ -1,12 +1,8 @@
 import { BaseResourceModel } from 'app/global/base-http/base-http.model';
 import { ProgressStatus } from 'app/global/pipes/steps-progress.pipe';
-import { SmallResource } from 'app/modules/resource/model/resource.model';
+import { DeadlineProcessWithResources, SmallResource } from 'app/modules/resource/model/resource.model';
 
-type NameTypes = 'recurso' | 'processo';
-export interface DeadlineProcessWithResources {
-  name: NameTypes;
-  number: string;
-}
+
 
 export enum Status {
   INPROGRESS,
@@ -47,7 +43,7 @@ export interface IDeadlineTracker {
 export interface CreateDeadlineTracker {
   id: number;
   processId: number;
-  processNumber: DeadlineProcessWithResources;
+  process: DeadlineProcessWithResources;
   subType: number;
   manager: number;
   internDeadline: string;

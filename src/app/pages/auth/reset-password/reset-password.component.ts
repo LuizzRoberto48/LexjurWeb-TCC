@@ -96,7 +96,6 @@ export class AuthResetPasswordComponent implements OnInit {
         this.router.navigateByUrl('sign-in')
       },
       error: (err) => {
-        console.log(err)
         this.alert = {
           type: 'error',
           message: 'Não foi possível alterar a senha. Tente novamente'

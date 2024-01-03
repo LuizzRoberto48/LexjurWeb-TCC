@@ -4,18 +4,7 @@ import { AuthService } from 'app/modules/auth/auth.service';
 import { AuthInterceptor } from 'app/modules/auth/auth.interceptor';
 
 @NgModule({
-    imports  : [
-        HttpClientModule
-    ],
-    providers: [
-        AuthService,
-        {
-            provide : HTTP_INTERCEPTORS,
-            useClass: AuthInterceptor,
-            multi   : true
-        }
-    ]
+  imports: [HttpClientModule],
+  providers: [AuthService],
 })
-export class AuthModule
-{
-}
+export class AuthModule {}

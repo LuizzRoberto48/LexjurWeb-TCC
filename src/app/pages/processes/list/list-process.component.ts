@@ -80,10 +80,7 @@ export class ListProcessComponent {
       next: (res: GetProcessPageable) => {
         this.length = res.totalItems;
         this.recentTransactionsDataSource.data = res.process;
-      },
-      error: (error) => {
-        console.log(error);
-      },
+      }
     });
   }
 
