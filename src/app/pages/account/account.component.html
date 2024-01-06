@@ -2,7 +2,6 @@
   <form [formGroup]="accountForm">
 
     <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
-
       <!-- LOGIN INFO START-->
       <!--Name-->
       <div class="sm:col-span-4">
@@ -18,12 +17,21 @@
       <div class="sm:col-span-4">
         <mat-form-field class="fuse-mat-emphasized-affix w-full" [subscriptSizing]="'dynamic'">
           <mat-label>E-mail</mat-label>
-          <input [formControlName]="'email'" matInput>
+          <input [value]="authService.authUser.email" disabled matInput>
           <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
       </div>
       <!-- LOGIN INFO END-->
+    </div>  
 
+    <!-- Divider -->
+    <div class="w-full mt-8 mb-1">
+      <h1 class="font-semibold tracking-wide uppercase text-blue-800">Endereço</h1>
+      <hr class="h-0.5 mt-5 bg-gray-200 border-0 dark:bg-gray-700">
+    </div>
+    
+
+    <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
       <!-- ADRESS INFO START -->
       <!--Postal Code (CEP)-->
       <div class="sm:col-span-2">
@@ -38,8 +46,11 @@
       <div class="sm:col-span-2">
         <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
           <mat-label>UF</mat-label>
-          <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:briefcase'" matPrefix></mat-icon>
-          <input [formControlName]="'uf'" matInput>
+          <mat-select [formControlName]="'uf'">
+           <mat-option *ngFor="let uf of ufs" [value]="uf.name">
+              {{uf.name}}
+            </mat-option>
+          </mat-select>
           <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
       </div>
@@ -89,7 +100,15 @@
         </mat-form-field>
       </div>
       <!-- ADRESS INFO END -->
+    </div>
 
+    <!-- Divider -->
+    <div class="w-full mt-8 mb-1">
+      <h1 class="font-semibold tracking-wide uppercase text-blue-800">OAB</h1>
+      <hr class="h-0.5 mt-5 bg-gray-200 border-0 dark:bg-gray-700">
+    </div>
+
+    <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
       <!-- COMPANY INFO START -->
       <!--OAB-->
       <div class="sm:col-span-2">
@@ -105,7 +124,12 @@
       <div class="sm:col-span-2">
         <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
           <mat-label>UF OAB</mat-label>
-          <input [formControlName]="'ufOab'" matInput>
+          <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:briefcase'" matPrefix></mat-icon>
+          <mat-select [formControlName]="'ufOab'">
+            <mat-option *ngFor="let uf of ufs" [value]="uf.name">
+              {{uf.name}}
+            </mat-option>
+          </mat-select>
           <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
       </div>

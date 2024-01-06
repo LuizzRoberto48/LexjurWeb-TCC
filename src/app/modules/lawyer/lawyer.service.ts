@@ -48,4 +48,10 @@ export class LawyerService {
       `${environment.apiURL}/lawyers/${id}`, info
     );
   }
+
+  findById(id: number){
+    return this._http.get(
+      `${environment.apiURL}/lawyers/${id}`
+    )
+  }
 }
