@@ -8,7 +8,6 @@ import { CreateLawyer, Person } from 'app/modules/lawyer/model/lawyer.model';
 @Component({
   selector: 'settings-account',
   templateUrl: './account.component.html',
-  //styleUrls:['./account.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -55,7 +54,6 @@ export class SettingsAccountComponent implements OnInit {
     this.authService.authUser
     // Create the form
     this.accountForm = this._formBuilder.group({
-      //id:[this.authService.authUser.sub],
       name: ['', Validators.required],
       oab: ['', Validators.required],
       postalCode: ['', Validators.required],
@@ -66,13 +64,6 @@ export class SettingsAccountComponent implements OnInit {
       complement: ['', Validators.required],
       uf: ['', [Validators.required, Validators.minLength(2)]],
       ufOab: ['', [Validators.required, Validators.minLength(2)]],
-      //roleEnum: ['LEXJUR', Validators.required]
-      
-      //LEXJUR
-      //ADMIN
-      //LAWYER
-      //INTERN
-      
     });
     this.findById();
     console.log(this.lawyer);
