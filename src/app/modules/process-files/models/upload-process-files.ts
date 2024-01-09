@@ -8,6 +8,7 @@ export enum TargetFiles {
   PRAZO = 'PRAZO',
   RECURSO = 'RECURSO',
   PROCESSO = 'PROCESSO',
+  PROGRESS = 'ANDAMENTO',
   TODOS = 'TODOS',
 }
 

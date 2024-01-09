@@ -1,0 +1,68 @@
+<form [formGroup]="form" class="flex flex-col mt-5">
+  <div class="grid w-full">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="flex flex-col">
+        <mat-form-field class="flex-auto gt-xs:pl-3">
+          <mat-label>Processo</mat-label>
+          <mat-select formControlName="processNumber">
+            <mat-option
+              [value]="item.number"
+              *ngFor="let item of processWithResources"
+            >
+              {{ item.name }} / {{ item.number }}
+            </mat-option>
+          </mat-select>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <mat-form-field class="flex-auto gt-xs:pl-3">
+          <mat-label>Data de criação</mat-label>
+          <input matInput type="text" formControlName="createAt" />
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <mat-form-field class="flex-auto gt-xs:pl-3">
+          <mat-label>Tipo</mat-label>
+          <mat-select formControlName="type">
+            <mat-option [value]="opt.id" *ngFor="let opt of types">{{
+              opt?.label
+            }}</mat-option>
+          </mat-select>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4">
+      <div class="flex flex-col">
+        <mat-form-field class="w-full">
+          <mat-label>Descrição </mat-label>
+          <textarea matInput type="text" formControlName="desc"></textarea>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="flex items-center justify-end">
+    <button
+      mat-stroked-button
+      type="button"
+      [color]="'default'"
+      (click)="back()"
+    >
+      Voltar
+    </button>
+    <button
+      class="ml-4"
+      mat-flat-button
+      type="button"
+      [color]="'primary'"
+      [disabled]="!form.valid"
+      (click)="onSubmit()"
+    >
+      {{ editId ? 'Editar' : 'Cadastrar' }}
+    </button>
+  </div>
+</form>

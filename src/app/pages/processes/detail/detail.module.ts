@@ -63,6 +63,17 @@ const routes: Route[] = [
           ),
       },
       {
+        title: 'andamento',
+        path: 'progress',
+        data: {
+          breadcrumb: () => 'Andamento',
+        },
+        loadChildren: () =>
+          import('./process-progress/process-progress.module').then(
+            (m) => m.ProcessProgressModule,
+          ),
+      },
+      {
         title: 'Arquivos',
         path: 'files',
         data: {
