@@ -45,6 +45,7 @@ export class ProcessProgressComponent {
 
   getProgressByProcess() {
     this.progressService.findByProcess().subscribe((res) => {
+      console.log(res)
       this.dataSource.data = res;
     });
   }

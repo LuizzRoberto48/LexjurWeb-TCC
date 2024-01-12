@@ -12,6 +12,7 @@ export interface ProcessProgress {
 }
 
 export interface CreateProcessProgress {
+  id?:number;
   processNumber: DeadlineProcessWithResources;
   typeId: number;
   date: string;

@@ -50,7 +50,7 @@ export const MY_FORMATS = {
 })
 export class ProgressFormComponent implements OnInit, OnDestroy {
   @Input() editedProgress: ProcessProgress;
-  @Output() onUpdate: EventEmitter<IDeadlineTracker> = new EventEmitter();
+  @Output() onUpdate: EventEmitter<ProcessProgress> = new EventEmitter();
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
     processId: new FormControl(null),
@@ -149,15 +149,14 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
   onSubmit() {
     const id = this.form.value['id'];
     if (this.form.invalid) return;
-
-    id ? this.updateProgress() : this.createProgress();
+    id ? this.updateProgress(id) : this.createProgress();
   }
 
   private createProgress() {
     const obj = this.formToObj();
     console.log(obj);
     this.progressService.create(obj).subscribe({
-      next: (progress) => {
+      next: (progress: ProcessProgress) => {
         this.navigateToEdit(progress);
         this.notification.success('Andamento criado com sucesso');
       },
@@ -171,20 +170,25 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private updateProgress() {
-    /* const obj = this.form.value;
-    const updatedObj = this.formToObj(obj);
-    this.progressService.update(updatedObj).subscribe({
-      next: (deadline: IDeadlineTracker) => {
-        this.onUpdate.emit(deadline);
-        this.notification.success('Prazo alterado com sucesso');
+  private updateProgress(id:number) {
+    const obj = this.formToObj();
+    obj.id = id;
+    console.log(obj)
+    this.progressService.update(obj).subscribe({
+      next: (progress: ProcessProgress) => {
+        this.onUpdate.emit(progress);
+        this.notification.success('Andamento alterado com sucesso');
       },
-    }); */
+    });
   }
 
   private formToObj(): CreateProcessProgress {
     const { id, date, processNumber, ...obj } = this.form.value;
-    const isoDate = date.toISO();
+    let isoDate = date;
+    if (date instanceof DateTime) {
+      isoDate = date.toISO();
+    }
+
     const pwrObj = this.processWithResources.find(
       (p) => p.number == processNumber,
     );
@@ -192,8 +196,6 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
     obj.processNumber = pwrObj;
     return obj;
   }
-
-  private objToForm(obj) {}
 
   ngOnDestroy() {
     this.$subs.unsubscribe();
