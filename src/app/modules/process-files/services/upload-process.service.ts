@@ -1,6 +1,13 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subject,
+  catchError,
+  from,
+  switchMap,
+} from 'rxjs';
 import { environment } from 'environments/environment';
 import { UploadType } from '@components/upload-file/upload.model';
 import {
@@ -23,7 +30,7 @@ export class UploadProcessFileService {
   $crudFile: Subject<CrudFileMethod> = new Subject();
 
   currentTarget: { name: string; id: number };
-  $currentProcessNumber:Observable<string>
+  $currentProcessNumber: Observable<string>;
 
   constructor(
     private _http: HttpClient,
@@ -86,10 +93,9 @@ export class UploadProcessFileService {
     );
   }
 
-  findByTarget(target: string, processId: number, targetId?:number) {
+  findByTarget(target: string, processId: number, targetId?: number) {
     let params = new HttpParams();
-    if(targetId)
-      params = params.set('targetId', targetId);
+    if (targetId) params = params.set('targetId', targetId);
     params = params.set('processId', processId.toString());
     params = params.set('name', target);
     return this._http.get<GetUploadFile[]>(
@@ -111,11 +117,10 @@ export class UploadProcessFileService {
   downloadFile(path: string) {
     let params = new HttpParams().set('key', path);
 
-    return this._http.get<Blob>(
+    return this._http.get<{url:string}>(
       `${environment.apiURL}/process/uploads/download`,
       {
         params,
-        responseType:<any>'blob'
       },
     );
   }
@@ -144,5 +149,36 @@ export class UploadProcessFileService {
     file.target = uploadFile.target;
     file.id = uploadFile.id;
     return { ...file } as UploadType;
+  }
+
+  fetchFileAsObservable(
+    urlFile: string,
+    fileProperties: UploadType,
+    name: string,
+  ) {
+    return from(fetch(urlFile)).pipe(
+      switchMap((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return Promise.all([
+          response.blob(),
+          Promise.resolve(response.headers.get('Content-Type')),
+        ]);
+      }),
+      switchMap(([blob, contentType]) => {
+        // Infer the MIME type if not provided
+        let mimeType = contentType;
+        if (!mimeType || mimeType === 'application/octet-stream') {
+          mimeType = fileProperties.accept;
+        }
+        const file = new File([blob], name, { type: mimeType });
+        return [file];
+      }),
+      catchError((error) => {
+        console.error('Error fetching file:', error);
+        throw error;
+      }),
+    );
   }
 }
