@@ -12,28 +12,53 @@ import { DeadlineTrackerTypeService } from 'app/modules/deadline-trackers/deadli
 import { DeadlineTrackerService } from 'app/modules/deadline-trackers/deadline-tracker.service';
 import { IDeadlineTrackerTypes } from 'app/modules/deadline-trackers/model/deadline-tracker-type.model';
 import { IDeadlineTracker } from 'app/modules/deadline-trackers/model/deadline-tracker.model';
-import { Subscription,tap } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import { Location } from '@angular/common';
 import { ProcessService } from 'app/modules/process/process.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DeadlineProcessWithResources } from 'app/modules/resource/model/resource.model';
 import { ProcessProgressService } from 'app/modules/process-progress/progress.service';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
+import { ResourceService } from 'app/modules/resource/resource.service';
+import { ProcessProgressTypeService } from 'app/modules/process-progress/progress_type.service';
+import {
+  CreateProcessProgress,
+  ProcessProgress,
+} from 'app/modules/process-progress/models/progress.model';
+import { ProcessProgressType } from 'app/modules/process-progress/models/progress_types.model';
+import { DateTime } from 'luxon';
 
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'dd/MM/yyyy',
+  },
+  display: {
+    dateInput: 'dd/MM/yyyy',
+    monthYearLabel: 'MMM yyyy',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM yyyy',
+  },
+};
 @Component({
   selector: 'progress-form',
   templateUrl: './progress-form.component.html',
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    { provide: MAT_LUXON_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+  ],
 })
 export class ProgressFormComponent implements OnInit, OnDestroy {
-  @Input() editId: number;
+  @Input() editedProgress: ProcessProgress;
   @Output() onUpdate: EventEmitter<IDeadlineTracker> = new EventEmitter();
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
     processId: new FormControl(null),
     processNumber: new FormControl('', { validators: [Validators.required] }),
-    type: new FormControl('', {
+    typeId: new FormControl('', {
       validators: [Validators.required],
     }),
-    createAt: new FormControl('', { validators: [Validators.required] }),
+    date: new FormControl('', { validators: [Validators.required] }),
     desc: new FormControl('', { validators: [Validators.required] }),
   });
 
@@ -44,9 +69,9 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
   $subs: Subscription = new Subscription();
 
   constructor(
-    private typeService: DeadlineTrackerTypeService,
-    private dTrackerService: DeadlineTrackerService,
     private progressService: ProcessProgressService,
+    private pTypes: ProcessProgressTypeService,
+    private resourceService: ResourceService,
     private notification: NotificationService,
     private location: Location,
     private processService: ProcessService,
@@ -66,10 +91,14 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
   }
 
   edit() {
-    if (this.editId) {
-      this.form.get('id').setValue(this.editId);
-      this.getEditProgress();
+    if (this.editedProgress?.id) {
+      this.form.get('id').setValue(this.editedProgress.id);
+      this.populateForm(this.editedProgress);
     }
+  }
+
+  ngOnChanges() {
+    this.edit();
   }
 
   back() {
@@ -78,7 +107,6 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.$getProcess();
-    this.edit();
   }
 
   $getProcess() {
@@ -92,16 +120,26 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  populateForm(data) {}
+  populateForm(data: ProcessProgress) {
+    const number = data?.resource
+      ? data.resource.number
+      : data.process.caseNumber;
+    const { id, processProgressTypeId, ...rest } = data;
+    this.form.patchValue({
+      ...rest,
+      typeId: processProgressTypeId,
+      processNumber: number,
+    });
+  }
 
   private findTypes() {
-    this.typeService.findAll().subscribe((res: IDeadlineTrackerTypes[]) => {
+    this.pTypes.findAll().subscribe((res: ProcessProgressType[]) => {
       this.types = res;
     });
   }
 
   private findProcessResources() {
-    this.dTrackerService
+    this.resourceService
       .findProcessResources()
       .subscribe((res: DeadlineProcessWithResources[]) => {
         this.processWithResources = res;
@@ -110,22 +148,18 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     const id = this.form.value['id'];
-    if (this.form.invalid) {
-      this.notification.danger(
-        this.form.errors?.msg ?? 'formulário incompleto',
-      );
-      return;
-    }
+    if (this.form.invalid) return;
+
     id ? this.updateProgress() : this.createProgress();
   }
 
   private createProgress() {
-    const { id, ...obj } = this.form.value;
-    const createObj = this.formToObj(obj);
-    this.progressService.create(createObj).subscribe({
-      next: (deadline) => {
-        this.navigateToEdit(deadline);
-        this.notification.success('Prazo criado com sucesso');
+    const obj = this.formToObj();
+    console.log(obj);
+    this.progressService.create(obj).subscribe({
+      next: (progress) => {
+        this.navigateToEdit(progress);
+        this.notification.success('Andamento criado com sucesso');
       },
     });
   }
@@ -138,17 +172,26 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
   }
 
   private updateProgress() {
-    const obj = this.form.value;
+    /* const obj = this.form.value;
     const updatedObj = this.formToObj(obj);
     this.progressService.update(updatedObj).subscribe({
       next: (deadline: IDeadlineTracker) => {
         this.onUpdate.emit(deadline);
         this.notification.success('Prazo alterado com sucesso');
       },
-    });
+    }); */
   }
 
-  private formToObj(form) {}
+  private formToObj(): CreateProcessProgress {
+    const { id, date, processNumber, ...obj } = this.form.value;
+    const isoDate = date.toISO();
+    const pwrObj = this.processWithResources.find(
+      (p) => p.number == processNumber,
+    );
+    obj.date = isoDate;
+    obj.processNumber = pwrObj;
+    return obj;
+  }
 
   private objToForm(obj) {}
 

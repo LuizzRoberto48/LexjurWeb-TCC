@@ -9,6 +9,21 @@ import { ProcessProgressDetailComponent } from './detail/progress-detail.compone
 import { MatStepperModule } from '@angular/material/stepper';
 import { ProgressFormComponent } from './detail/form/progress-form.component';
 import { FilesModule } from 'app/modules/process-files/components/files.module';
+import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { ProcessProgressTypeService } from 'app/modules/process-progress/progress_type.service';
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'dd/MM/yyyy',
+  },
+  display: {
+    dateInput: 'dd/MM/yyyy',
+    monthYearLabel: 'MMM yyyy',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM yyyy',
+  },
+};
 
 const routes: Routes = [
   {
@@ -27,17 +42,34 @@ const routes: Routes = [
       breadcrumb: () => 'Cadastrar',
     },
   },
+  {
+    title: 'Edição de Andamento',
+    path: 'edit/:id',
+    component: ProcessProgressDetailComponent,
+    data: {
+      breadcrumb: () => 'Editar',
+    },
+  },
 ];
 
 @NgModule({
-  declarations: [ProcessProgressComponent, ProcessProgressDetailComponent, ProgressFormComponent],
+  declarations: [
+    ProcessProgressComponent,
+    ProcessProgressDetailComponent,
+    ProgressFormComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     BreadCrumbModule,
     GlobalModule,
     MatStepperModule,
-    FilesModule
-  ]
+    FilesModule,
+  ],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    { provide: MAT_LUXON_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+    ProcessProgressTypeService,
+  ],
 })
 export class ProcessProgressModule {}

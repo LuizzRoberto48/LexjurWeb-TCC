@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { FuseCardModule } from '@fuse/components/card';
-import { SharedModule } from 'app/shared/shared.module';
-import { AuthConfirmationRequiredComponent } from 'app/modules/auth/confirmation-required/confirmation-required.component';
+import { AuthConfirmationRequiredComponent } from './confirmation-required.component';
+import { GlobalModule } from 'app/shared/global.module';
 
 
 export const authConfirmationRequiredRoutes: Route[] = [
@@ -21,7 +21,7 @@ export const authConfirmationRequiredRoutes: Route[] = [
         RouterModule.forChild(authConfirmationRequiredRoutes),
         MatButtonModule,
         FuseCardModule,
-        SharedModule
+        GlobalModule
     ]
 })
 export class AuthConfirmationRequiredModule

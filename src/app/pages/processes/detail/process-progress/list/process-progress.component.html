@@ -60,7 +60,7 @@
         <ng-container matColumnDef="createAt" style="width: 30%;">
           <th mat-header-cell *matHeaderCellDef>Data de criação</th>
           <td mat-cell *matCellDef="let element">
-            {{ element.createAt | date:'dd/MM/yyyy' }}
+            {{ element.date | date:'dd/MM/yyyy' }}
           </td>
         </ng-container>
 
@@ -82,7 +82,7 @@
                 ></mat-icon>
                 <span>Editar</span>
               </button>
-              <button mat-menu-item (click)="removeDialog(element)">
+              <button mat-menu-item (click)="removeDialog(element.id)">
                 <mat-icon
                   class="icon-size-4 text-gray-600"
                   svgIcon="remove_circle_outline"

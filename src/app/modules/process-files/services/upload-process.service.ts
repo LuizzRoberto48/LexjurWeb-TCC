@@ -115,6 +115,7 @@ export class UploadProcessFileService {
       `${environment.apiURL}/process/uploads/download`,
       {
         params,
+        responseType:<any>'blob'
       },
     );
   }
@@ -125,6 +126,7 @@ export class UploadProcessFileService {
       TargetFiles.PRAZO,
       TargetFiles.PROCESSO,
       TargetFiles.RECURSO,
+      TargetFiles.PROGRESS,
     ];
   }
 

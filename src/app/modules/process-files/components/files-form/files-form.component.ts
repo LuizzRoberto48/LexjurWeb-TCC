@@ -216,7 +216,8 @@ export class FilesFormComponent implements OnInit {
   }
 
   send() {
-    const formValue = this.form.value;
+    const formValue = this.form.getRawValue();
+  
     const sendObj = this.formToObj(formValue);
     if (formValue?.id) {
       this.updateFile(sendObj);
@@ -251,13 +252,13 @@ export class FilesFormComponent implements OnInit {
     const pwrObj = this.processWithResources.find(
       (p) => p.number == processNumber,
     );
-
+      console.log(form)
     const obj: CreateUploadProcessFile = {
       ...deadlineForm,
       processNumber: pwrObj,
     };
     if (!obj.processNumber) delete obj.processNumber;
-
+    console.log(obj)
     /* Logica para processo e recurso é diferente do resto */
     if (!this.hasTarget()) {
       obj.targetId = pwrObj.id;

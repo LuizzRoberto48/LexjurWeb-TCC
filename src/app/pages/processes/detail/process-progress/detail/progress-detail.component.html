@@ -3,23 +3,26 @@
 >
   <div class="inset-0 flex flex-col min-w-0 overflow-hidden w-full p-5">
     <mat-horizontal-stepper [linear]="true" #horizontalStepper>
-     
-      <mat-step  #horizontalStepperStep2>
+      <mat-step [stepControl]="register.form" #horizontalStepperStep2>
         <ng-template matStepLabel>Cadastro</ng-template>
-        <progress-form></progress-form>
+        <progress-form
+          #register
+          (onUpdate)="onUpdate($event)"
+          [editedProgress]="progress"
+        ></progress-form>
       </mat-step>
       <mat-step #horizontalStepperStep3>
         <ng-template matStepLabel>Arquivos</ng-template>
         <files-list
           [isFilterTarget]="false"
           [target]="target"
-          [$processNumber]="$processNumber "
+          [$processNumber]="$processNumber"
           [isCreated]="!isEdit"
         ></files-list>
       </mat-step>
-      <mat-step #horizontalStepperStep1 >
+      <mat-step #horizontalStepperStep1>
         <ng-template matStepLabel>Detalhes</ng-template>
-        <ng-container >
+        <ng-container>
           <p>detalhe</p>
           <!-- <deadline-tracker-info [info]="deadline"></deadline-tracker-info> -->
         </ng-container>
