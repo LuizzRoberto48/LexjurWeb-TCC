@@ -2,7 +2,8 @@ import { BaseResourceModel } from 'app/global/base-http/base-http.model';
 import { DeadlineProcessWithResources, SmallResource } from 'app/modules/resource/model/resource.model';
 import { ProcessSmall } from '../../process/models/process.model';
 
-export interface ProcessProgress {
+export interface IProcessProgress {
+  id?:number;
   resource?: SmallResource;
   type: { id: number; name: string };
   process: ProcessSmall;
@@ -20,11 +21,11 @@ export interface CreateProcessProgress {
 }
 
 export class ProcessProgress extends BaseResourceModel {
-  constructor(readonly processProgress: ProcessProgress) {
+  constructor(readonly processProgress: IProcessProgress) {
     super();
   }
 
-  static fromJson(jsonData: ProcessProgress): ProcessProgress {
+  static fromJson(jsonData: IProcessProgress): IProcessProgress {
     return jsonData;
   }
 }

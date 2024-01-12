@@ -1,11 +1,17 @@
 import { Component } from '@angular/core';
+import { UntypedFormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { ProcessProgress } from 'app/modules/process-progress/models/progress.model';
+import {
+  IProcessProgress,
+  ProcessProgress,
+} from 'app/modules/process-progress/models/progress.model';
 import { ProcessProgressService } from 'app/modules/process-progress/progress.service';
 import { configDialogResource } from 'app/modules/process/utils';
+import { DateTime } from 'luxon';
+import { Subscription, tap } from 'rxjs';
 
 @Component({
   selector: 'app-process-progress',
@@ -15,6 +21,8 @@ export class ProcessProgressComponent {
   processId!: number;
   dataSource = new MatTableDataSource([]);
   columns: string[] = ['processNumber', 'createAt', 'type', 'actions'];
+  $searchSubs: Subscription = new Subscription();
+  searchInputControl: any = new UntypedFormControl();
   constructor(
     protected _activatedRoute: ActivatedRoute,
     public route: Router,
@@ -27,6 +35,13 @@ export class ProcessProgressComponent {
 
   ngOnInit() {
     this.getProgressByProcess();
+    this.search()
+  }
+
+  private search() {
+    this.$searchSubs = this.searchInputControl.valueChanges
+      .pipe(tap((value: string) => (this.dataSource.filter = value)))
+      .subscribe();
   }
 
   open() {
@@ -45,9 +60,17 @@ export class ProcessProgressComponent {
 
   getProgressByProcess() {
     this.progressService.findByProcess().subscribe((res) => {
-      console.log(res)
       this.dataSource.data = res;
+      this.dataSource.filterPredicate = this.customFilterPredicate;
     });
+  }
+
+  customFilterPredicate(data: IProcessProgress, value: string) {
+    const filter = value.toLocaleLowerCase();
+    return (
+      data.type.name.toLowerCase().includes(filter) ||
+      DateTime.fromISO(data.date).toUTC().toFormat('dd/MM/yyyy').includes(filter)
+    );
   }
 
   removeDialog(id: number) {

@@ -106,8 +106,8 @@ export class ProcessResourcesComponent {
     const dialogRef = this.__confirmationService.open(
       configDialogResource(element.number),
     );
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
+    dialogRef.afterClosed().subscribe((result:'confirmed' | 'cancelled') => {
+      if (result == 'confirmed') {
         this.remove(element.id);
       }
     });

@@ -13,7 +13,7 @@
         matPrefix
         [svgIcon]="'heroicons_solid:search'"
       ></mat-icon>
-      <input matInput [autocomplete]="'off'" [placeholder]="'Buscar'" />
+      <input matInput [autocomplete]="'off'" [placeholder]="'Buscar'" [formControl]="searchInputControl"/>
     </mat-form-field>
     <!-- Add product button -->
     <button class="ml-4" mat-flat-button [color]="'primary'" (click)="open()">

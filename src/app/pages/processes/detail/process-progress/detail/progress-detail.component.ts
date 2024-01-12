@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TargetFiles } from 'app/modules/process-files/models/upload-process-files';
-import { ProcessProgress } from 'app/modules/process-progress/models/progress.model';
+import { IProcessProgress, ProcessProgress } from 'app/modules/process-progress/models/progress.model';
 import { ProcessProgressService } from 'app/modules/process-progress/progress.service';
 import { ProcessService } from 'app/modules/process/process.service';
 import { Observable, map, of, tap } from 'rxjs';
@@ -39,7 +39,7 @@ export class ProcessProgressDetailComponent {
     });
   }
 
-  onUpdate(progress: ProcessProgress) {
+  onUpdate(progress: IProcessProgress) {
     this.target.id = progress.id
     this.progress = progress;
     this.$processNumber = of(

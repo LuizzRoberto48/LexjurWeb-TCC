@@ -24,6 +24,7 @@ import { ResourceService } from 'app/modules/resource/resource.service';
 import { ProcessProgressTypeService } from 'app/modules/process-progress/progress_type.service';
 import {
   CreateProcessProgress,
+  IProcessProgress,
   ProcessProgress,
 } from 'app/modules/process-progress/models/progress.model';
 import { ProcessProgressType } from 'app/modules/process-progress/models/progress_types.model';
@@ -49,7 +50,7 @@ export const MY_FORMATS = {
   ],
 })
 export class ProgressFormComponent implements OnInit, OnDestroy {
-  @Input() editedProgress: ProcessProgress;
+  @Input() editedProgress: IProcessProgress;
   @Output() onUpdate: EventEmitter<ProcessProgress> = new EventEmitter();
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
@@ -120,7 +121,7 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  populateForm(data: ProcessProgress) {
+  populateForm(data: IProcessProgress) {
     const number = data?.resource
       ? data.resource.number
       : data.process.caseNumber;
