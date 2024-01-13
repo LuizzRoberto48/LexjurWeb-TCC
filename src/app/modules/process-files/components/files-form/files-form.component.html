@@ -86,7 +86,7 @@
         class="flex-auto"
         mat-flat-button
         [color]="'primary'"
-        [disabled]="!form.valid"
+        [disabled]="!form.valid || isLoading"
         (click)="send()"
       >
         Adicionar
