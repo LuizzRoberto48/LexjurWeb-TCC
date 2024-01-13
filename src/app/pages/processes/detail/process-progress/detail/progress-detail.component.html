@@ -20,11 +20,10 @@
           [isCreated]="!isEdit"
         ></files-list>
       </mat-step>
-      <mat-step #horizontalStepperStep1>
+      <mat-step #horizontalStepperStep1 >
         <ng-template matStepLabel>Detalhes</ng-template>
-        <ng-container>
-          <p>detalhe</p>
-          <!-- <deadline-tracker-info [info]="deadline"></deadline-tracker-info> -->
+        <ng-container *ngIf="progress?.id">
+          <process-progress-info [info]="progress"></process-progress-info>
         </ng-container>
       </mat-step>
     </mat-horizontal-stepper>

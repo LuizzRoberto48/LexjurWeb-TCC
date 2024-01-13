@@ -12,6 +12,7 @@ import { FilesModule } from 'app/modules/process-files/components/files.module';
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { ProcessProgressTypeService } from 'app/modules/process-progress/progress_type.service';
+import { ProcessProgressInfoComponent } from './detail/info/process-progress-info.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -57,6 +58,7 @@ const routes: Routes = [
     ProcessProgressComponent,
     ProcessProgressDetailComponent,
     ProgressFormComponent,
+    ProcessProgressInfoComponent
   ],
   imports: [
     CommonModule,

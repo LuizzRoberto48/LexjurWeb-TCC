@@ -228,8 +228,11 @@ export class FilesFormComponent implements OnInit {
   }
 
   send() {
+    if(!this.fileType.file) {
+      this.notificationService.danger('Adicione um arquivo para envio')
+      return;
+    }
     const formValue = this.form.getRawValue();
-
     const sendObj = this.formToObj(formValue);
     if (formValue?.id) {
       this.updateFile(sendObj);

@@ -117,7 +117,7 @@
       mat-flat-button
       type="button"
       [color]="'primary'"
-      [disabled]="!form.valid"
+      [disabled]="!form.valid || isLoading"
       (click)="onSubmit()"
     >
       {{editId ? 'Editar' : 'Cadastrar'}}

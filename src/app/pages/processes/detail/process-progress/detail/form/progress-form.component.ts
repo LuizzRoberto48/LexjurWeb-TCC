@@ -64,7 +64,7 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
   });
 
   types: any[] = [];
-
+  isLoading: boolean = false;
   processWithResources: DeadlineProcessWithResources[] = [];
   processId: number;
   $subs: Subscription = new Subscription();
@@ -148,6 +148,7 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.isLoading = true;
     const id = this.form.value['id'];
     if (this.form.invalid) return;
     id ? this.updateProgress(id) : this.createProgress();
@@ -161,6 +162,9 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
         this.navigateToEdit(progress);
         this.notification.success('Andamento criado com sucesso');
       },
+      complete: () => {
+        this.isLoading = false;
+      },
     });
   }
 
@@ -171,14 +175,16 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private updateProgress(id:number) {
+  private updateProgress(id: number) {
     const obj = this.formToObj();
     obj.id = id;
-    console.log(obj)
     this.progressService.update(obj).subscribe({
       next: (progress: ProcessProgress) => {
         this.onUpdate.emit(progress);
         this.notification.success('Andamento alterado com sucesso');
+      },
+      complete: () => {
+        this.isLoading = false;
       },
     });
   }
