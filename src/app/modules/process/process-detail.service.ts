@@ -4,8 +4,10 @@ import { BehaviorSubject, Observable, of, switchMap } from "rxjs";
 import { ProcessService } from "./process.service";
 
 export const RESOURCE = 'process-details.resources';
-export const GENERAL = 'process-details.general'
-export const SCHEDULE = 'process-details.schedule'
+export const GENERAL = 'process-details.general';
+export const SCHEDULE = 'process-details.schedule';
+export const FILES = 'process-details.files';
+export const PROGRESS = 'process-details.progress';
 
 @Injectable({
   providedIn: 'any'
@@ -45,11 +47,18 @@ export class ProcessDetailService {
           link: 'schedule'
         },
         {
-          id: 'arquivos',
+          id: PROGRESS,
+          title: 'Andamento',
+          type: 'basic',
+          link: 'progress'
+        },
+        {
+          id: FILES,
           title: 'Arquivos',
           type: 'basic',
           link: 'files'
         },
+        
       ]
     }]
   }

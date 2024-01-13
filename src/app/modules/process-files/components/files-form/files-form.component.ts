@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { UploadType } from '@components/upload-file/upload.model';
@@ -14,7 +21,7 @@ import {
 import { UploadProcessFileService } from '../../services/upload-process.service';
 import { DateTime } from 'luxon';
 import { blobToFile } from '../../../../global/utils/file.manipulations';
-import { Subscription } from 'rxjs';
+import { Subscription, map, switchMap, tap } from 'rxjs';
 import { UploadFileService } from '@components/upload-file/upload-file.service';
 import { ALL } from '../files-list/files-list.component';
 import { DeadlineProcessWithResources } from 'app/modules/resource/model/resource.model';
@@ -43,12 +50,14 @@ export class FilesFormComponent implements OnInit {
   form: FormGroup;
   isEdit: boolean = false;
   subs: Subscription[] = [];
+  isLoading: boolean = false;
 
   constructor(
     private dTrackerService: DeadlineTrackerService,
     public uploadService: UploadProcessFileService,
     private fileService: UploadFileService,
     private notificationService: NotificationService,
+    private cd: ChangeDetectorRef,
   ) {
     this.form = this.initForm;
   }
@@ -91,8 +100,6 @@ export class FilesFormComponent implements OnInit {
           this.isEdit = true;
         } else {
           /* create */
-          this.currentFile = null;
-          this.fileType = null;
           this.isEdit = false;
         }
         this.getProcessNumber();
@@ -162,12 +169,23 @@ export class FilesFormComponent implements OnInit {
     const fileProperties = this.uploadService.findCardFile(this.uploadFile);
     const subs = this.uploadService
       .downloadFile(this.uploadFile.bucketKey)
-      .subscribe((res: any) => {
-        this.urlFile = res.url;
-        const blob = new Blob([res.url], { type: fileProperties.accept });
-        const file: File = blobToFile(blob, this.uploadFile.originalName);
+      .pipe(
+        tap((res: { url: string }) => {
+          this.urlFile = res.url;
+        }),
+        switchMap((res: { url: string }) => {
+          const urlFile = res.url;
+          return this.uploadService.fetchFileAsObservable(
+            urlFile,
+            fileProperties,
+            this.uploadFile.originalName,
+          );
+        }),
+      )
+      .subscribe((file: any) => {
         this.setFile({ file, type: fileProperties });
         this.currentFile = file;
+        this.cd.detectChanges();
       });
 
     this.subs.push(subs);
@@ -216,7 +234,12 @@ export class FilesFormComponent implements OnInit {
   }
 
   send() {
-    const formValue = this.form.value;
+    if (!this.fileType.file) {
+      this.notificationService.danger('Adicione um arquivo para envio');
+      return;
+    }
+    this.isLoading = true;
+    const formValue = this.form.getRawValue();
     const sendObj = this.formToObj(formValue);
     if (formValue?.id) {
       this.updateFile(sendObj);
@@ -233,6 +256,9 @@ export class FilesFormComponent implements OnInit {
         this.form.reset();
         this.currentFile = null;
       },
+      complete: () => {
+        this.isLoading = false;
+      },
     });
   }
 
@@ -242,6 +268,9 @@ export class FilesFormComponent implements OnInit {
         this.uploadService.$crudFile.next({ file: data, method: 'update' });
         this.form.reset();
         this.currentFile = null;
+      },
+      complete: () => {
+        this.isLoading = false;
       },
     });
   }
@@ -257,7 +286,6 @@ export class FilesFormComponent implements OnInit {
       processNumber: pwrObj,
     };
     if (!obj.processNumber) delete obj.processNumber;
-
     /* Logica para processo e recurso é diferente do resto */
     if (!this.hasTarget()) {
       obj.targetId = pwrObj.id;

@@ -22,7 +22,7 @@ import {
 import { LawyerService } from 'app/modules/lawyer/lawyer.service';
 import { BasicLawyer } from 'app/modules/lawyer/model/lawyer.model';
 import { DateTime } from 'luxon';
-import { Subscription, switchMap, tap } from 'rxjs';
+import { Subscription, delay, switchMap, tap } from 'rxjs';
 import { Location } from '@angular/common';
 import { ProcessService } from 'app/modules/process/process.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -63,8 +63,9 @@ export class DeadlineTrackerFormComponent implements OnInit, OnDestroy {
   laywers: BasicLawyer[] = [];
   isDeadline = false;
   isAudience = false;
-  processId:number
+  processId: number;
   $subs: Subscription = new Subscription();
+  isLoading: boolean = false;
 
   constructor(
     private typeService: DeadlineTrackerTypeService,
@@ -76,7 +77,7 @@ export class DeadlineTrackerFormComponent implements OnInit, OnDestroy {
     private location: Location,
     private processService: ProcessService,
     private _activatedRoute: ActivatedRoute,
-    private route:Router
+    private route: Router,
   ) {
     this.findTypes();
     this.findProcessResources();
@@ -111,9 +112,8 @@ export class DeadlineTrackerFormComponent implements OnInit, OnDestroy {
     this.$subs = this.processService.$obsevableProcess
       .pipe(
         tap((process) => {
-          this.processId = process.id
+          this.processId = process.id;
           this.form.get('processId').setValue(process.id);
-          
         }),
       )
       .subscribe();
@@ -236,6 +236,7 @@ export class DeadlineTrackerFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.isLoading = true;
     const id = this.form.value['id'];
     if (this.form.invalid) {
       this.notification.danger(
@@ -251,13 +252,16 @@ export class DeadlineTrackerFormComponent implements OnInit, OnDestroy {
     const createObj = this.formToObj(obj);
     this.dTrackerService.create(createObj).subscribe({
       next: (deadline: IDeadlineTracker) => {
-        this.navigateToEdit(deadline)
+        this.navigateToEdit(deadline);
         this.notification.success('Prazo criado com sucesso');
+      },
+      complete: () => {
+        this.isLoading = false;
       },
     });
   }
 
-  navigateToEdit(element:IDeadlineTracker) {
+  navigateToEdit(element: IDeadlineTracker) {
     this.route.navigate(['edit/' + element.id], {
       relativeTo: this._activatedRoute.parent,
       queryParams: { processId: this.processId },
@@ -271,6 +275,9 @@ export class DeadlineTrackerFormComponent implements OnInit, OnDestroy {
       next: (deadline: IDeadlineTracker) => {
         this.onUpdate.emit(deadline);
         this.notification.success('Prazo alterado com sucesso');
+      },
+      complete: () => {
+        this.isLoading = false;
       },
     });
   }
