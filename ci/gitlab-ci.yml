@@ -26,7 +26,7 @@ install_dependencies:
 build:
   stage: build
   script:
-    - ng build --prod
+    - ng build
   artifacts:
     paths:
       - dist/
