@@ -58,6 +58,7 @@ export class FilesFormComponent implements OnInit {
     private fileService: UploadFileService,
     private notificationService: NotificationService,
     private cd: ChangeDetectorRef,
+    private notification: NotificationService,
   ) {
     this.form = this.initForm;
   }
@@ -255,9 +256,12 @@ export class FilesFormComponent implements OnInit {
         this.uploadService.$crudFile.next({ file: data, method: 'create' });
         this.form.reset();
         this.currentFile = null;
-      },
-      complete: () => {
         this.isLoading = false;
+        this.cd.detectChanges();
+      },
+      error: () => {
+        this.isLoading = false;
+        this.cd.detectChanges();
       },
     });
   }
@@ -265,13 +269,17 @@ export class FilesFormComponent implements OnInit {
   private updateFile(obj: CreateUploadProcessFile) {
     this.uploadService.updateFile(this.fileType.file, obj).subscribe({
       next: (data) => {
+        this.notification.success('Prazo alterado com sucesso');
         this.uploadService.$crudFile.next({ file: data, method: 'update' });
         this.form.reset();
         this.currentFile = null;
-      },
-      complete: () => {
         this.isLoading = false;
+        this.cd.detectChanges();
       },
+      error:()=> {
+        this.isLoading = false;
+        this.cd.detectChanges();
+      }
     });
   }
 
