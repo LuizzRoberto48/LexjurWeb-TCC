@@ -18,7 +18,7 @@ before_script:
 install_dependencies:
   stage: install
   script:
-    - npm install
+    - npm ci
   artifacts:
     paths:
       - node_modules/
