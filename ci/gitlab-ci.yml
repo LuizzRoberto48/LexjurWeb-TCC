@@ -5,8 +5,9 @@ stages:
 
 variables:
   NODE_VERSION: 18
-  AWS_DEFAULT_REGION: your-aws-region # e.g., us-east-1
-  S3_BUCKET_NAME: your-s3-bucket-name
+  AWS_DEFAULT_REGION: us-east-1 # e.g., us-east-1
+  S3_BUCKET_NAME: homolog.lexjur.com.br
+  APP_OUTPUT_PATH: dist/lexjur
 
 before_script:
   - 'which nvm || (curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.38.0/install.sh | bash)'
@@ -33,11 +34,13 @@ build:
     expire_in: 1 hour
 
 
-deploy_to_s3:
+deploy-prod-job:
   stage: deploy
   script:
-    - apt-get update -y && apt-get install -y python3-pip
-    - pip3 install awscli
-    - aws s3 sync ./dist/your-app-name s3://$S3_BUCKET_NAME --delete
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws s3 sync $APP_OUTPUT_PATH $S3_BUCKET_NAME_PROD --delete
+    #- aws cloudfront create-invalidation --distribution-id ${PROD_DISTRIBUTION_ID} --paths "/*"
+    - echo "Application successfully deployed to production."
   only:
     - master
