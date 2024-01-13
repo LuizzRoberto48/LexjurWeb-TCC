@@ -36,13 +36,12 @@ build:
 
 deploy-prod-job:
   stage: deploy
-  before_script:
-    image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   script:
     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
     - aws s3 sync $APP_OUTPUT_PATH $S3_BUCKET_NAME_PROD --delete
-    #- aws cloudfront create-invalidation --distribution-id ${PROD_DISTRIBUTION_ID} --paths "/*"
+    # - aws cloudfront create-invalidation --distribution-id ${PROD_DISTRIBUTION_ID} --paths "/*"
     - echo "Application successfully deployed to production."
   only:
     - master
