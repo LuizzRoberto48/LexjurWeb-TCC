@@ -32,6 +32,7 @@ build:
       - dist/
     expire_in: 1 hour
 
+
 deploy_to_s3:
   stage: deploy
   script:
