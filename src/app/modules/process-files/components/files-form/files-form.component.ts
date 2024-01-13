@@ -92,8 +92,6 @@ export class FilesFormComponent implements OnInit {
           this.isEdit = true;
         } else {
           /* create */
-          /* this.currentFile = null;
-          this.fileType = null; */
           this.isEdit = false;
         }
         this.getProcessNumber();
