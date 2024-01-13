@@ -156,7 +156,6 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
 
   private createProgress() {
     const obj = this.formToObj();
-    console.log(obj);
     this.progressService.create(obj).subscribe({
       next: (progress: ProcessProgress) => {
         this.navigateToEdit(progress);
