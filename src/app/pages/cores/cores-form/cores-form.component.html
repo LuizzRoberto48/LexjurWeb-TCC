@@ -1,0 +1,40 @@
+<!--Form START-->
+<div class="w-full">
+    <form [formGroup]="accountForm">
+      <div class="grid sm:grid-cols-4 gap-6 w-full">
+        <!-- LOGIN INFO START-->
+        <!--Name-->
+        <div class="sm:col-span-4">
+          <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+            <mat-label>Nome</mat-label>
+            <input [formControlName]="'name'" matInput>
+            <mat-error ga-form-field-errors></mat-error>
+          </mat-form-field>
+        </div>
+  
+        <!--Email-->
+        <div class="sm:col-span-4">
+          <mat-form-field class="fuse-mat-emphasized-affix w-full" [subscriptSizing]="'dynamic'">
+            <mat-label>Descrição</mat-label>
+            <input [formControlName]="'description'" matInput>
+            <mat-error ga-form-field-errors></mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+  
+  <div class="flex items-center justify-end">
+    <div class="mt-4 ml-1 mr-1">
+      <button  mat-stroked-button matDialogClose type="button" >
+        Cancelar
+      </button>
+    </div>
+  
+    <div class="mt-4 ml-1 mr-1">
+      <button  mat-flat-button type="button" [color]="'primary'" >
+        Confirmar
+      </button>
+    </div>
+  </div>
+  <!--Form END-->

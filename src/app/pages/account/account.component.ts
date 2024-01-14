@@ -34,7 +34,6 @@ export class SettingsAccountComponent implements OnInit {
       {
         this.showOnScreen(res)
       })
-      
   }
 
   showOnScreen(lawyer: any){

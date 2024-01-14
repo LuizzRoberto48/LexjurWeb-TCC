@@ -14,7 +14,6 @@ import { CommonModule } from '@angular/common';
 import { GlobalModule } from './shared/global.module';
 import { LayoutModule } from './layouts/layout.module';
 
-
 const routerConfig: ExtraOptions = {
   preloadingStrategy: PreloadAllModules,
   scrollPositionRestoration: 'enabled',
