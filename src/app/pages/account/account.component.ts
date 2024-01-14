@@ -66,10 +66,5 @@ export class SettingsAccountComponent implements OnInit {
       ufOab: ['', [Validators.required, Validators.minLength(2)]],
     });
     this.findById();
-    console.log(this.lawyer);
-  }
-
-  ngOnView(){
-    console.log(this.accountForm.value);
   }
 }
