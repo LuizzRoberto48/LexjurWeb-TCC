@@ -8,6 +8,7 @@ export const GENERAL = 'process-details.general';
 export const SCHEDULE = 'process-details.schedule';
 export const FILES = 'process-details.files';
 export const PROGRESS = 'process-details.progress';
+export const PARTS = 'process-details.parts';
 
 @Injectable({
   providedIn: 'any'
@@ -51,6 +52,12 @@ export class ProcessDetailService {
           title: 'Andamento',
           type: 'basic',
           link: 'progress'
+        },
+        {
+          id: PARTS,
+          title: 'partes',
+          type: 'basic',
+          link: 'parts'
         },
         {
           id: FILES,

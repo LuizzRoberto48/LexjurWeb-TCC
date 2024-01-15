@@ -18,7 +18,6 @@ import { GlobalModule } from 'app/shared/global.module';
 import { DeadlineTrackerTypeService } from 'app/modules/deadline-trackers/deadline-tracker-types.service';
 import { DeadlineTrackerSubTypeService } from 'app/modules/deadline-trackers/deadline-tracker-subtypes.service';
 
-
 const routes: Route[] = [
   {
     path: '',
@@ -84,6 +83,17 @@ const routes: Route[] = [
             (m) => m.ProcessFilesModule,
           ),
       },
+      {
+        title: 'Partes',
+        path: 'parts',
+        data: {
+          breadcrumb: () => 'Partes envolvidas',
+        },
+        loadChildren: () =>
+          import('./process-parts/process-parts.module').then(
+            (m) => m.ProcessPartsModule,
+          ),
+      },
     ],
   },
 ];
@@ -93,7 +103,7 @@ const routes: Route[] = [
     ProcessDetailComponent,
     ProcessResourcesComponent,
     ProcessGeneralComponent,
-    ResourceFormComponent
+    ResourceFormComponent,
   ],
   providers: [
     BreadcrumbService,
