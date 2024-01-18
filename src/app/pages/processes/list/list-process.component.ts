@@ -80,7 +80,7 @@ export class ListProcessComponent {
       next: (res: GetProcessPageable) => {
         this.length = res.totalItems;
         this.recentTransactionsDataSource.data = res.process;
-      }
+      },
     });
   }
 
@@ -95,12 +95,7 @@ export class ListProcessComponent {
   }
 
   removeProcessDialog(process: Process): void {
-    const dialogRef = this.__confirmationService.open(
-      configDialog(process.caseNumber),
-    );
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
-    });
+    this.__confirmationService.open(configDialog(process.caseNumber));
   }
 
   ngOnDestroy() {

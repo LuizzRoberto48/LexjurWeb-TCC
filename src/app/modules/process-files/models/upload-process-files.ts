@@ -5,12 +5,15 @@ import {
 } from 'app/modules/resource/model/resource.model';
 
 export enum TargetFiles {
+  TODOS = 'TODOS',
   PRAZO = 'PRAZO',
   RECURSO = 'RECURSO',
   PROCESSO = 'PROCESSO',
   PROGRESS = 'ANDAMENTO',
-  TODOS = 'TODOS',
+  EXPENSES = 'DESPESAS',
 }
+
+export const allTargets = Object.values(TargetFiles)
 
 export type UploadTypes =
   | 'png'

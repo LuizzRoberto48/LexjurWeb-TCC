@@ -84,6 +84,15 @@ const routes: Route[] = [
           ),
       },
       {
+        title: 'Despesas',
+        path: 'expenses',
+        data: {
+          breadcrumb: () => 'Minhas despesas',
+        },
+        loadChildren: () =>
+          import('./process-expenses/process-expenses.module').then(
+            (m) => m.ProcessExpenseModule,
+          )},{
         title: 'Partes',
         path: 'parts',
         data: {
@@ -103,7 +112,7 @@ const routes: Route[] = [
     ProcessDetailComponent,
     ProcessResourcesComponent,
     ProcessGeneralComponent,
-    ResourceFormComponent,
+    ResourceFormComponent
   ],
   providers: [
     BreadcrumbService,

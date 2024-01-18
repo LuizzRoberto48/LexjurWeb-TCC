@@ -73,7 +73,6 @@ export class ProcessPartsFormComponent {
   }
 
   update() {
-    console.log(this.form.value)
     this.partsService.update(this.form.value).subscribe(() => {
       this.mdDialogRef.close(true);
       this.notification.success('Parte modificada com sucesso');
