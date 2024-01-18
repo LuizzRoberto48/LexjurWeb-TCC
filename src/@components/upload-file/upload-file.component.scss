@@ -1,0 +1,15 @@
+.upload {
+  min-width: 100%;
+  background: #fff;
+  
+}
+
+::ng-deep .content {
+  border-radius: 8px ;
+  border: 1px dashed var(--fuse-border) !important;
+  div {
+    color: var(--fuse-primary-300) !important;
+    font-size: 0.80rem;
+    font-weight: 600;
+  }  
+}

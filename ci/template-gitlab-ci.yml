@@ -1,0 +1,31 @@
+cache: &global_cache
+  key:
+    files:
+      - package-lock.json
+  paths:
+    - .npm/
+    - node_modules
+  policy: pull
+
+.install:
+  image: node:18
+  cache:
+    # inherit all global cache settings
+    <<: *global_cache
+    # override the policy
+    policy: pull-push
+
+.build:
+  image: node:18
+  cache:
+    # inherit all global cache settings
+    <<: *global_cache
+  artifacts:
+    name: 'lexjur-app'
+    expire_in: 60 minutes
+    paths:
+      - $CI_PROJECT_DIR/dist
+
+.deploy:
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  cache: {}

@@ -9,7 +9,6 @@ import {
   provideNgxMask,
 } from 'ngx-mask';
 import { NotificationModule } from '@fuse/components/notification/notification.module';
-import { LawyerService } from 'app/modules/lawyer/lawyer.service';
 import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
 import { BreadcrumbService } from '@components/breadcrumb/breadcrumb.service';
 import { CoreSheetModule } from 'app/modules/cores/core-sheet/core-sheet.module';

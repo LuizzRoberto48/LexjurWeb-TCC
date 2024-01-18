@@ -1,0 +1,47 @@
+stages:
+  - install
+  - build
+  - deploy
+
+variables:
+  NODE_VERSION: 18
+  AWS_DEFAULT_REGION: us-east-1 # e.g., us-east-1
+  S3_BUCKET_NAME: homolog.lexjur.com.br
+  APP_OUTPUT_PATH: dist/lexjur
+
+before_script:
+  - 'which nvm || (curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.38.0/install.sh | bash)'
+  - source ~/.nvm/nvm.sh
+  - nvm install $NODE_VERSION
+  - nvm use $NODE_VERSION
+  - npm install -g @angular/cli
+
+install_dependencies:
+  stage: install
+  script:
+    - npm ci
+  artifacts:
+    paths:
+      - node_modules/
+
+build:
+  stage: build
+  script:
+    - ng build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+
+
+deploy-prod-job:
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  script:
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - aws s3 sync $APP_OUTPUT_PATH s3://${S3_BUCKET_NAME} --delete
+    # - aws cloudfront create-invalidation --distribution-id ${PROD_DISTRIBUTION_ID} --paths "/*"
+    - echo "Application successfully deployed to production."
+  only:
+    - master
