@@ -68,7 +68,7 @@ export class FilesFormComponent implements OnInit {
     this.findProcessResources();
     this.listClassifications();
     this.initFile();
-    this.getProcessNumber();
+    this.getEditProcessNumber();
   }
 
   clearProcessValidator() {
@@ -95,6 +95,7 @@ export class FilesFormComponent implements OnInit {
         this.form.controls['processId'].setValue(this.processId);
         /* edit */
         if (file) {
+          this.getEditProcessNumber();
           this.form.controls['id'].setValue(file.id);
           this.uploadFile = file;
           this.objToForm();
@@ -103,16 +104,17 @@ export class FilesFormComponent implements OnInit {
           /* create */
           this.isEdit = false;
         }
-        this.getProcessNumber();
         this.isProcessControlEnabled();
       },
     });
     this.subs.push(subs);
   }
 
-  getProcessNumber() {
+  getEditProcessNumber() {
+    
     if (!this.uploadService?.$currentProcessNumber) return;
     this.uploadService?.$currentProcessNumber.subscribe((processNumber) => {
+      console.log(processNumber)
       this.form.get('processNumber').setValue(processNumber);
     });
   }
@@ -294,6 +296,7 @@ export class FilesFormComponent implements OnInit {
       processNumber: pwrObj,
     };
     if (!obj.processNumber) delete obj.processNumber;
+    console.log(this.uploadService.currentTarget)
     /* Logica para processo e recurso é diferente do resto */
     if (!this.hasTarget()) {
       obj.targetId = pwrObj.id;
