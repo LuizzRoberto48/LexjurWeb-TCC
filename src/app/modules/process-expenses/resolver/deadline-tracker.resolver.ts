@@ -7,19 +7,19 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { DeadlineTrackerService } from '../deadline-tracker.service';
+import { ProcessExpensesService } from '../process-expenses.service';
 
 @Injectable({
   providedIn: 'any',
 })
-export class DeadlineFormResolver implements Resolve<any> {
-  constructor(private deadlineTrackerService: DeadlineTrackerService) {}
+export class ExpenseFormResolver implements Resolve<any> {
+  constructor(private expenseService: ProcessExpensesService) {}
 
   resolve(
     actroute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<any> {
     const id = actroute.params['id'];
-    return this.deadlineTrackerService.findById(id);
+    return this.expenseService.findById(id);
   }
 }

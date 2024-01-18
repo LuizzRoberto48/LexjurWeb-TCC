@@ -93,9 +93,9 @@ export class FilesFormComponent implements OnInit {
     const subs = this.uploadService.$obsevableFile.subscribe({
       next: (file: GetUploadFile) => {
         this.form.controls['processId'].setValue(this.processId);
+        this.getEditProcessNumber();
         /* edit */
         if (file) {
-          this.getEditProcessNumber();
           this.form.controls['id'].setValue(file.id);
           this.uploadFile = file;
           this.objToForm();
@@ -111,10 +111,8 @@ export class FilesFormComponent implements OnInit {
   }
 
   getEditProcessNumber() {
-    
     if (!this.uploadService?.$currentProcessNumber) return;
     this.uploadService?.$currentProcessNumber.subscribe((processNumber) => {
-      console.log(processNumber)
       this.form.get('processNumber').setValue(processNumber);
     });
   }
@@ -275,10 +273,8 @@ export class FilesFormComponent implements OnInit {
         this.uploadService.$crudFile.next({ file: data, method: 'update' });
         this.form.reset();
         this.currentFile = null;
-        this.isLoading = false;
-        this.cd.detectChanges();
       },
-      error:()=> {
+      complete:()=> {
         this.isLoading = false;
         this.cd.detectChanges();
       }
@@ -296,7 +292,6 @@ export class FilesFormComponent implements OnInit {
       processNumber: pwrObj,
     };
     if (!obj.processNumber) delete obj.processNumber;
-    console.log(this.uploadService.currentTarget)
     /* Logica para processo e recurso é diferente do resto */
     if (!this.hasTarget()) {
       obj.targetId = pwrObj.id;

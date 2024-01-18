@@ -15,6 +15,7 @@ import {
   CrudFileMethod,
   GetUploadFile,
   TargetFiles,
+  allTargets,
 } from '../models/upload-process-files';
 import { getLastIndex } from 'app/global/utils/str-manipulations';
 import { UploadFileService } from '@components/upload-file/upload-file.service';
@@ -126,13 +127,7 @@ export class UploadProcessFileService {
   }
 
   get targetList(): TargetFiles[] {
-    return [
-      TargetFiles.TODOS,
-      TargetFiles.PRAZO,
-      TargetFiles.PROCESSO,
-      TargetFiles.RECURSO,
-      TargetFiles.PROGRESS,
-    ];
+    return allTargets
   }
 
   set file(file: GetUploadFile) {

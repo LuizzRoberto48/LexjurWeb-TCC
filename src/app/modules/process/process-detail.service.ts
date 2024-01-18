@@ -8,6 +8,7 @@ export const GENERAL = 'process-details.general';
 export const SCHEDULE = 'process-details.schedule';
 export const FILES = 'process-details.files';
 export const PROGRESS = 'process-details.progress';
+export const EXPENSES = 'process-details.expenses';
 export const PARTS = 'process-details.parts';
 
 @Injectable({
@@ -65,7 +66,12 @@ export class ProcessDetailService {
           type: 'basic',
           link: 'files'
         },
-        
+        {
+          id: EXPENSES,
+          title: 'Despesas',
+          type: 'basic',
+          link: 'expenses'
+        },
       ]
     }]
   }
