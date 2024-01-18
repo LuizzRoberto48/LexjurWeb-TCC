@@ -1,33 +1,83 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { Ufs, UfsModel } from 'app/global/utils/get-ufs';
+import { AuthService } from 'app/modules/auth/auth.service';
+import { LawyerService } from 'app/modules/lawyer/lawyer.service';
+import { CreateLawyer, Person } from 'app/modules/lawyer/model/lawyer.model';
 
 @Component({
   selector: 'settings-account',
   templateUrl: './account.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsAccountComponent implements OnInit {
-  accountForm: UntypedFormGroup;
+  ufs: UfsModel[] = Ufs;
 
+  accountForm: UntypedFormGroup;
+  lawyer: any;
 
   constructor(
-    private _formBuilder: UntypedFormBuilder
-  ) {
+    private _formBuilder: UntypedFormBuilder,
+    private lawyerService: LawyerService,
+    public authService: AuthService,
+  ) {}
+
+  update() {
+    const id = this.authService.authUser.sub;
+    this.lawyerService.update(id, this.accountForm.value).subscribe((res) => {
+      this.showOnScreen(res);
+    });
+  }
+
+  findById() {
+    const id = this.authService.authUser.sub;
+    this.lawyerService.findById(id).subscribe((res) => {
+      this.showOnScreen(res);
+    });
+  }
+
+  showOnScreen(lawyer: any) {
+    this.accountForm.get('name').setValue(lawyer.name);
+    this.accountForm.get('oab').setValue(lawyer.oab);
+    this.accountForm.get('postalCode').setValue(lawyer.postalCode);
+    this.accountForm.get('city').setValue(lawyer.city);
+    this.accountForm.get('district').setValue(lawyer.district);
+    this.accountForm.get('street').setValue(lawyer.street);
+    this.accountForm.get('number').setValue(lawyer.number);
+    this.accountForm.get('complement').setValue(lawyer.complement);
+    this.accountForm.get('uf').setValue(lawyer.uf);
+    this.accountForm.get('ufOab').setValue(lawyer.ufOab);
   }
 
   ngOnInit(): void {
     // Create the form
+    this.initForm()
+    this.findById();
+   
+  }
+
+  initForm() {
     this.accountForm = this._formBuilder.group({
-      name: ['Brian Hughes'],
-      username: ['brianh'],
-      title: ['Senior Frontend Developer'],
-      company: ['YXZ Software'],
-      about: ['Hey! This is Brian; husband, father and gamer. I\'m mostly passionate about bleeding edge tech and chocolate! 🍫'],
-      email: ['hughes.brian@mail.com', Validators.email],
-      phone: ['121-490-33-12'],
-      country: ['usa'],
-      language: ['english']
+      name: ['', Validators.required],
+      oab: ['', Validators.required],
+      postalCode: ['', Validators.required],
+      city: ['', Validators.required],
+      district: ['', Validators.required],
+      street: ['', Validators.required],
+      number: ['', Validators.required],
+      complement: ['', Validators.required],
+      uf: ['', [Validators.required, Validators.minLength(2)]],
+      ufOab: ['', [Validators.required, Validators.minLength(2)]],
     });
   }
 }
