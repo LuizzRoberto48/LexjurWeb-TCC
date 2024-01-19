@@ -1,41 +1,32 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { Route, RouterModule } from '@angular/router';
 import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
 import { BreadcrumbService } from '@components/breadcrumb/breadcrumb.service';
 
 import { ProcessDetailComponent } from './detail.component';
-import { FuseHighlightModule } from '@fuse/components/highlight';
-import { FuseAlertModule } from '@fuse/components/alert';
 import { FuseNavigationModule } from '@fuse/components/navigation';
-import { FuseScrollResetModule } from '@fuse/directives/scroll-reset';
-import { GENERAL, ProcessDetailService, RESOURCE, SCHEDULE } from 'app/modules/process/process-detail.service';
+import { ProcessDetailService } from 'app/modules/process/process-detail.service';
 import { ProcessResourcesComponent } from './resources/resources.component';
 import { ProcessGeneralComponent } from './general/general.component';
 import { FormProcessResolver } from 'app/modules/process/resolver/process.resolver';
 import { ResourceFormComponent } from './resources/form/resource-form.component';
 import { GlDialogModule } from '@components/gl-dialog/gl-dialog.module';
-
 import { ResourceService } from 'app/modules/resource/resource.service';
-
-import { DeadlineTrackerFormComponent } from './deadline-tracker/form/deadline-tracker-form.component';
-import { DeadLineTrackerComponent } from './deadline-tracker/deadline-tracker.component';
 import { DeadlineTrackerService } from 'app/modules/deadline-trackers/deadline-tracker.service';
 import { GlobalModule } from 'app/shared/global.module';
 import { DeadlineTrackerTypeService } from 'app/modules/deadline-trackers/deadline-tracker-types.service';
 import { DeadlineTrackerSubTypeService } from 'app/modules/deadline-trackers/deadline-tracker-subtypes.service';
-
 
 const routes: Route[] = [
   {
     path: '',
     component: ProcessDetailComponent,
     resolve: {
-      data: FormProcessResolver
+      data: FormProcessResolver,
     },
     data: {
-      breadcrumb: (data: any) => `${data.data.caseNumber}`
+      breadcrumb: (data: any) => `${data.data.caseNumber}`,
     },
     children: [
       {
@@ -44,61 +35,100 @@ const routes: Route[] = [
         redirectTo: 'general',
       },
       {
-        title: GENERAL,
+        title: 'geral',
         path: 'general',
         component: ProcessGeneralComponent,
         data: {
-          breadcrumb: () => 'Geral'
-        }
+          breadcrumb: () => 'Geral',
+        },
       },
       {
-        title: RESOURCE,
+        title: 'recurso',
         path: 'resources',
         component: ProcessResourcesComponent,
         data: {
-          breadcrumb: () => 'Recursos'
+          breadcrumb: () => 'Recursos',
         },
       },
       {
-        title: SCHEDULE,
+        title: 'agendamento',
         path: 'schedule',
-        component: DeadLineTrackerComponent,
         data: {
-          breadcrumb: () => 'Agendamento'
+          breadcrumb: () => 'Agendamentos',
         },
-      }
-    ]
-  }
+        loadChildren: () =>
+          import('./deadline-tracker/deadline-tracker.module').then(
+            (m) => m.DeadlineTrackerModule,
+          ),
+      },
+      {
+        title: 'andamento',
+        path: 'progress',
+        data: {
+          breadcrumb: () => 'Andamento',
+        },
+        loadChildren: () =>
+          import('./process-progress/process-progress.module').then(
+            (m) => m.ProcessProgressModule,
+          ),
+      },
+      {
+        title: 'Arquivos',
+        path: 'files',
+        data: {
+          breadcrumb: () => 'Meus arquivos',
+        },
+        loadChildren: () =>
+          import('./process-files/process-files.module').then(
+            (m) => m.ProcessFilesModule,
+          ),
+      },
+      {
+        title: 'Despesas',
+        path: 'expenses',
+        data: {
+          breadcrumb: () => 'Minhas despesas',
+        },
+        loadChildren: () =>
+          import('./process-expenses/process-expenses.module').then(
+            (m) => m.ProcessExpenseModule,
+          )},{
+        title: 'Partes',
+        path: 'parts',
+        data: {
+          breadcrumb: () => 'Partes envolvidas',
+        },
+        loadChildren: () =>
+          import('./process-parts/process-parts.module').then(
+            (m) => m.ProcessPartsModule,
+          ),
+      },
+    ],
+  },
 ];
 
 @NgModule({
-    declarations: [
-        ProcessDetailComponent,
-        ProcessResourcesComponent,
-        ProcessGeneralComponent,
-        ResourceFormComponent,
-        DeadLineTrackerComponent,
-        DeadlineTrackerFormComponent
-    ],
-    providers: [
-        BreadcrumbService,
-        ProcessDetailService,
-        ResourceService,
-        DeadlineTrackerService,
-        DeadlineTrackerTypeService,
-        DeadlineTrackerSubTypeService
-    ],
-    imports: [
-        CommonModule,
-        RouterModule.forChild(routes),
-        BreadCrumbModule,
-        GlobalModule,
-        FuseHighlightModule,
-        FuseAlertModule,
-        FuseNavigationModule,
-        FuseScrollResetModule,
-        GlDialogModule,
-    ]
+  declarations: [
+    ProcessDetailComponent,
+    ProcessResourcesComponent,
+    ProcessGeneralComponent,
+    ResourceFormComponent
+  ],
+  providers: [
+    BreadcrumbService,
+    ProcessDetailService,
+    ResourceService,
+    DeadlineTrackerService,
+    DeadlineTrackerTypeService,
+    DeadlineTrackerSubTypeService,
+  ],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    BreadCrumbModule,
+    GlobalModule,
+    FuseNavigationModule,
+    GlDialogModule,
+  ],
 })
-export class ProcessDetailModule {
-}
+export class ProcessDetailModule {}

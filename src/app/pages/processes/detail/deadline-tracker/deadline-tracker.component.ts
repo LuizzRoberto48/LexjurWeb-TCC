@@ -3,21 +3,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Process } from 'app/modules/process/models/process.model';
 import { ProcessService } from 'app/modules/process/process.service';
 import { Subscription, switchMap, tap } from 'rxjs';
-import { DeadlineTrackerFormComponent } from './form/deadline-tracker-form.component';
 import { DeadlineTrackerService } from 'app/modules/deadline-trackers/deadline-tracker.service';
 import { IDeadlineTracker } from 'app/modules/deadline-trackers/model/deadline-tracker.model';
 import { UntypedFormControl } from '@angular/forms';
 import { DateTime } from 'luxon';
-import {
-  ProgressStatus,
-  stepProgress,
-} from 'app/global/pipes/steps-progress.pipe';
+import { stepProgress } from 'app/global/pipes/steps-progress.pipe';
+import { configDialogResource } from 'app/modules/process/utils';
 
 @Component({
   selector: 'deadline-tracker',
@@ -36,7 +33,6 @@ export class DeadLineTrackerComponent implements OnInit {
     'status',
     'internDeadline',
     'local',
-    'observation',
     'actions',
   ];
 
@@ -51,6 +47,8 @@ export class DeadLineTrackerComponent implements OnInit {
     private processService: ProcessService,
     public dialog: MatDialog,
     private __confirmationService: FuseConfirmationService,
+    private notification: NotificationService,
+    public route: Router,
   ) {
     this.dataSource.data = [];
   }
@@ -80,7 +78,6 @@ export class DeadLineTrackerComponent implements OnInit {
         }),
       )
       .subscribe((deadlineTrackers: IDeadlineTracker[]) => {
-        console.log(deadlineTrackers);
         this.dataSource.data = deadlineTrackers;
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
@@ -88,12 +85,11 @@ export class DeadLineTrackerComponent implements OnInit {
       });
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(DeadlineTrackerFormComponent, {
-      data: { processId: this.processId },
-      disableClose: false,
+  open() {
+    this.route.navigate(['new'], {
+      relativeTo: this._activatedRoute.parent,
+      queryParams: { processId: this.processId },
     });
-    this.afterCloseDialog(dialogRef);
   }
 
   customFilterPredicate(data: IDeadlineTracker, value: string) {
@@ -114,21 +110,32 @@ export class DeadLineTrackerComponent implements OnInit {
     );
   }
 
-  afterCloseDialog(dialogRef) {
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) this.getDeadlineTrackerByProcess();
-    });
-  }
-
   edit(element: IDeadlineTracker) {
-    const dialogRef = this.dialog.open(DeadlineTrackerFormComponent, {
-      data: { processId: this.processId, editObj: element },
-      disableClose: false,
+    this.route.navigate(['edit/' + element.id], {
+      relativeTo: this._activatedRoute.parent,
+      queryParams: { processId: this.processId },
     });
-    this.afterCloseDialog(dialogRef);
   }
 
-  remove(id: number) {}
+  removeDialog(element: IDeadlineTracker) {
+    const dialogRef = this.__confirmationService.open(configDialogResource());
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.remove(element.id);
+      }
+    });
+  }
+
+  remove(id: number) {
+    this.deadlineTrackerService
+      .delete(id, [{ name: 'processId', value: this.processId }]) //queryParams
+      .subscribe({
+        next: () => {
+          this.notification.success('Prazo removido com sucesso');
+          this.getDeadlineTrackerByProcess();
+        }
+      });
+  }
 
   ngOnDestroy(): void {
     this.$subs.unsubscribe();

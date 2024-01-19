@@ -1,0 +1,96 @@
+<div class="flex flex-col flex-auto p-2 md:p-5">
+  <div class="flex items-center justify-end">
+    <div class="flex items-center">
+      <!-- More menu -->
+      <button mat-icon-button [matMenuTriggerFor]="moreMenu">
+        <mat-icon [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
+      </button>
+      <mat-menu #moreMenu="matMenu" >
+        <button mat-menu-item (click)="removeFile()">
+          <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+          <span>Remover</span>
+        </button>
+        <button mat-menu-item (click)="downloadFile()">
+          <mat-icon [svgIcon]="'heroicons_outline:download'"></mat-icon>
+          <span>Download</span>
+        </button>
+      </mat-menu>
+
+      <a mat-icon-button (click)="close()">
+        <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+      </a>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mt-5">
+    <gl-upload-file
+      (changedFile)="setFile($event)"
+      [hasCloseBtn]="true"
+      [file]="currentFile"
+      [title]="uploadFile?.target"
+    ></gl-upload-file>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mt-4">
+      <div class="flex flex-col">
+        <mat-form-field class="flex-auto gt-xs:pl-3">
+          <mat-label>Processo</mat-label>
+          <mat-select formControlName="processNumber">
+            <mat-option
+              [value]="item.number"
+              *ngFor="let item of processWithResources"
+            >
+              {{ item.number }}
+            </mat-option>
+          </mat-select>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <mat-form-field class="flex-auto gt-xs:pl-3">
+          <mat-label>Classificação</mat-label>
+          <mat-select formControlName="fileClassificationId">
+            <mat-option [value]="item.id" *ngFor="let item of classifications">
+              {{ item.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+      <div class="flex flex-col">
+        <mat-form-field class="w-full">
+          <mat-label>Data</mat-label>
+          <input matInput type="date" formControlName="createAt" />
+          <mat-error>Campo obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <mat-form-field class="flex-auto gt-xs:pl-3">
+          <mat-label>Probabilidade de perda</mat-label>
+          <mat-select formControlName="lossProbability">
+            <mat-option [value]="item" *ngFor="let item of lossProbabilities">
+              {{ item }}
+            </mat-option>
+          </mat-select>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="grid grid-cols-1 gap-4 w-full mt-4 items-center">
+      <button
+        class="flex-auto"
+        mat-flat-button
+        [color]="'primary'"
+        [disabled]="!form.valid || isLoading"
+        (click)="send()"
+      >
+        Adicionar
+      </button>
+    </div>
+  </form>
+</div>

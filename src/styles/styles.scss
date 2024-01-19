@@ -44,3 +44,29 @@
    
   }
 }
+
+.mat-button-toggle {
+  border-radius: 9999px;
+  overflow: hidden;
+  border: none !important;
+  font-weight: 500;
+  
+  &.mat-button-toggle-checked {
+    @apply  shadow bg-accent-500 #{!important};
+    
+    .mat-button-toggle-label-content {
+      span {
+        @apply  text-white #{'!important'};
+        font-weight: 600;
+        font-size: 13px !important;
+      }
+         // @apply text-default #{'!important'};
+      }
+  }
+
+  .mat-button-toggle-label-content {
+      padding: 0 20px;
+      line-height: 40px !important;
+      @apply text-secondary;
+  }
+}

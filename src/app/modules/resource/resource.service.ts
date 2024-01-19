@@ -1,13 +1,16 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
-import { Observable, map } from 'rxjs';
+import { Observable, map, switchMap } from 'rxjs';
 import {
   CreateResource,
   FormResource,
   GetResource,
 } from './model/resource.model';
 import { FormGroup } from '@angular/forms';
+import { ProcessService } from '../process/process.service';
+import { Process } from '../process/models/process.model';
+import { ParamsModel } from 'app/global/base-http/base-http.model';
 
 export const CORE = 'CORE';
 
@@ -15,7 +18,10 @@ export const CORE = 'CORE';
   providedIn: 'any',
 })
 export class ResourceService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private processService: ProcessService,
+  ) {}
 
   create(data: CreateResource): Observable<GetResource> {
     return this.http.post<GetResource>(`${environment.apiURL}/resources`, data);
@@ -32,6 +38,10 @@ export class ResourceService {
     );
   }
 
+  get $process() {
+    return this.processService.$obsevableProcess;
+  }
+
   remove(id: number): Observable<any> {
     return this.http.delete<GetResource>(
       `${environment.apiURL}/resources/${id}`,
@@ -44,6 +54,18 @@ export class ResourceService {
     return this.http
       .get(`${environment.apiURL}/resources`, { params })
       .pipe(map((resources: any[]) => this.formatReqToResource(resources)));
+  }
+
+  findProcessResources(): Observable<any> {
+    return this.$process.pipe(
+      switchMap((process: Process) => {
+        let params = new HttpParams();
+        params = params.set('processId', process.id);
+        return this.http.get(`${environment.apiURL}/process_resources`, {
+          params,
+        });
+      }),
+    );
   }
 
   formatReqToResource(list: any[]): GetResource[] {
