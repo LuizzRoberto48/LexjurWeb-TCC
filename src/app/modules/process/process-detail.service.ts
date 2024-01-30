@@ -10,6 +10,8 @@ export const FILES = 'process-details.files';
 export const PROGRESS = 'process-details.progress';
 export const EXPENSES = 'process-details.expenses';
 export const PARTS = 'process-details.parts';
+export const GUARANTEES = 'process-details.guarantees';
+export const REQUESTS = 'process-details.requests';
 
 @Injectable({
   providedIn: 'any'
@@ -71,6 +73,18 @@ export class ProcessDetailService {
           title: 'Despesas',
           type: 'basic',
           link: 'expenses'
+        },
+        {
+          id: GUARANTEES,
+          title: 'Garantias',
+          type: 'basic',
+          link: 'guarantees'
+        },
+        {
+          id: REQUESTS,
+          title: 'Pedidos',
+          type: 'basic',
+          link: 'requests'
         },
       ]
     }]

@@ -8,35 +8,34 @@ import {
   CreateProcessExpenses,
   GetProcessExpenses,
 } from 'app/modules/process-expenses/expenses.model';
-import { ProcessExpensesService } from 'app/modules/process-expenses/process-expenses.service';
 import { ProcessService } from 'app/modules/process/process.service';
 import { Subscription, tap } from 'rxjs';
+
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
 import { DateTime } from 'luxon';
+import { ProcessGuaranteeService } from 'app/modules/process-guarantees/process-guarantee.service';
 import { MY_FORMATS } from 'app/shared/date-picker-formats';
 
 @Component({
-  selector: 'process-expense-form',
-  templateUrl: './process-expense-form.component.html',
+  selector: 'process-guarantee-form',
+  templateUrl: './process-guarantee-form.component.html',
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
     { provide: MAT_LUXON_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
   ],
 })
-export class ProcessExpenseFormComponent {
+export class ProcessGuaranteeFormComponent {
   @Input() editId: number;
   @Output() onUpdate: EventEmitter<GetProcessExpenses> = new EventEmitter();
   @Output() onCreate: EventEmitter<GetProcessExpenses> = new EventEmitter();
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
     processId: new FormControl(null),
-    type: new FormControl('', {
+    guarantee: new FormControl('', {
       validators: [Validators.required],
     }),
-    expirationDate: new FormControl('', { validators: [Validators.required] }),
-    paymentDate: new FormControl(null),
+    date: new FormControl('', { validators: [Validators.required] }),
     price: new FormControl('', { validators: [Validators.required] }),
-    isRefundable: new FormControl(false, { validators: [Validators.required] }),
     observation: new FormControl(''),
   });
 
@@ -49,7 +48,7 @@ export class ProcessExpenseFormComponent {
     private location: Location,
     private processService: ProcessService,
     private _activatedRoute: ActivatedRoute,
-    private expenseService: ProcessExpensesService,
+    private guaranteeService: ProcessGuaranteeService,
     private route: Router,
     private cdr: ChangeDetectorRef,
   ) {}
@@ -109,13 +108,12 @@ export class ProcessExpenseFormComponent {
 
   onSubmit() {
     this.isLoading = true;
-    const id = this.form.value['id'];
     if (this.form.invalid) return;
-    id ? this.updateExpense(id) : this.createExpense();
+    this.editId ? this.updateExpense() : this.createExpense();
   }
 
   private findTypes() {
-    this.expenseService.findExpenseTypes().subscribe((res: string[]) => {
+    this.guaranteeService.findGuaranteeTypes().subscribe((res: string[]) => {
       this.types = res;
     });
   }
@@ -138,10 +136,10 @@ export class ProcessExpenseFormComponent {
   private createExpense() {
     const obj = this.formToObj();
     const {id, ...rest} = obj
-    this.expenseService.create(rest).subscribe({
+    this.guaranteeService.create(rest).subscribe({
       next: (expense:GetProcessExpenses) => {
         this.navigateToEdit(expense, true);
-        this.notification.success('Despesa criada com sucesso');
+        this.notification.success('Garantia criada com sucesso');
       },
       complete: () => {
         this.isLoading = false;
@@ -149,12 +147,12 @@ export class ProcessExpenseFormComponent {
     });
   }
 
-  private updateExpense(id: number) {
+  private updateExpense() {
     const obj = this.formToObj();
-    this.expenseService.update(obj).subscribe({
+    this.guaranteeService.update(obj).subscribe({
       next: (expense: GetProcessExpenses) => {
         this.onUpdate.emit(expense);
-        this.notification.success('Despesa alterada com sucesso');
+        this.notification.success('Garantia alterada com sucesso');
         
       },
       complete: () => {

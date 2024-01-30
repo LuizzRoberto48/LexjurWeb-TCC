@@ -1,0 +1,80 @@
+<gl-dialog
+  [title]="'Cadastro'"
+  [isDisableClose]="true"
+  (emitClick)="btnClicked($event)"
+>
+  <ng-container body>
+    <form [formGroup]="form" class="flex flex-col mt-5">
+      <div class="grid w-full">
+        <div class="grid grid-cols-3 gap-4">
+          <div class="flex flex-col">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Pedido</mat-label>
+              <mat-select formControlName="request">
+                <mat-option [value]="opt" *ngFor="let opt of requests">{{
+                  opt
+                }}</mat-option>
+              </mat-select>
+              <mat-error ga-form-field-errors></mat-error>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col">
+            <mat-form-field class="w-full">
+              <mat-label>Data </mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="date" />
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error ga-form-field-errors></mat-error>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Probabilidade de perda</mat-label>
+              <mat-select formControlName="lossProbability">
+                <mat-option [value]="opt" *ngFor="let opt of lossProbability">{{
+                  opt
+                }}</mat-option>
+              </mat-select>
+              <mat-error ga-form-field-errors></mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex flex-col">
+            <mat-form-field class="w-full">
+              <mat-label>Valor </mat-label>
+              <input
+                matInput
+                formControlName="value"
+                type="text"
+                prefix="R$ "
+                mask="separator.2"
+                thousandSeparator="."
+                decimalMarker=","
+              />
+              <mat-error ga-form-field-errors></mat-error>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col">
+            <mat-form-field class="w-full">
+              <mat-label>Valor provisionado </mat-label>
+              <input
+                matInput
+                formControlName="provisionedValue"
+                type="text"
+                prefix="R$ "
+                mask="separator.2"
+                thousandSeparator="."
+                decimalMarker=","
+              />
+              <mat-error ga-form-field-errors></mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</gl-dialog>

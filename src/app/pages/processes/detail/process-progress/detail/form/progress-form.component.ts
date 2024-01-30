@@ -29,18 +29,7 @@ import {
 } from 'app/modules/process-progress/models/progress.model';
 import { ProcessProgressType } from 'app/modules/process-progress/models/progress_types.model';
 import { DateTime } from 'luxon';
-
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'dd/MM/yyyy',
-  },
-  display: {
-    dateInput: 'dd/MM/yyyy',
-    monthYearLabel: 'MMM yyyy',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM yyyy',
-  },
-};
+import { MY_FORMATS } from 'app/shared/date-picker-formats';
 @Component({
   selector: 'progress-form',
   templateUrl: './progress-form.component.html',

@@ -17,6 +17,7 @@ import {
   TargetFiles,
   CreateUploadProcessFile,
   FormUploadProcessFile,
+  LossProbabilityEnum,
 } from '../../models/upload-process-files';
 import { UploadProcessFileService } from '../../services/upload-process.service';
 import { DateTime } from 'luxon';
@@ -39,7 +40,7 @@ export class FilesFormComponent implements OnInit {
 
   processWithResources: DeadlineProcessWithResources[] = [];
   classifications: { id: number; name: string }[] = [];
-  lossProbabilities = lossProbability;
+  //lossProbabilities = [];
   types: TargetFiles[] = [];
 
   fileType: { file: File; type: UploadType } = {} as any;
@@ -87,6 +88,10 @@ export class FilesFormComponent implements OnInit {
     hasProcessDisable
       ? this.form.controls['processNumber'].disable({ onlySelf: true })
       : this.form.controls['processNumber'].enable({ onlySelf: true });
+  }
+
+  get lossProbabilities() {
+    return Object.values(LossProbabilityEnum)
   }
 
   initFile() {

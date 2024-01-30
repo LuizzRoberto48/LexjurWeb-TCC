@@ -11,9 +11,10 @@ export enum TargetFiles {
   PROCESSO = 'PROCESSO',
   PROGRESS = 'ANDAMENTO',
   EXPENSES = 'DESPESAS',
+  GUARANTEE = 'GARANTIA',
 }
 
-export const allTargets = Object.values(TargetFiles)
+export const allTargets = Object.values(TargetFiles);
 
 export type UploadTypes =
   | 'png'
@@ -24,6 +25,12 @@ export type UploadTypes =
   | 'pdf'
   | 'word';
 export type LossProbability = 'Possível' | 'Provável' | 'Remota';
+
+export enum LossProbabilityEnum {
+  POSSIBLE = 'Possível',
+  PROBABLE = 'Provável',
+  REMOTE = 'Remota',
+}
 
 export const targetFilesArray = Object.keys(
   {} as { [K in TargetFiles]: null },
