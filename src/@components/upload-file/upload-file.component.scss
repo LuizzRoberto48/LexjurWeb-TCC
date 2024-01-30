@@ -1,10 +1,9 @@
 .upload {
   min-width: 100%;
   background: #fff;
-  
 }
 
-::ng-deep .content {
+::ng-deep .file-content {
   border-radius: 8px ;
   border: 1px dashed var(--fuse-border) !important;
   div {

@@ -11,19 +11,19 @@ import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FilesModule } from 'app/modules/process-files/components/files.module';
 import { UploadProcessFileService } from 'app/modules/process-files/services/upload-process.service';
-import { ProcessExpensesComponent } from './process-expenses.component';
-import { ProcessExpensesService } from 'app/modules/process-expenses/process-expenses.service';
+import { ProcessGuaranteesComponent } from './process-guarantees.component';
 import localePt from '@angular/common/locales/pt';
-import { ProcessExpenseFormComponent } from './detail/form/process-expense-form.component';
-import { ProcessFormDetailComponent } from './detail/process-expense-detail.component';
+import { ProcessGuaranteeFormComponent } from './detail/form/process-guarantee-form.component';
 import {
   IConfig,
   NgxMaskDirective,
   provideEnvironmentNgxMask,
   provideNgxMask,
 } from 'ngx-mask';
-import { ProcessExpenseInfoComponent } from './detail/info/process-expense-info.component';
-import { ExpenseFormResolver } from 'app/modules/process-expenses/resolver/process-expenses.resolver';
+import { GuaranteeResolver } from 'app/modules/process-guarantees/resolver/guarantees.resolver';
+import { ProcessGuaranteeService } from 'app/modules/process-guarantees/process-guarantee.service';
+import { GuaranteeDetailComponent } from './detail/guarantee-detail.component';
+import { ProcessGuaranteeInfoComponent } from './detail/info/guarantee-info.component';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -35,7 +35,7 @@ const routes: Routes = [
   {
     title: 'Lista despesas',
     path: '',
-    component: ProcessExpensesComponent,
+    component: ProcessGuaranteesComponent,
     data: {
       breadcrumb: () => '',
     },
@@ -43,7 +43,7 @@ const routes: Routes = [
   {
     title: 'Cadastro de despesa',
     path: 'new',
-    component: ProcessFormDetailComponent,
+    component: GuaranteeDetailComponent,
     data: {
       breadcrumb: () => 'Cadastrar',
     },
@@ -51,22 +51,22 @@ const routes: Routes = [
   {
     title: 'Edição de despesa',
     path: 'edit/:id',
-    component: ProcessFormDetailComponent,
+    component: GuaranteeDetailComponent,
     data: {
       breadcrumb: () => 'Editar',
     },
     resolve: {
-      data: ExpenseFormResolver,
+      data: GuaranteeResolver,
     },
   },
 ];
 
 @NgModule({
   declarations: [
-    ProcessExpensesComponent,
-    ProcessExpenseFormComponent,
-    ProcessFormDetailComponent,
-    ProcessExpenseInfoComponent
+    ProcessGuaranteesComponent,
+    ProcessGuaranteeFormComponent,
+    GuaranteeDetailComponent,
+    ProcessGuaranteeInfoComponent
   ],
   imports: [
     CommonModule,
@@ -84,10 +84,10 @@ const routes: Routes = [
   ],
   providers: [
     UploadProcessFileService,
-    ProcessExpensesService,
+    ProcessGuaranteeService,
     provideNgxMask(),
     provideEnvironmentNgxMask(maskConfig),
     { provide: LOCALE_ID, useValue: 'pt-BR' },
   ],
 })
-export class ProcessExpenseModule {}
+export class ProcessGuaranteesModule {}

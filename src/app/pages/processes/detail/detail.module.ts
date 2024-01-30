@@ -92,7 +92,9 @@ const routes: Route[] = [
         loadChildren: () =>
           import('./process-expenses/process-expenses.module').then(
             (m) => m.ProcessExpenseModule,
-          )},{
+          ),
+      },
+      {
         title: 'Partes',
         path: 'parts',
         data: {
@@ -101,6 +103,28 @@ const routes: Route[] = [
         loadChildren: () =>
           import('./process-parts/process-parts.module').then(
             (m) => m.ProcessPartsModule,
+          ),
+      },
+      {
+        title: 'Garantias',
+        path: 'guarantees',
+        data: {
+          breadcrumb: () => 'Garantias',
+        },
+        loadChildren: () =>
+          import('./process-guarantees/process-guarantees.module').then(
+            (m) => m.ProcessGuaranteesModule,
+          ),
+      },
+      {
+        title: 'Pedidos',
+        path: 'requests',
+        data: {
+          breadcrumb: () => 'Pedidos',
+        },
+        loadChildren: () =>
+          import('./process-requests/process-requests.module').then(
+            (m) => m.ProcessRequestsModule,
           ),
       },
     ],
@@ -112,7 +136,7 @@ const routes: Route[] = [
     ProcessDetailComponent,
     ProcessResourcesComponent,
     ProcessGeneralComponent,
-    ResourceFormComponent
+    ResourceFormComponent,
   ],
   providers: [
     BreadcrumbService,

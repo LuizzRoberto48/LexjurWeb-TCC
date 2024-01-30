@@ -4,7 +4,7 @@
   </h1>
 </div>
 
-<div class="grid grid-cols-3 gap-4 mt-4">
+<div class="grid grid-cols-2 gap-4 mt-4">
   <p class="text-gray-900 font-bold">
     Processo
     <span class="font-light">{{ info.process.caseNumber }}</span>
@@ -12,24 +12,25 @@
 
   <p class="text-gray-900 font-bold">
     Tipo:
-    <span class="font-light">{{ info.type }}</span>
+    <span class="font-light">{{ info.guarantee }}</span>
   </p>
-  <p class="text-gray-900 font-bold">
-    Reembolsável ?: <span class="font-light">{{ info.isRefundable ? 'Sim' : 'Não' }}</span>
-  </p>
+  
 </div>
-<div class="grid grid-cols-3 gap-4 mt-4">
+<div class="grid grid-cols-2 gap-4 mt-4">
   <div class="flex flex-col">
     <p class="text-gray-900 font-bold">
-      Data de expiração:
+      Data:
       <span class="font-light">{{
-        info.expirationDate | date : 'dd/MM/yyyy'
+        info.date | date : 'dd/MM/yyyy'
       }}</span>
     </p>
   </div>
   <div class="flex flex-col">
-    <p class="text-gray-900 font-bold" *ngIf="info.paymentDate">
-      Data do pagamento: <span class="font-light">{{ info.paymentDate | date : 'dd/MM/yyyy'}}</span>
+    <p class="text-gray-900 font-bold">
+      Valor:
+      <span class="font-light">{{
+        info.price| currency : 'BRL' : 'symbol-narrow' : '1.2-2'
+      }}</span>
     </p>
   </div>
 </div>
