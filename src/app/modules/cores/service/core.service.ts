@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "environments/environment";
 import { BehaviorSubject, Observable, of, Subject } from "rxjs";
-import { LocalCore } from "../model/get-core";
+import { Core, LocalCore } from "../model/get-core";
 
 export const CORE = "CORE"
 
@@ -20,20 +20,28 @@ export class CoreService {
     }
   }
 
+  getAll() {
+    return this._http.get(`${environment.apiURL}/cores`)
+  }
+
   getById(id: number) {
-    this._http.get(`${environment.apiURL}/cores/:${id}`)
+    return this._http.get(`${environment.apiURL}/cores/${id}`)
   }
 
   getCoresByUser(): Observable<any[]> {
     return this._http.get<any[]>(`${environment.apiURL}/cores/user`)
   }
 
-  create(core: any) {
-    this._http.post(`${environment.apiURL}/cores`, core)
+  create(core: Core): Observable<Core> {
+    return this._http.post<Core>(`${environment.apiURL}/cores`, core);
   }
 
   update(id: number, core: any) {
-    this._http.put(`${environment.apiURL}/cores/${id}`, core)
+    return this._http.put(`${environment.apiURL}/cores/${id}`, core)
+  }
+
+  remove(id: number){
+    return this._http.delete(`${environment.apiURL}/cores/${id}`)
   }
 
   updateLocalStorage(core: LocalCore) {
@@ -49,3 +57,4 @@ export class CoreService {
     localStorage.removeItem(CORE)
   }
 }
+

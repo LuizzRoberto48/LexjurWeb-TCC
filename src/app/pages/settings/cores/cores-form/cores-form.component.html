@@ -1,3 +1,8 @@
+<!--Title-->
+<span class="inline-flex items-center pb-4 font-semibold text-xl">
+  {{actionName}}
+</span>
+
 <!--Form START-->
 <div class="w-full">
     <form [formGroup]="accountForm">
@@ -16,7 +21,7 @@
         <div class="sm:col-span-4">
           <mat-form-field class="fuse-mat-emphasized-affix w-full" [subscriptSizing]="'dynamic'">
             <mat-label>Descrição</mat-label>
-            <input [formControlName]="'description'" matInput>
+            <textarea [formControlName]="'description'" matInput></textarea>
             <mat-error ga-form-field-errors></mat-error>
           </mat-form-field>
         </div>
@@ -32,7 +37,7 @@
     </div>
   
     <div class="mt-4 ml-1 mr-1">
-      <button  mat-flat-button type="button" [color]="'primary'" >
+      <button  mat-flat-button matDialogClose type="button" [color]="'primary'" (click)="send()">
         Confirmar
       </button>
     </div>
