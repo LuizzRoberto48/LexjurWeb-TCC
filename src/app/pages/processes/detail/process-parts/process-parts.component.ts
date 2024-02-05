@@ -8,10 +8,10 @@ import { NotificationService } from '@fuse/components/notification/notification.
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { GetProcessParts } from 'app/modules/process-parts/dto/process-parts.dto';
 import { ProcessPartsService } from 'app/modules/process-parts/process-parts.service';
-import { Process } from 'app/modules/process/models/process.model';
+import { PersonType, Process } from 'app/modules/process/models/process.model';
 import { ProcessService } from 'app/modules/process/process.service';
 import { configDialogResource } from 'app/modules/process/utils';
-import { Subscription, switchMap } from 'rxjs';
+import { Subscription, switchMap, tap } from 'rxjs';
 import { ProcessPartsFormComponent } from './form/process-parts-form.component';
 
 @Component({
@@ -37,10 +37,18 @@ export class ProcessPartsComponent {
     private notification: NotificationService,
   ) {
     this.findByProcess();
+    this.search();
   }
 
   get $process() {
     return this.processService.$obsevableProcess;
+  }
+
+  private search() {
+    const subs = this.searchInputControl.valueChanges
+      .pipe(tap((value: string) => (this.dataSource.filter = value)))
+      .subscribe();
+    this.$subs.push(subs);
   }
 
   editResource(element: GetProcessParts) {
@@ -62,10 +70,18 @@ export class ProcessPartsComponent {
         this.dataSource.data = parts;
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-        //this.dataSource.filterPredicate = this.customFilterPredicate;
+        this.dataSource.filterPredicate = this.customFilterPredicate;
       });
 
     this.$subs.push(subs);
+  }
+
+  customFilterPredicate(data: GetProcessParts, value: string) {
+    const pType = PersonType[data.personType];
+    const filter = value.toLocaleLowerCase();
+    return data.name.toLowerCase().includes(filter) ||
+    data.position.toLowerCase().includes(filter) ||
+    pType.toLowerCase().includes(filter);
   }
 
   removeDialog(element: GetProcessParts): void {
@@ -115,5 +131,9 @@ export class ProcessPartsComponent {
 
   ngOnDestroy() {
     this.$subs.forEach((s) => s.unsubscribe());
+  }
+
+  getPersonType(type: PersonType) {
+    return this.partsService.getPersonType(type);
   }
 }

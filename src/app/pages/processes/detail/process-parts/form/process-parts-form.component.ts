@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { GlDialogComponent } from '@components/gl-dialog/gl-dialog.component';
 import { NotificationService } from '@fuse/components/notification/notification.service';
+import { getEnumKeyByEnumValue } from 'app/global/utils/str-manipulations';
 import { GetProcessParts } from 'app/modules/process-parts/dto/process-parts.dto';
 import { ProcessPartsService } from 'app/modules/process-parts/process-parts.service';
 import { PersonType } from 'app/modules/process/models/process.model';
@@ -43,7 +44,11 @@ export class ProcessPartsFormComponent {
   isEdit() {
     if (this.data.id) {
       this.editParts = this.data.parts;
-      this.form.patchValue({ ...this.data.parts });
+      console.log(this.data.parts);
+      this.form.patchValue({
+        ...this.data.parts,
+        personType: this.getPersonType(this.data.parts.personType),
+      });
     }
   }
 
@@ -59,7 +64,16 @@ export class ProcessPartsFormComponent {
     return Object.values(PersonType);
   }
 
+  personTypeKey(type: string) {
+    this.form.controls['personType'].setValue(
+      getEnumKeyByEnumValue(PersonType, type),
+    );
+  }
+
   btnClicked(event: boolean) {
+    const personType = this.form.controls['personType'].value;
+    this.personTypeKey(personType);
+
     if (!event) return;
     if (!this.form.valid) return;
     this.data?.id ? this.update() : this.create();
@@ -77,5 +91,9 @@ export class ProcessPartsFormComponent {
       this.mdDialogRef.close(true);
       this.notification.success('Parte modificada com sucesso');
     });
+  }
+
+  getPersonType(type: PersonType) {
+    return this.partsService.getPersonType(type);
   }
 }

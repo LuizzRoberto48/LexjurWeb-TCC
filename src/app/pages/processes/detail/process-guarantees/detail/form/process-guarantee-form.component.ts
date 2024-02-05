@@ -15,6 +15,7 @@ import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter'
 import { DateTime } from 'luxon';
 import { ProcessGuaranteeService } from 'app/modules/process-guarantees/process-guarantee.service';
 import { MY_FORMATS } from 'app/shared/date-picker-formats';
+import { GUARANTEES_PATH } from 'app/modules/process/process-detail.service';
 
 @Component({
   selector: 'process-guarantee-form',
@@ -98,6 +99,12 @@ export class ProcessGuaranteeFormComponent {
     });
   }
 
+  navigateToList() {
+    this.route.navigate([
+      `processos/detail/${this.processId}/${GUARANTEES_PATH}`,
+    ]);
+  }
+
   getEditExpense() {
     this._activatedRoute.data.subscribe({
       next: ({ data }) => {
@@ -151,7 +158,7 @@ export class ProcessGuaranteeFormComponent {
     const obj = this.formToObj();
     this.guaranteeService.update(obj).subscribe({
       next: (expense: GetProcessExpenses) => {
-        this.onUpdate.emit(expense);
+        this.navigateToList()
         this.notification.success('Garantia alterada com sucesso');
         
       },

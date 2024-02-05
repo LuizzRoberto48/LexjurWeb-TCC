@@ -1,5 +1,5 @@
 <div
-  class="flex flex-col w-30 h-32 mt-5 shadow rounded-2xl cursor-pointer bg-card"
+  class="flex flex-col w-30 h-32 mt-5 shadow rounded-2xl cursor-pointer bg-card container relative"
 >
   <ng-container *ngIf="!service.closeBtn">
     <mat-icon
@@ -35,5 +35,13 @@
     <div class="text-base font-normal mt-2 text-gray-500 text-sm">
       {{ uploadType.label | truncate : 10 }}
     </div>
+  </div>
+  <div class="overlay" *ngIf="!noDownload">
+    <button class="text" (click)="download()">
+      <mat-icon
+        [svgIcon]="'heroicons_outline:download'"
+        style="color: #fff"
+      ></mat-icon>
+    </button>
   </div>
 </div>

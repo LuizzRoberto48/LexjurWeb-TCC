@@ -41,11 +41,19 @@ import {
 
 import { Ufs, UfsModel } from 'app/global/utils/get-ufs';
 import { FormProcessService } from 'app/modules/process/form-process.service';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+
+import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
+import { MY_FORMATS } from 'app/shared/date-picker-formats';
 
 @Component({
   selector: 'app-form-process',
   templateUrl: './form-process.component.html',
   styleUrls: ['./form-process.component.scss'],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    { provide: MAT_LUXON_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+  ],
 })
 export class FormProcessComponent implements OnInit {
   form: FormGroup = this.formService.init();
@@ -81,8 +89,10 @@ export class FormProcessComponent implements OnInit {
     private notification: NotificationService,
     private lawyerService: LawyerService,
     private route: ActivatedRoute,
+
     private coreService: CoreService,
     private _router: Router,
+    public _route: Router
   ) {}
 
   ngOnInit(): void {
@@ -106,6 +116,11 @@ export class FormProcessComponent implements OnInit {
       this.isEdit = true;
       this.getEditProcess();
     }
+  }
+
+  toDetail() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this._route.navigate([`/processos/detail/${id}`]);
   }
 
   getCore() {
@@ -231,10 +246,8 @@ export class FormProcessComponent implements OnInit {
 
   onSubmit() {
     if (!this.validateError()) return;
-
     /* GetRawValue recovery object that was disabled in the reactive form */
     const obj = this.formService.formToObj(this.form.getRawValue());
-
     if (this.isEdit) {
       this.updateProcess(obj);
       return;

@@ -20,20 +20,12 @@ import { FuseLoadingService } from '@fuse/services/loading';
 })
 export class FuseLoadingBarComponent implements OnChanges, OnInit, OnDestroy {
   @Input() autoMode: boolean = true;
-  mode: 'determinate' | 'indeterminate';
+  @Input() mode: 'determinate' | 'indeterminate';
   progress: number = 0;
-  show: boolean = false;
+  @Input() show: boolean = true;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-  /**
-   * Constructor
-   */
   constructor(private _fuseLoadingService: FuseLoadingService) {}
-
-  // -----------------------------------------------------------------------------------------------------
-  // @ Lifecycle hooks
-  // -----------------------------------------------------------------------------------------------------
-
   /**
    * On changes
    *

@@ -1,37 +1,60 @@
-<gl-dialog [title]="dialogTitle" [isDisableClose]="true" (emitClick)="btnClicked($event)">
+<gl-dialog
+  [title]="dialogTitle"
+  [isDisableClose]="true"
+  (emitClick)="btnClicked($event)"
+>
   <ng-container body>
     <div class="inset-0 flex flex-col min-w-0 overflow-hidden w-full">
       <div class="xl:col-span-2 flex flex-col flex-auto overflow-hidden pt-4">
         <form [formGroup]="form">
           <div class="grid w-full">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="flex flex-col">
                 <mat-form-field class="w-full">
                   <mat-label>Número do recurso</mat-label>
-                  <input matInput type="text" formControlName="number">
+                  <input matInput type="text" formControlName="number" />
                 </mat-form-field>
               </div>
               <div class="flex flex-col">
                 <mat-form-field class="flex-auto gt-xs:pl-3">
                   <mat-label>Origem</mat-label>
-                  <mat-select formControlName="origin" (selectionChange)="changeOrigin()">
-                    <mat-option [value]="origin.id" *ngFor="let origin of origins">{{origin.name}}</mat-option>
+                  <mat-select
+                    formControlName="origin"
+                    (selectionChange)="changeOrigin()"
+                  >
+                    <mat-option
+                      [value]="origin.id"
+                      *ngFor="let origin of origins"
+                      >{{ origin.name }}</mat-option
+                    >
                   </mat-select>
                 </mat-form-field>
               </div>
-              <div class="flex flex-col ">
+              <div class="flex flex-col">
                 <mat-form-field class="flex-auto gt-xs:pl-3">
                   <mat-label>UFs</mat-label>
-                  <mat-select formControlName="uf" (selectionChange)="changeUfs()">
-                    <mat-option [value]="uf.name" *ngFor="let uf of ufs">{{uf.name}}</mat-option>
+                  <mat-select
+                    formControlName="uf"
+                    (selectionChange)="changeUfs()"
+                  >
+                    <mat-option [value]="uf.name" *ngFor="let uf of ufs">{{
+                      uf.name
+                    }}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
               <div class="flex flex-col">
                 <mat-form-field class="flex-auto gt-xs:pl-3">
                   <mat-label>Comarca</mat-label>
-                  <mat-select formControlName="county" (selectionChange)="changeCounty()">
-                    <mat-option [value]="county.id" *ngFor="let county of counties">{{county.name}}</mat-option>
+                  <mat-select
+                    formControlName="county"
+                    (selectionChange)="changeCounty()"
+                  >
+                    <mat-option
+                      [value]="county.id"
+                      *ngFor="let county of counties"
+                      >{{ county.name }}</mat-option
+                    >
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -39,7 +62,11 @@
                 <mat-form-field class="flex-auto gt-xs:pl-3">
                   <mat-label>Foro</mat-label>
                   <mat-select formControlName="forum">
-                    <mat-option [value]="forum.id" *ngFor="let forum of forums">{{forum.name}}</mat-option>
+                    <mat-option
+                      [value]="forum.id"
+                      *ngFor="let forum of forums"
+                      >{{ forum.name }}</mat-option
+                    >
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -47,7 +74,11 @@
                 <mat-form-field class="flex-auto gt-xs:pl-3">
                   <mat-label>Orgão</mat-label>
                   <mat-select formControlName="organ">
-                    <mat-option [value]="organ.id" *ngFor="let organ of organs">{{organ.name}}</mat-option>
+                    <mat-option
+                      [value]="organ.id"
+                      *ngFor="let organ of organs"
+                      >{{ organ.name }}</mat-option
+                    >
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -55,16 +86,26 @@
                 <mat-form-field class="flex-auto gt-xs:pl-3">
                   <mat-label>Instância</mat-label>
                   <mat-select formControlName="instance">
-                    <mat-option [value]="instance" *ngFor="let instance of instanceTypes">{{instance}}</mat-option>
+                    <mat-option
+                      [value]="instance"
+                      *ngFor="let instance of instanceTypes"
+                      >{{ instance | titlecase }}</mat-option
+                    >
                   </mat-select>
                 </mat-form-field>
               </div>
               <div class="grid grid-cols gap-4">
                 <div class="flex flex-col">
                   <div class="flex flex-col">
-                    <mat-form-field class="w-full">
+                    <mat-form-field class="w-full flex-auto gt-xs:pl-3">
                       <mat-label>Tipo do recurso</mat-label>
-                      <input matInput type="text" formControlName="resourceType">
+                      <mat-select formControlName="resourceType">
+                        <mat-option
+                          [value]="type"
+                          *ngFor="let type of rTypes"
+                          >{{ type | titlecase }}</mat-option
+                        >
+                      </mat-select>
                     </mat-form-field>
                   </div>
                 </div>

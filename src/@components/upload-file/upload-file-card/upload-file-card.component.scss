@@ -1,3 +1,44 @@
 .bg-excell {
   background-color:#008739 !important;
 }
+
+.overlay {
+  position: absolute;
+  top:-100;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--fuse-accent-500);
+  //opacity:0.7;
+  width: 100%;
+  height: 0;
+  transition: .3s ease;
+  border-radius: 0rem 0 1rem 1rem;
+}
+.text {
+  display: none;
+  color: #fff;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+
+.container:hover .overlay {
+  height: 30%;
+  width: auto;
+  .text {
+    display: block;
+  }
+}
+
+.download-icon {
+  color: white;
+  font-size: 24px; /* Adjust as needed */
+  cursor: pointer;
+}

@@ -21,7 +21,12 @@
           <div class="flex flex-col">
             <mat-form-field class="w-full">
               <mat-label>Data </mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="date" />
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="date"
+                readonly
+              />
               <mat-datepicker-toggle
                 matIconSuffix
                 [for]="picker"

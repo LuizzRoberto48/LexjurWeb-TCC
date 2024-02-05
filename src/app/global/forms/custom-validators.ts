@@ -1,4 +1,9 @@
-import { AbstractControl, ValidationErrors, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { DateTime } from 'luxon';
 
 const cnpjPattern = /^\d{2}\d{3}\d{3}\d{4}\d{2}$/;
@@ -62,5 +67,19 @@ export namespace CustomValidators {
       };
     }
     return null;
+  }
+
+  export function atLeastNotEmptyValidator(minRequired: number) {
+    return (group: FormGroup): ValidationErrors | null => {
+      let filledFields = 0;
+  
+      Object.values(group.controls).forEach((control) => {
+        if (control.value) { // Check if control has a value
+          filledFields++;
+        }
+      });
+  
+      return filledFields >= minRequired ? null : { atLeastNotEmpty: true };
+    };
   }
 }

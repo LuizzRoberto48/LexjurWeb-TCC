@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { NotificationService } from '@fuse/components/notification/notification.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Paginator } from 'app/global/paginator/public-api';
 import { CoreService } from 'app/modules/cores/service/core.service';
@@ -11,7 +12,7 @@ import {
   Process,
 } from 'app/modules/process/models/process.model';
 import { ProcessService } from 'app/modules/process/process.service';
-import { configDialog } from 'app/modules/process/utils';
+import { configDialog, configDialogResource } from 'app/modules/process/utils';
 import { Subscription } from 'rxjs';
 
 const MINWIDTH = 1024;
@@ -23,9 +24,9 @@ const MINWIDTH = 1024;
 export class ListProcessComponent {
   screenWidth: string;
   length = 0;
-  pageSize = 2;
+  pageSize = 20;
   pageIndex = 1;
-  pageSizeOptions = [2, 6, 25];
+  pageSizeOptions = [20];
 
   $subsChangedCore: Subscription = new Subscription();
   coreName: string = '';
@@ -54,6 +55,7 @@ export class ListProcessComponent {
     private processService: ProcessService,
     private coreService: CoreService,
     private __confirmationService: FuseConfirmationService,
+    private notification: NotificationService,
   ) {}
 
   ngOnInit() {
@@ -95,7 +97,22 @@ export class ListProcessComponent {
   }
 
   removeProcessDialog(process: Process): void {
-    this.__confirmationService.open(configDialog(process.caseNumber));
+    const dialogRef = this.__confirmationService.open(configDialogResource());
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'confirmed') {
+        this.remove(process.id);
+      }
+    });
+  }
+
+  remove(id: number) {
+    //let paginator: Paginator = { page: 1, size: 20 };
+    this.processService.delete(id).subscribe({
+      next: () => {
+        this.notification.success('processo removido com sucesso');
+        this.getCore();
+      },
+    });
   }
 
   ngOnDestroy() {

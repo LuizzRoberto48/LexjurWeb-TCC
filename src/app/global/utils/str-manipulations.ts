@@ -18,3 +18,10 @@ export function findAndReplaceFromArray(list: any[], param1: any, param2: any, n
     console.error('File not found in the array.');
   }
 }
+
+
+// Function to get enum key by value
+export function getEnumKeyByEnumValue(myEnum: any, enumValue: string): string | null {
+  let keys = Object.keys(myEnum).filter(x => myEnum[x] == enumValue);
+  return keys.length > 0 ? keys[0] : null;
+}

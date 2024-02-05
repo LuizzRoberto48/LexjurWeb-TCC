@@ -1,6 +1,6 @@
 <form [formGroup]="form" class="flex flex-col mt-5">
   <div class="grid w-full">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div class="flex flex-col">
         <mat-form-field class="flex-auto gt-xs:pl-3">
           <mat-label>Tipo</mat-label>
@@ -27,8 +27,6 @@
           <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
       </div>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="flex flex-col">
         <mat-form-field class="w-full">
           <mat-label>Data </mat-label>
@@ -36,6 +34,7 @@
             matInput
             [matDatepicker]="picker"
             formControlName="date"
+            readonly
           />
           <mat-datepicker-toggle
             matIconSuffix
@@ -45,8 +44,11 @@
           <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
       </div>
-      
     </div>
+    <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      
+      
+    </div> -->
     <div class="grid grid-cols-1 gap-4">
       <div class="flex flex-col">
         <mat-form-field class="w-full">

@@ -13,7 +13,7 @@
         <ng-template matStepLabel>Cadastro</ng-template>
         <process-guarantee-form
           #register
-          (onUpdate)="onObjectUpdated($event)"
+          (onUpdate)="onUpdate($event)"
           [editId]="id"
         ></process-guarantee-form>
       </mat-step>

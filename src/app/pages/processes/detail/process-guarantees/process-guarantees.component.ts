@@ -7,8 +7,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { GetProcessExpenses } from 'app/modules/process-expenses/expenses.model';
-import { ProcessExpensesService } from 'app/modules/process-expenses/process-expenses.service';
 import { GetProcessGuarantee } from 'app/modules/process-guarantees/model/guarantees.model';
 import { ProcessGuaranteeService } from 'app/modules/process-guarantees/process-guarantee.service';
 import { Process } from 'app/modules/process/models/process.model';
@@ -27,7 +25,6 @@ export class ProcessGuaranteesComponent {
   searchInputControl: any = new UntypedFormControl();
   subs: Subscription[] = [];
   columns: string[] = [
-    'processNumber',
     'guarantee',
     'price',
     'date',
@@ -82,7 +79,7 @@ export class ProcessGuaranteesComponent {
           return this.guaranteeService.findAll([param]);
         }),
       )
-      .subscribe((guarantees: GetProcessExpenses[]) => {
+      .subscribe((guarantees: GetProcessGuarantee[]) => {
         console.log(guarantees);
         this.dataSource.data = guarantees;
         this.dataSource.sort = this.sort;
@@ -92,7 +89,14 @@ export class ProcessGuaranteesComponent {
     this.subs.push($subs);
   }
 
-  edit(element: GetProcessExpenses) {
+  edit(element: GetProcessGuarantee) {
+    this.route.navigate(['edit/' + element.id], {
+      relativeTo: this._activatedRoute.parent,
+      queryParams: { processId: this.processId, isEdit: true },
+    });
+  }
+
+  details(element: GetProcessGuarantee) {
     this.route.navigate(['edit/' + element.id], {
       relativeTo: this._activatedRoute.parent,
       queryParams: { processId: this.processId },

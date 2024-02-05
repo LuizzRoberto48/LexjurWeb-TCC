@@ -1,5 +1,11 @@
 import { GetLawyer } from 'app/modules/lawyer/model/lawyer.model';
 
+export enum ProcessStatus {
+  ACTIVE = 'Ativo',
+  FINISHED = 'Encerrado',
+  WAIT_TO_FINISHED = 'Aguardando Encerramento',
+}
+
 export enum InstanceType {
   PRIMEIRA = 'PRIMEIRA',
   SEGUNDA = 'SEGUNDA',
@@ -7,8 +13,8 @@ export enum InstanceType {
 }
 
 export enum PersonType {
-  FISICA = 'FISICA',
-  JURIDICA = 'JURIDICA',
+  FISICA = 'Física',
+  JURIDICA = 'Jurídica',
 }
 
 export interface GetProcessPageable {
@@ -47,8 +53,8 @@ export interface CreateProcess {
   coreId: number;
   adverseStakeholder: AdverseStakeholder;
   stakeholderId: number;
-  distributionDate: string;
-  quoteDate: string;
+  distributionDate: any;
+  quoteDate: any;
   description: string;
   stakeholderPosition: string;
   adversePosition: string;
@@ -66,7 +72,7 @@ export interface ProcessForm {
   clientId: number;
   countyId: number;
   description: string;
-  distributionDate: string;
+  distributionDate: any;
   eletronicSystemId: number;
   forumId: number;
   insideLawyerId: number;
@@ -81,7 +87,7 @@ export interface ProcessForm {
   lawSubAreaId: number;
   originId: number;
   phaseId: number;
-  quoteDate: string;
+  quoteDate: any;
   stakeholderId: number;
   stakeholderPosition: string;
   adversePosition: string;
@@ -93,6 +99,7 @@ export interface ProcessForm {
 
 export interface Process {
   id: number;
+  status:any
   createAt: Date;
   updateAt: Date;
   isCNJ: boolean;

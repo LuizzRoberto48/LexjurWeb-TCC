@@ -8,7 +8,7 @@ export enum TargetFiles {
   TODOS = 'TODOS',
   PRAZO = 'PRAZO',
   RECURSO = 'RECURSO',
-  PROCESSO = 'PROCESSO',
+  PROCESSO = 'PRINCIPAL',
   PROGRESS = 'ANDAMENTO',
   EXPENSES = 'DESPESAS',
   GUARANTEE = 'GARANTIA',
@@ -64,7 +64,7 @@ export interface FormUploadProcessFile {
   targetId: number;
   target: string;
   fileClassificationId: number;
-  createAt: string;
+  createAt: any;
   lossProbability: LossProbability;
 }
 

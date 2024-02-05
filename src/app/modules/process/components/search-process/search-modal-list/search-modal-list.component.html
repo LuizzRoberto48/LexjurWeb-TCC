@@ -1,0 +1,79 @@
+<div class="flex items-center sm:mt-0 px-6 justify-between flex-col">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="processNumber">
+      <th mat-header-cell *matHeaderCellDef>Número do processo</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.caseNumber }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="uf">
+      <th mat-header-cell *matHeaderCellDef>UF</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.Forum?.County?.uf }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="county">
+      <th mat-header-cell *matHeaderCellDef>Comarca</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.Forum?.County?.name }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="organ">
+      <th mat-header-cell *matHeaderCellDef>Orgão</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.Organ.name }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="adverseStakeholder">
+      <th mat-header-cell *matHeaderCellDef>Parte adversa</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.AdverseStakeholder?.name }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="client">
+      <th mat-header-cell *matHeaderCellDef>Cliente</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.Stakeholder?.Client?.name }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element" class="text-end">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          aria-label="Example icon-button with a menu"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="goTo(element)">
+            <mat-icon
+              class="icon-size-5 text-gray-600"
+              [svgIcon]="'heroicons_outline:doc-detail'"
+            ></mat-icon>
+            <span>Ver processo</span>
+          </button>
+          <button mat-menu-item (click)="vinculate(element)">
+            <mat-icon
+              class="icon-size-5 text-gray-600"
+              svgIcon="add_circle_outline"
+            ></mat-icon>
+            <span>Vincular processo</span>
+          </button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[15, 25, 30]" [showFirstLastButtons]="true">
+  </mat-paginator>
+</div>

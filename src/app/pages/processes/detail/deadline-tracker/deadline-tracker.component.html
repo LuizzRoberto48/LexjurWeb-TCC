@@ -45,7 +45,7 @@
               <span class="leading-relaxed whitespace-nowrap">{{
                 (element?.resource?.number
                   ? ('Recurso' | stepProgress)
-                  : ('Processo' | stepProgress)
+                  : ('Principal' | stepProgress)
                 ).label
               }}</span>
             </span>
@@ -111,6 +111,13 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="details(element)">
+                <mat-icon
+                  class="icon-size-4 text-gray-600"
+                  svgIcon="library_books"
+                ></mat-icon>
+                <span>Detalhes</span>
+              </button>
               <button mat-menu-item (click)="edit(element)">
                 <mat-icon
                   class="icon-size-4 text-gray-600"

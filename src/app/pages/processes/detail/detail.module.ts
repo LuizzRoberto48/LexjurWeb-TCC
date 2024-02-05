@@ -6,7 +6,7 @@ import { BreadcrumbService } from '@components/breadcrumb/breadcrumb.service';
 
 import { ProcessDetailComponent } from './detail.component';
 import { FuseNavigationModule } from '@fuse/components/navigation';
-import { ProcessDetailService } from 'app/modules/process/process-detail.service';
+import { ATTACHED_PATH, EXPENSES_PATH, FILES_PATH, GENERAL_PATH, GUARANTEES_PATH, PARTS_PATH, PROGRESS_PATH, ProcessDetailService, REQUESTS_PATH, RESOURCE_PATH, SCHEDULE_PATH } from 'app/modules/process/process-detail.service';
 import { ProcessResourcesComponent } from './resources/resources.component';
 import { ProcessGeneralComponent } from './general/general.component';
 import { FormProcessResolver } from 'app/modules/process/resolver/process.resolver';
@@ -32,11 +32,11 @@ const routes: Route[] = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'general',
+        redirectTo: GENERAL_PATH,
       },
       {
         title: 'geral',
-        path: 'general',
+        path: GENERAL_PATH,
         component: ProcessGeneralComponent,
         data: {
           breadcrumb: () => 'Geral',
@@ -44,7 +44,7 @@ const routes: Route[] = [
       },
       {
         title: 'recurso',
-        path: 'resources',
+        path: RESOURCE_PATH,
         component: ProcessResourcesComponent,
         data: {
           breadcrumb: () => 'Recursos',
@@ -52,7 +52,7 @@ const routes: Route[] = [
       },
       {
         title: 'agendamento',
-        path: 'schedule',
+        path: SCHEDULE_PATH,
         data: {
           breadcrumb: () => 'Agendamentos',
         },
@@ -63,7 +63,7 @@ const routes: Route[] = [
       },
       {
         title: 'andamento',
-        path: 'progress',
+        path: PROGRESS_PATH,
         data: {
           breadcrumb: () => 'Andamento',
         },
@@ -74,7 +74,7 @@ const routes: Route[] = [
       },
       {
         title: 'Arquivos',
-        path: 'files',
+        path: FILES_PATH,
         data: {
           breadcrumb: () => 'Meus arquivos',
         },
@@ -85,7 +85,7 @@ const routes: Route[] = [
       },
       {
         title: 'Despesas',
-        path: 'expenses',
+        path: EXPENSES_PATH,
         data: {
           breadcrumb: () => 'Minhas despesas',
         },
@@ -96,7 +96,7 @@ const routes: Route[] = [
       },
       {
         title: 'Partes',
-        path: 'parts',
+        path: PARTS_PATH,
         data: {
           breadcrumb: () => 'Partes envolvidas',
         },
@@ -107,7 +107,7 @@ const routes: Route[] = [
       },
       {
         title: 'Garantias',
-        path: 'guarantees',
+        path: GUARANTEES_PATH,
         data: {
           breadcrumb: () => 'Garantias',
         },
@@ -118,13 +118,24 @@ const routes: Route[] = [
       },
       {
         title: 'Pedidos',
-        path: 'requests',
+        path: REQUESTS_PATH,
         data: {
           breadcrumb: () => 'Pedidos',
         },
         loadChildren: () =>
           import('./process-requests/process-requests.module').then(
             (m) => m.ProcessRequestsModule,
+          ),
+      },
+      {
+        title: 'Apenso',
+        path: ATTACHED_PATH,
+        data: {
+          breadcrumb: () => 'Vínculos',
+        },
+        loadChildren: () =>
+          import('./process-attached/process-attached.module').then(
+            (m) => m.ProcessAttachedModule,
           ),
       },
     ],

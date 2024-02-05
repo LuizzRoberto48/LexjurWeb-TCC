@@ -6,7 +6,9 @@ import {
   Subject,
   catchError,
   from,
+  map,
   switchMap,
+  tap,
 } from 'rxjs';
 import { environment } from 'environments/environment';
 import { UploadType } from '@components/upload-file/upload.model';
@@ -19,6 +21,7 @@ import {
 } from '../models/upload-process-files';
 import { getLastIndex } from 'app/global/utils/str-manipulations';
 import { UploadFileService } from '@components/upload-file/upload-file.service';
+import { FuseLoadingService } from '@fuse/services/loading';
 
 @Injectable({
   providedIn: 'any',
@@ -35,7 +38,7 @@ export class UploadProcessFileService {
 
   constructor(
     private _http: HttpClient,
-    private fileService: UploadFileService,
+    private fileService: UploadFileService
   ) {}
 
   private formatDataFile(file: File, obj: CreateUploadProcessFile) {
@@ -44,7 +47,6 @@ export class UploadProcessFileService {
     // Append properties from obj to formData
     Object.entries(obj).forEach(([key, value]: any) => {
       if (key === 'processNumber') {
-        // If the key is 'processNumber', append its properties individually
         formData.append('processNumber[name]', value.name);
         formData.append('processNumber[number]', value.number);
       } else {
@@ -67,7 +69,7 @@ export class UploadProcessFileService {
     );
   }
 
-  updateFile(file: File, obj: CreateUploadProcessFile): Observable<any> {
+  updateFile(obj: CreateUploadProcessFile, file?: File): Observable<any> {
     const formData: FormData = this.formatDataFile(file, obj);
 
     // Create headers to specify that you are sending form data
@@ -118,7 +120,7 @@ export class UploadProcessFileService {
   downloadFile(path: string) {
     let params = new HttpParams().set('key', path);
 
-    return this._http.get<{url:string}>(
+    return this._http.get<{ url: string }>(
       `${environment.apiURL}/process/uploads/download`,
       {
         params,
@@ -127,7 +129,7 @@ export class UploadProcessFileService {
   }
 
   get targetList(): TargetFiles[] {
-    return allTargets
+    return allTargets;
   }
 
   set file(file: GetUploadFile) {
@@ -156,6 +158,7 @@ export class UploadProcessFileService {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
+        
         return Promise.all([
           response.blob(),
           Promise.resolve(response.headers.get('Content-Type')),
@@ -173,6 +176,28 @@ export class UploadProcessFileService {
       catchError((error) => {
         console.error('Error fetching file:', error);
         throw error;
+      }),
+    );
+  }
+
+  toGetUploadFile(uploadType: UploadType, files: GetUploadFile[]) {
+    return files.find((f) => f.id == uploadType.id);
+  }
+
+  getFileFromBucket(
+    uploadFile: GetUploadFile,
+  ): Observable<{ file: File; urlFile: string }> {
+    const fileProperties = this.findCardFile(uploadFile);
+    return this.downloadFile(uploadFile.bucketKey).pipe(
+      switchMap((res: { url: string }) => {
+        const urlFile = res.url;
+        return this.fetchFileAsObservable(
+          urlFile,
+          fileProperties,
+          uploadFile.originalName,
+        ).pipe(
+          map((file) => ({ file, urlFile })), // Use map here to transform the data
+        );
       }),
     );
   }
