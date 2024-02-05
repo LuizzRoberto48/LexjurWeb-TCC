@@ -3,7 +3,12 @@
 >
   <div class="inset-0 flex flex-col min-w-0 overflow-hidden w-full p-5">
     <mat-horizontal-stepper [linear]="!isEdit" #horizontalStepper>
-     
+      <mat-step #horizontalStepperStep1 *ngIf="isEdit">
+        <ng-template matStepLabel>Detalhes</ng-template>
+        <ng-container *ngIf="deadline?.id">
+          <deadline-tracker-info [info]="deadline"></deadline-tracker-info>
+        </ng-container>
+      </mat-step>
       <mat-step [stepControl]="register.form" #horizontalStepperStep2>
         <ng-template matStepLabel>Cadastro</ng-template>
         <deadline-tracker-form
@@ -17,15 +22,9 @@
         <files-list
           [isFilterTarget]="false"
           [target]="target"
-          [$processNumber]="$processNumber "
+          [$processNumber]="$processNumber"
           [isCreated]="!isEdit"
         ></files-list>
-      </mat-step>
-      <mat-step #horizontalStepperStep1 >
-        <ng-template matStepLabel>Detalhes</ng-template>
-        <ng-container *ngIf="deadline?.id">
-          <deadline-tracker-info [info]="deadline"></deadline-tracker-info>
-        </ng-container>
       </mat-step>
     </mat-horizontal-stepper>
   </div>

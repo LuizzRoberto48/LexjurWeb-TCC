@@ -30,20 +30,6 @@
   >
     <div class="overflow-x-auto mx-6" style="padding: 20px">
       <table mat-table [dataSource]="dataSource">
-        <ng-container matColumnDef="processNumber">
-          <th mat-header-cell *matHeaderCellDef>N° processo</th>
-          <td mat-cell *matCellDef="let element">
-            <span
-              class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 tracking-wide uppercase"
-              [ngClass]="(element?.process?.caseNumber | stepProgress).cssClass"
-            >
-              <span class="leading-relaxed whitespace-nowrap">{{
-                ('Processo' | stepProgress).label
-              }}</span>
-            </span>
-          </td>
-        </ng-container>
-
         <ng-container matColumnDef="guarantee">
           <th mat-header-cell *matHeaderCellDef>Tipo</th>
           <td mat-cell *matCellDef="let element">
@@ -72,6 +58,13 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="details(element)">
+                <mat-icon
+                  class="icon-size-4 text-gray-600"
+                  svgIcon="library_books"
+                ></mat-icon>
+                <span>Detalhes</span>
+              </button>
               <button mat-menu-item (click)="edit(element)">
                 <mat-icon
                   class="icon-size-4 text-gray-600"

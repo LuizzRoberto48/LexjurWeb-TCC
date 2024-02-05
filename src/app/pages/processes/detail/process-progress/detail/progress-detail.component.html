@@ -3,6 +3,12 @@
 >
   <div class="inset-0 flex flex-col min-w-0 overflow-hidden w-full p-5">
     <mat-horizontal-stepper [linear]="!isEdit" #horizontalStepper>
+      <mat-step #horizontalStepperStep1 *ngIf="isEdit">
+        <ng-template matStepLabel>Detalhes</ng-template>
+        <ng-container *ngIf="progress?.id">
+          <process-progress-info [info]="progress"></process-progress-info>
+        </ng-container>
+      </mat-step>
       <mat-step [stepControl]="register.form" #horizontalStepperStep2>
         <ng-template matStepLabel>Cadastro</ng-template>
         <progress-form
@@ -20,12 +26,7 @@
           [isCreated]="!isEdit"
         ></files-list>
       </mat-step>
-      <mat-step #horizontalStepperStep1 >
-        <ng-template matStepLabel>Detalhes</ng-template>
-        <ng-container *ngIf="progress?.id">
-          <process-progress-info [info]="progress"></process-progress-info>
-        </ng-container>
-      </mat-step>
+      
     </mat-horizontal-stepper>
   </div>
 </div>

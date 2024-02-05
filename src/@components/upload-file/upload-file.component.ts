@@ -9,32 +9,31 @@ import {
 import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
 import { UploadType } from './upload.model';
 import { UploadFileService } from './upload-file.service';
+import { NotificationService } from '@fuse/components/notification/notification.service';
 @Component({
   selector: 'gl-upload-file',
   templateUrl: './upload-file.component.html',
   styleUrls: ['./upload-file.component.scss'],
   providers: [UploadFileService],
 })
-export class UploadFileComponent implements OnChanges{
+export class UploadFileComponent {
   @Input() hasCloseBtn: true;
-  @Input() file: File;
-  @Input() title:string;
+  @Input() uploadType: UploadType;
+  @Input() noDownload:boolean = false;
+  file:File;
   extension: string;
   acceptedTypes: UploadType[] = [];
-  uploadType: UploadType = {} as UploadType;
+
 
   @Output() changedFile: EventEmitter<{ file: File; type: UploadType }> =
     new EventEmitter();
 
-  constructor(private service: UploadFileService) {
+  constructor(
+    private service: UploadFileService,
+    private notification: NotificationService,
+  ) {
     this.acceptedTypes = this.service.acceptedTypes;
     this.service.closeBtn = this.hasCloseBtn;
-  }
-
-  ngOnChanges() {
-    /* Para edição */
-    if (this.file) this.uploadType = this.getFile(this.file);
-    this.uploadType.target = this.title
   }
 
   fileDrop(file) {
@@ -47,32 +46,29 @@ export class UploadFileComponent implements OnChanges{
   }
 
   removeFile() {
+    this.uploadType = null;
     this.file = null;
   }
 
   changeFile(file: File) {
-    this.uploadType = this.getFile(file);
-    this.file = file;
-    this.changedFile.emit({ file: this.file, type: this.uploadType });
+    this.uploadType = this.setUploadType(file)
+    this.changedFile.emit({ file, type: this.uploadType });
   }
 
-  getFile(file): UploadType {
+  setUploadType(file:File): UploadType {
     const acceptFile = this.acceptedFile(file);
-    //TODO:return messagem que não possui suporte para o formato solicitado
-    if (!acceptFile) return; 
+    if (!acceptFile) return;
     const uploadType = acceptFile;
     uploadType.label = file.name;
     return uploadType;
   }
-
 
   acceptedFile(file: File) {
     const found = this.acceptedTypes.find(
       (accepted) => accepted.accept == file.type,
     );
     if (!found) {
-      this.file = null;
-      throw new Error('Esta extensão não é permitida');
+      this.notification.danger('Extensão não permitida');
     }
     return found;
   }

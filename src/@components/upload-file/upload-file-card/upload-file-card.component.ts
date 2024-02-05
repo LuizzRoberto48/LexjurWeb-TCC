@@ -10,9 +10,10 @@ import { UploadType } from '../upload.model';
 export class UploadFileCardComponent {
   acceptedTypes: UploadType[] = [];
   @Input() uploadType: UploadType;
+  @Input() noDownload: boolean = false;
   @Output() clicked: EventEmitter<boolean> = new EventEmitter();
   @Output() onClose: EventEmitter<boolean> = new EventEmitter();
-
+  @Output() onDownload: EventEmitter<boolean> = new EventEmitter();
   constructor(public service: UploadFileService) {
     this.acceptedTypes = this.service.acceptedTypes;
   }
@@ -23,5 +24,9 @@ export class UploadFileCardComponent {
 
   close() {
     this.onClose.emit(false);
+  }
+
+  download() {
+    this.service.download = this.uploadType;
   }
 }

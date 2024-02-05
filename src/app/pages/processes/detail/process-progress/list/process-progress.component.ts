@@ -4,10 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import {
-  IProcessProgress,
-  ProcessProgress,
-} from 'app/modules/process-progress/models/progress.model';
+import { IProcessProgress } from 'app/modules/process-progress/models/progress.model';
 import { ProcessProgressService } from 'app/modules/process-progress/progress.service';
 import { configDialogResource } from 'app/modules/process/utils';
 import { DateTime } from 'luxon';
@@ -35,7 +32,7 @@ export class ProcessProgressComponent {
 
   ngOnInit() {
     this.getProgressByProcess();
-    this.search()
+    this.search();
   }
 
   private search() {
@@ -51,7 +48,14 @@ export class ProcessProgressComponent {
     });
   }
 
-  edit(element: ProcessProgress) {
+  edit(element: IProcessProgress) {
+    this.route.navigate(['edit/' + element.id], {
+      relativeTo: this._activatedRoute.parent,
+      queryParams: { processId: this.processId, isEdit: true },
+    });
+  }
+
+  details(element: IProcessProgress) {
     this.route.navigate(['edit/' + element.id], {
       relativeTo: this._activatedRoute.parent,
       queryParams: { processId: this.processId },
@@ -69,7 +73,10 @@ export class ProcessProgressComponent {
     const filter = value.toLocaleLowerCase();
     return (
       data.type.name.toLowerCase().includes(filter) ||
-      DateTime.fromISO(data.date).toUTC().toFormat('dd/MM/yyyy').includes(filter)
+      DateTime.fromISO(data.date)
+        .toUTC()
+        .toFormat('dd/MM/yyyy')
+        .includes(filter)
     );
   }
 

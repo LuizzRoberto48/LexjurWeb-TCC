@@ -2,17 +2,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 export type ProgressStatus = 'CANCELED' | 'INPROGRESS' | 'COMPLETED';
 
-export function stepProgress(type: ProgressStatus):string {
-  switch (type) {
-    case 'CANCELED':
-      return 'Cancelado';
-    case 'INPROGRESS':
-      return 'Em Progresso'
-    case 'COMPLETED':
-      return 'Completo'
-  }
-}
-
 interface StatusClass {
   label: string;
   cssClass: { [key: string]: boolean };
@@ -29,7 +18,7 @@ const statusClassMappings: { [key in ProgressStatus]: StatusClass } = {
     },
   },
   INPROGRESS: {
-    label: 'Em progresso',
+    label: 'Pendente',
     cssClass: {
       'bg-yellow-200': true,
       'text-yellow-800': true,

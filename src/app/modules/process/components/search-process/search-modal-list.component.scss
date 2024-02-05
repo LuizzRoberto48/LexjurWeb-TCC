@@ -1,0 +1,7 @@
+::ng-deep mat-expansion-panel-header.header-center {
+  justify-content: center !important;
+
+  .mat-content {
+    flex: none !important;
+  }
+}

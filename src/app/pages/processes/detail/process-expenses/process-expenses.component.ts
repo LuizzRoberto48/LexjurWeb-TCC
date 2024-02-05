@@ -25,7 +25,6 @@ export class ProcessExpensesComponent {
   searchInputControl: any = new UntypedFormControl();
   subs: Subscription[] = [];
   columns: string[] = [
-    'processNumber',
     'type',
     'price',
     'expirationDate',
@@ -94,6 +93,13 @@ export class ProcessExpensesComponent {
   }
 
   edit(element: GetProcessExpenses) {
+    this.route.navigate(['edit/' + element.id], {
+      relativeTo: this._activatedRoute.parent,
+      queryParams: { processId: this.processId, isEdit: true },
+    });
+  }
+
+  details(element: GetProcessExpenses) {
     this.route.navigate(['edit/' + element.id], {
       relativeTo: this._activatedRoute.parent,
       queryParams: { processId: this.processId },

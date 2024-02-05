@@ -26,18 +26,11 @@ export class GuaranteeDetailComponent {
   ) {
     this.editMode();
    
-    //this.findProcessNumberFromTarget();
-  }
-
-  onObjectUpdated(guarantee: GetProcessGuarantee): void {
-    // Move two steps forward (to the third step)
-    this.horizontalStepper.next();
-    this.horizontalStepper.next();
-    this.onUpdate(guarantee);
   }
 
   ngAfterViewInit() {
     this.activeRoute.queryParams.subscribe((param: any) => {
+      if (param['isEdit']) this.horizontalStepper.next();
       if (param['isCreated']) {
         this.horizontalStepper.next();
         this.horizontalStepper.next();

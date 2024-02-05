@@ -21,6 +21,14 @@
 <div class="grid grid-cols-3 gap-4 mt-4">
   <div class="flex flex-col">
     <p class="text-gray-900 font-bold">
+      Valor:
+      <span class="font-light">{{
+        info.price | currency : 'BRL' : 'symbol-narrow' : '1.2-2'
+      }}</span>
+    </p>
+  </div>
+  <div class="flex flex-col">
+    <p class="text-gray-900 font-bold">
       Data de expiração:
       <span class="font-light">{{
         info.expirationDate | date : 'dd/MM/yyyy'
