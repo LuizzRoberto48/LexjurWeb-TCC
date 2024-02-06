@@ -1,0 +1,149 @@
+<div class="w-full">
+  <form [formGroup]="accountForm">
+
+    <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+      <!-- LOGIN INFO START-->
+      <!--Name-->
+      <div class="sm:col-span-4">
+        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>Nome</mat-label>
+          <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:user'" matPrefix></mat-icon>
+          <input [formControlName]="'name'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--Email-->
+      <div class="sm:col-span-4">
+        <mat-form-field class="fuse-mat-emphasized-affix w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>E-mail</mat-label>
+          <input [value]="authService.authUser.email" disabled matInput>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+      <!-- LOGIN INFO END-->
+    </div>  
+
+    <!-- Divider -->
+    <div class="w-full mt-8 mb-1">
+      <h1 class="font-semibold tracking-wide uppercase text-blue-800">Endereço</h1>
+      <hr class="h-0.5 mt-5 bg-gray-200 border-0 dark:bg-gray-700">
+    </div>
+    
+    <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+      <!-- ADRESS INFO START -->
+      <!--Postal Code (CEP)-->
+      <div class="sm:col-span-2">
+        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>CEP</mat-label>
+          <input [formControlName]="'postalCode'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--UF-->
+      <div class="sm:col-span-2">
+        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>UF</mat-label>
+          <mat-select [formControlName]="'uf'">
+           <mat-option *ngFor="let uf of ufs" [value]="uf.name">
+              {{uf.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--City-->
+      <div class="sm:col-span-2">
+        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>Cidade</mat-label>
+          <input [formControlName]="'city'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--District-->
+      <div class="sm:col-span-2">
+        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>Bairro</mat-label>
+          <input [formControlName]="'district'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--Street-->
+      <div class="sm:col-span-4">
+        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>Rua</mat-label>
+          <input [formControlName]="'street'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--Street number-->
+      <div class="sm:col-span-2">
+        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>Número da rua</mat-label>
+          <input [formControlName]="'number'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--Complement-->
+      <div class="sm:col-span-2">
+        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>Complemento</mat-label>
+          <input [formControlName]="'complement'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+      <!-- ADRESS INFO END -->
+    </div>
+
+    <!-- Divider -->
+    <div class="w-full mt-8 mb-1">
+      <h1 class="font-semibold tracking-wide uppercase text-blue-800">OAB</h1>
+      <hr class="h-0.5 mt-5 bg-gray-200 border-0 dark:bg-gray-700">
+    </div>
+
+    <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+      <!-- COMPANY INFO START -->
+      <!--OAB-->
+      <div class="sm:col-span-2">
+        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>OAB</mat-label>
+          <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:office-building'" matPrefix></mat-icon>
+          <input [formControlName]="'oab'" matInput>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--UF OAB-->
+      <div class="sm:col-span-2">
+        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+          <mat-label>UF OAB</mat-label>
+          <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:briefcase'" matPrefix></mat-icon>
+          <mat-select [formControlName]="'ufOab'">
+            <mat-option *ngFor="let uf of ufs" [value]="uf.name">
+              {{uf.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error ga-form-field-errors></mat-error>
+        </mat-form-field>
+      </div>
+      
+      <!-- COMPANY INFO END -->
+    </div>
+
+    <!-- Divider -->
+    <div class="mt-11 mb-10 border-t"></div>
+
+    <!-- Actions -->
+    <div class="flex items-center justify-end">
+      <button class="ml-4" mat-flat-button type="button" [color]="'primary'" (click)="update()">
+        Salvar
+      </button>
+    </div>
+  </form>
+</div>

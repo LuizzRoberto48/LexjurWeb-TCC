@@ -15,7 +15,7 @@ export class ProfileHelper {
       {
         id: 'core',
         icon: 'heroicons_outline:lock-closed',
-        title: 'Núcleos',
+        title: 'Meus núcleos',
         description: 'Gerêncie os núcleos que você é administrador'
       },
       {

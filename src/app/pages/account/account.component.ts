@@ -79,5 +79,6 @@ export class SettingsAccountComponent implements OnInit {
       uf: ['', [Validators.required, Validators.minLength(2)]],
       ufOab: ['', [Validators.required, Validators.minLength(2)]],
     });
+    this.findById();
   }
 }

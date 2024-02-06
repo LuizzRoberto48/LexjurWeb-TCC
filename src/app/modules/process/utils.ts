@@ -22,7 +22,7 @@ export const configDialog = (itemName: string) => {
 
 export const configDialogResource = (itemName?: string) => {
   const config: FuseConfirmationConfig = {
-    title: `Você deseja remover ${itemName ?? 'este item'} ?`,
+    title: `Você deseja remover ${itemName ?? 'este item'}?`,
     message: `Este processo não pode ser desfeito`,
     icon: {
       color: 'warning',
