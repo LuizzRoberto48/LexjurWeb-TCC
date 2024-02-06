@@ -134,6 +134,7 @@ export class FormProcessComponent implements OnInit {
       next: ({ data }) => {
         this.processId = data.id;
         this.form = this.formService.objToForm(this.form, data);
+        this.form.controls['adverseStakeholder'].get('type').enable()
         this.changeLawArea();
         this.changeOrigin();
         this.changeUfs();

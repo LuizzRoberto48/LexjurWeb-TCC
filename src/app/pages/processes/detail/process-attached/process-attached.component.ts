@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { SearchModalListComponent } from 'app/global/components/search-process-list/search-modal-list.component';
 import { GetAttachedProcess } from 'app/modules/attached-process/attached-process.model';
 import { AttachedProcessService } from 'app/modules/attached-process/attached-process.service';
 import { Process } from 'app/modules/process/models/process.model';
@@ -44,6 +45,14 @@ export class ProcessAttachedComponent {
     private notification: NotificationService,
   ) {
     this.findByProcess();
+  }
+
+  openDialog(processes) {
+    const dialogRef = this.dialog.open(SearchModalListComponent, {
+      data: processes,
+      minWidth: '40vw',
+      minHeight: '30wh',
+    });
   }
 
   ngOnInit() {

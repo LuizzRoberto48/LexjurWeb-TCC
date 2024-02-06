@@ -5,7 +5,9 @@ import { GlobalModule } from 'app/shared/global.module';
 
 import { GlDialogModule } from '@components/gl-dialog/gl-dialog.module';
 import { ProcessAttachedComponent } from './process-attached.component';
-import { SearchProcessModule } from 'app/modules/process/components/search-process/search-process.module';
+
+import { AttachedProcessService } from 'app/modules/attached-process/attached-process.service';
+import { SearchProcessNewModule } from 'app/global/components/search-process-new.module';
 
 const routes: Routes = [
   {
@@ -24,8 +26,9 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     GlobalModule,
-    GlDialogModule,
-    SearchProcessModule
+    SearchProcessNewModule,
+    /* SearchProcessModule */
   ],
+  providers:[AttachedProcessService]
 })
 export class ProcessAttachedModule {}

@@ -97,6 +97,10 @@ export class FormProcessService {
     return type === PersonType.FISICA ? 'Física' : 'Jurídica';
   }
 
+  getPersonType(type:PersonType) {
+    return PersonType[type]
+  }
+
   createAdverseStakeholder(adverse: AdverseStakeholder): AdverseStakeholder {
     adverse.email == '' ? (adverse.email = undefined) : adverse.email;
     adverse.phone == '' ? (adverse.phone = undefined) : adverse.phone;
@@ -144,6 +148,8 @@ export class FormProcessService {
   }
 
   objToForm(form: FormGroup, obj: any): FormGroup<any> {
+    console.log(obj.AdverseStakeholder.type)
+    console.log(this.getPersonType(obj.AdverseStakeholder.type))
     let process: ProcessForm = {
       ...obj,
       lawAreaId: obj.LawSubArea.lawAreaId,
@@ -160,7 +166,7 @@ export class FormProcessService {
       
       adverseStakeholder: {
         id: obj.AdverseStakeholder.id,
-        type: obj.AdverseStakeholder.type,
+        type: this.getPersonType(obj.AdverseStakeholder.type),
         cpfCnpj: obj.AdverseStakeholder.cpfCnpj,
         phone: obj.AdverseStakeholder.phone,
         email: obj.AdverseStakeholder.email,

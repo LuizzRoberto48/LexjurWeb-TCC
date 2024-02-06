@@ -6,7 +6,7 @@ import {
 } from './attached-process.model';
 import { Subject } from 'rxjs';
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'any',
 })
 export class AttachedProcessService extends BaseHttpService<any> {
   private _linkedProcess$: Subject<GetAttachedProcess> = new Subject();

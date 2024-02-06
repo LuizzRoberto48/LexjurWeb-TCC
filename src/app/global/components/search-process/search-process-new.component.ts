@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ProcessService } from '../../process.service';
+import { ProcessService } from '../../../modules/process/process.service';
 import { Ufs } from 'app/global/utils/get-ufs';
 import { CoreService } from 'app/modules/cores/service/core.service';
-import { Observable, forkJoin, of, switchMap } from 'rxjs';
+import { Observable, Subscription, forkJoin, of, switchMap } from 'rxjs';
 import { LocalCore } from 'app/modules/cores/model/get-core';
-import { SearchModalListComponent } from './search-modal-list/search-modal-list.component';
+import { SearchModalListComponent } from '../search-process-list/search-modal-list.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationService } from '@fuse/components/notification/notification.service';
-import { Process } from '../../models/process.model';
+import { Process } from '../../../modules/process/models/process.model';
 import { CustomValidators } from 'app/global/forms/custom-validators';
 
 @Component({
@@ -16,7 +16,7 @@ import { CustomValidators } from 'app/global/forms/custom-validators';
   templateUrl: './search-process.component.html',
   styleUrls:['./search-modal-list.component.scss']
 })
-export class SearchProcessComponent {
+export class SearchProcessNewComponent {
   form: FormGroup = new FormGroup(
     {
       id: new FormControl(''),
@@ -30,6 +30,7 @@ export class SearchProcessComponent {
   clients = [];
   counties = [];
   ufs = [];
+  $subs: Subscription[] = [];
 
   constructor(
     private processService: ProcessService,
@@ -51,7 +52,7 @@ export class SearchProcessComponent {
 
   search() {
     const coreId = this.core.id;
-    this.process
+    const subs = this.process
       .pipe(
         switchMap((process: Process) => {
           const processes$ = this.processService.getProcessByParams(
@@ -76,6 +77,7 @@ export class SearchProcessComponent {
           this.openDialog({ processes, currentProcessId });
         },
       });
+      this.$subs.push(subs)
   }
 
   validSearch() {
@@ -128,5 +130,9 @@ export class SearchProcessComponent {
       minWidth: '40vw',
       minHeight: '30wh',
     });
+  }
+
+  ngOnDestroy() {
+    this.$subs.forEach(s=> s.unsubscribe())
   }
 }
