@@ -14,5 +14,12 @@ export const NavigationList: FuseNavigationItem[] = [
     type : 'basic',
     icon : 'heroicons_outline:collection',
     link : '/processos'
-}
+  },
+  {
+    id   : 'users',
+    title: 'Usuários',
+    type : 'basic',
+    icon : 'heroicons_outline:identification',
+    link : '/users'
+  }
 ];

@@ -66,6 +66,13 @@ export const appRoutes: Route[] = [
             (m) => m.SettingsModule,
           ),
       },
+      {
+        path: 'users',
+        loadChildren: () =>
+          import('app/pages/users/users.module').then(
+            (m) => m.UsersModule,
+          ),
+      },
     ],
   },
 ];

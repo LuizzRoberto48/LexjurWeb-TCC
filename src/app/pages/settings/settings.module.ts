@@ -9,6 +9,7 @@ import { SettingsCoresComponent } from './cores/cores.component';
 import { SettingsTeamComponent } from './team/team.component';
 import { GlobalModule } from 'app/shared/global.module';
 import { CoresFormComponent } from './cores/cores-form/cores-form.component';
+import { CoreSheetModule } from 'app/modules/cores/core-sheet/core-sheet.module';
 
 
 
@@ -26,6 +27,7 @@ import { CoresFormComponent } from './cores/cores-form/cores-form.component';
     RouterModule,
     FuseDrawerModule,
     GlobalModule,
+    CoreSheetModule,
   ]
 })
 export class SettingsModule { }

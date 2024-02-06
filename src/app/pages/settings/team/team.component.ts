@@ -1,56 +1,73 @@
 import { Component } from "@angular/core";
+import { MatBottomSheet } from "@angular/material/bottom-sheet";
+import { CoreSheedList } from "app/modules/cores/core-sheet/core-sheet.component";
+import { CoreService } from "app/modules/cores/service/core.service";
+import { Subscription } from "rxjs";
 
 @Component({
     selector:'settings-team',
     templateUrl:'./team.component.html',
+    styleUrls: ['./team.component.scss']
 })
 
 export class SettingsTeamComponent{
     members: any[];
     roles: any[];
 
+    constructor(
+        private _bottomSheet: MatBottomSheet,
+        private coreService: CoreService
+    ){}
+
+    $subsChangedCore: Subscription = new Subscription()
+    coreName: string
+
     ngOnInit(): void
     {
+        this.$subsChangedCore = this.coreService.$obsevableCore.subscribe(res => {
+            this.coreName = res?.name
+        })
+
         // Setup the team members
         this.members = [
             {
-                avatar: 'assets/images/avatars/male-01.jpg',
+                avatar: 'assets/images/avatars/blank-profile-picture.png',
                 name  : 'Dejesus Michael',
                 email : 'dejesusmichael@mail.org',
-                role  : 'admin'
+                role  : 'administrador'
             },
             {
-                avatar: 'assets/images/avatars/male-03.jpg',
+                avatar: 'assets/images/avatars/blank-profile-picture.png',
                 name  : 'Mclaughlin Steele',
                 email : 'mclaughlinsteele@mail.me',
-                role  : 'admin'
+                role  : 'lexjur'
             },
             {
-                avatar: 'assets/images/avatars/female-02.jpg',
+                avatar: 'assets/images/avatars/blank-profile-picture.png',
                 name  : 'Laverne Dodson',
                 email : 'lavernedodson@mail.ca',
-                role  : 'write'
+                role  : 'administrador'
             },
             {
-                avatar: 'assets/images/avatars/female-03.jpg',
+                avatar: 'assets/images/avatars/blank-profile-picture.png',
                 name  : 'Trudy Berg',
                 email : 'trudyberg@mail.us',
                 role  : 'read'
             },
             {
-                avatar: 'assets/images/avatars/male-07.jpg',
+                avatar: 'assets/images/avatars/blank-profile-picture.png',
                 name  : 'Lamb Underwood',
                 email : 'lambunderwood@mail.me',
                 role  : 'read'
             },
             {
-                avatar: 'assets/images/avatars/male-08.jpg',
+                avatar: 'assets/images/avatars/blank-profile-picture.png',
                 name  : 'Mcleod Wagner',
                 email : 'mcleodwagner@mail.biz',
                 role  : 'read'
             },
             {
-                avatar: 'assets/images/avatars/female-07.jpg',
+                avatar: 'assets/images/avatars/blank-profile-picture.png',
                 name  : 'Shannon Kennedy',
                 email : 'shannonkennedy@mail.ca',
                 role  : 'read'
@@ -65,16 +82,20 @@ export class SettingsTeamComponent{
                 description: 'Can read and clone this repository. Can also open and comment on issues and pull requests.'
             },
             {
-                label      : 'Write',
-                value      : 'write',
+                label      : 'Administrador',
+                value      : 'administrador',
                 description: 'Can read, clone, and push to this repository. Can also manage issues and pull requests.'
             },
             {
-                label      : 'Admin',
-                value      : 'admin',
+                label      : 'Lexjur',
+                value      : 'lexjur',
                 description: 'Can read, clone, and push to this repository. Can also manage issues, pull requests, and repository settings, including adding collaborators.'
             }
         ];
+    }
+
+    ngOnDestroy() {
+        this.$subsChangedCore.unsubscribe()
     }
 
     trackByFn(index: number, item: any): any
