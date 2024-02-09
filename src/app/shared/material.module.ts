@@ -26,6 +26,7 @@ import { MyPaginatorIntl } from '../global/paginator/paginator.service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatLuxonDateModule } from '@angular/material-luxon-adapter';
+import {MatCardModule} from '@angular/material/card'; 
 
 const modules = [
   MatIconModule,
@@ -37,6 +38,7 @@ const modules = [
   MatToolbarModule,
   MatButtonModule,
   MatListModule,
+  MatCardModule,
   MatBottomSheetModule,
   MatSidenavModule,
   MatDialogModule,
