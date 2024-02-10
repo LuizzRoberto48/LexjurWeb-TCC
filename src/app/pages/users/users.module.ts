@@ -1,24 +1,27 @@
-import { NgModule } from "@angular/core";
-import { UsersComponent } from "./users.component";
+import { NgModule } from '@angular/core';
+import { UsersComponent } from './users.component';
 import { Route, RouterModule } from '@angular/router';
-import { CommonModule } from "@angular/common";
-import { GlobalModule } from "app/shared/global.module";
+import { CommonModule } from '@angular/common';
+import { GlobalModule } from 'app/shared/global.module';
+import { HeaderContentModule } from '@components/header-content/header-content.module';
 
 const UsersRoutes: Route[] = [
-    {
-      path: '',
-      component: UsersComponent
-    }
-  ];
+  {
+    data: {
+      breadcrumb: 'Usuários',
+    },
+    path: '',
+    component: UsersComponent,
+  },
+];
 
 @NgModule({
-    declarations: [UsersComponent],
-    imports: [
-        CommonModule,GlobalModule,
-        RouterModule.forChild(UsersRoutes)
-    ]
+  declarations: [UsersComponent],
+  imports: [
+    CommonModule,
+    GlobalModule,
+    RouterModule.forChild(UsersRoutes),
+    HeaderContentModule,
+  ],
 })
-
-export class UsersModule{
-
-}
+export class UsersModule {}

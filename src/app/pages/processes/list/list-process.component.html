@@ -1,49 +1,26 @@
 <div class="inset-0 flex flex-col min-w-0 overflow-hidden w-full">
-  <div class="bg-card">
-    <div
-      class="flex flex-col w-full mx-auto sm:px-10 min-w-0 sm:my-1 flex-auto"
-    >
-      <div class="flex justify-between py-5 px-7">
-        <div class="grid gap-4 content-between">
-          <div>
-            <gl-breadcrumb></gl-breadcrumb>
-          </div>
-          <div>
-            <h2
-              class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate"
-            >
-              Processos
-            </h2>
-          </div>
-          <div>
-            <button
-              class="bg-gray-300"
-              mat-flat-button
-              type="button"
-              changeCore
-            >
-              Núcleo: <span>{{ coreName }}</span>
-            </button>
-          </div>
-        </div>
-        <div class="grid gap-4 content-end">
-          <button
-            class="ml-4"
-            mat-flat-button
-            type="button"
-            [color]="'primary'"
-            routerLink="/processos/new"
-          >
-            Criar Processo
-          </button>
-        </div>
-      </div>
-    </div>
+  <header-content
+    titleIcon="heroicons_outline:collection"
+    title="Processos"
+    desc="Listagem de processos vinculados ao núcleo selecionado"
+    descIcon="heroicons_outline:archive"
+    hasCoreBtn="true"
+  >
+  <div content class="text-end">
+    <button item class="bg-white" mat-stroked-button color="primary">
+      <mat-icon
+        class="icon-size-5 "
+        [svgIcon]="'heroicons_solid:archive'"
+        
+      ></mat-icon>
+      <span class="ml-2">Criar Processo</span>
+    </button>
   </div>
+  </header-content>
   <div
     class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden mx-6 my-8"
   >
-    <div class="overflow-x-auto mx-6 h-full py-5" >
+    <div class="overflow-x-auto mx-6 h-full py-5">
       <table
         mat-table
         matSort

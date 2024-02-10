@@ -16,6 +16,7 @@ import { processRoutes } from './process.routing';
 import { IConfig } from 'ngx-mask';
 import { GlobalModule } from 'app/shared/global.module';
 import { FormProcessService } from 'app/modules/process/form-process.service';
+import { HeaderContentModule } from '@components/header-content/header-content.module';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -27,9 +28,8 @@ const maskConfig: Partial<IConfig> = {
     RouterModule.forChild(processRoutes),
     NgxMaskDirective,
     NotificationModule,
-    BreadCrumbModule,
-    CoreSheetModule,
     GlobalModule,
+    HeaderContentModule
   ],
   providers: [
     FormProcessService,
