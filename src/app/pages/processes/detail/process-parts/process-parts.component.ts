@@ -13,6 +13,7 @@ import { ProcessService } from 'app/modules/process/process.service';
 import { configDialogResource } from 'app/modules/process/utils';
 import { Subscription, switchMap, tap } from 'rxjs';
 import { ProcessPartsFormComponent } from './form/process-parts-form.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'process-parts',
@@ -30,6 +31,7 @@ export class ProcessPartsComponent {
   processId!: number;
 
   constructor(
+    public _activatedRoute: ActivatedRoute,
     private partsService: ProcessPartsService,
     private processService: ProcessService,
     public dialog: MatDialog,

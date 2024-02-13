@@ -9,9 +9,7 @@ import {
   provideNgxMask,
 } from 'ngx-mask';
 import { NotificationModule } from '@fuse/components/notification/notification.module';
-import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
 import { BreadcrumbService } from '@components/breadcrumb/breadcrumb.service';
-import { CoreSheetModule } from 'app/modules/cores/core-sheet/core-sheet.module';
 import { processRoutes } from './process.routing';
 import { IConfig } from 'ngx-mask';
 import { GlobalModule } from 'app/shared/global.module';

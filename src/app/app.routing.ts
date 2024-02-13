@@ -69,8 +69,8 @@ export const appRoutes: Route[] = [
       {
         path: 'users',
         loadChildren: () =>
-          import('app/pages/users/users.module').then(
-            (m) => m.UsersModule,
+          import('app/pages/profiles/profiles.module').then(
+            (m) => m.ProfilesModule,
           ),
       },
     ],

@@ -11,7 +11,6 @@ import { UploadProcessFileService } from 'app/modules/process-files/services/upl
 
 const routes: Routes = [
   {
-    title: 'Lista arquivos',
     path: '',
     component: ProcessFilesComponent,
     data: {

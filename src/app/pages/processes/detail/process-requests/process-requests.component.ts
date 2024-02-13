@@ -15,6 +15,7 @@ import { ProcessRequestsFormComponent } from './form/process-requests-form.compo
 import { ProcessRequestsService } from 'app/modules/process-requests/process-requests.service';
 import { GetProcessRequest } from 'app/modules/process-requests/model/process-requests.model';
 import { DateTime } from 'luxon';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'process-requests',
@@ -38,6 +39,7 @@ export class ProcessRequestsComponent {
   processId!: number;
 
   constructor(
+    protected _activatedRoute: ActivatedRoute,
     private requestsService: ProcessRequestsService,
     private processService: ProcessService,
     public dialog: MatDialog,
