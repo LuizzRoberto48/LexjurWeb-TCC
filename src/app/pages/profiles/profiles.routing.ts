@@ -1,4 +1,3 @@
-import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProfilesComponent } from './profiles.component';
 import { PermissionsListComponent } from './permissions/list/permissions-list.component';
@@ -6,6 +5,7 @@ import { PERMISSIONID, USERID } from 'app/modules/user/profile/profile-helper';
 import { UserPermissionFormComponent } from './permissions/form/user-permission-form.component';
 import { UserPermissionsComponent } from './permissions/perimissions.component';
 import { UsersComponent } from './users/users.component';
+import { UserDetailComponent } from './users/detail/user-detail.component';
 
 export const routes: Routes = [
   {
@@ -17,6 +17,12 @@ export const routes: Routes = [
         path: '',
         component: UsersComponent,
         data: { id: USERID, breadcrumb: '' },
+        children: [
+          {
+            path: 'edit/:id',
+            component: UserDetailComponent,
+          },
+        ],
       },
       {
         path: 'permissions',

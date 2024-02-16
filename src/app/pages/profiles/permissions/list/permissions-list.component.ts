@@ -6,7 +6,7 @@ import { PERMISSIONID } from 'app/modules/user/profile/profile-helper';
 import { UserService } from 'app/modules/user/user.service';
 
 @Component({
-  selector: 'app-permissions-list',
+  selector: 'permissions-list',
   templateUrl: './permissions-list.component.html',
 })
 export class PermissionsListComponent {
