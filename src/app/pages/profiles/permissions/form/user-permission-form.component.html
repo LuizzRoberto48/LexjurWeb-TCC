@@ -1,1 +1,164 @@
-<p>user-permission-form works!</p>
+<div class="flex flex-col w-full">
+  <div
+    class="relative w-full h-40 sm:h-48 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700"
+  >
+    <img
+      class="absolute inset-0 object-cover w-full h-full"
+      [src]="'assets/images/backgrounds/fundo-background-lexjur.jpg'"
+    />
+
+    <!-- Close button -->
+    <div class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6">
+      <a mat-icon-button [matTooltip]="'Fechar'">
+        <mat-icon
+          class="text-white"
+          [svgIcon]="'heroicons_outline:x'"
+        ></mat-icon>
+      </a>
+    </div>
+  </div>
+  <div class="relative flex flex-col flex-auto items-center px-6">
+    <div class="w-full max-w-3xl" style="height: 72vh !important">
+      <form>
+        <!-- Name -->
+        <div class="mt-8">
+          <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+            <mat-label>Nome </mat-label>
+            <mat-icon
+              matPrefix
+              class="hidden sm:flex icon-size-5"
+              [svgIcon]="'heroicons_solid:key'"
+            ></mat-icon>
+            <input
+              matInput
+              [placeholder]="'Ex: Admin, Estagiário, Coordenador'"
+              [spellcheck]="false"
+            />
+          </mat-form-field>
+        </div>
+        <div class="mt-8">
+          <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+            <mat-label>Função </mat-label>
+
+            <input
+              matInput
+              [placeholder]="
+                'Ex: Permitir acesso completo somente para as áreas de processos'
+              "
+              [spellcheck]="false"
+            />
+          </mat-form-field>
+        </div>
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 mt-8 bg-card border rounded-md p-5 gap-4 overflow-auto h-72"
+        >
+          <ng-container *ngFor="let item of items">
+            <div class="flex flex-col">
+              <mat-form-field class="w-full block chips">
+                <mat-label>Funcionalidades</mat-label>
+                <mat-chip-grid #chipGrid aria-label="Fruit selection">
+                  <mat-chip-row
+                    *ngFor="let fruit of selectedFruits"
+                    (removed)="remove(fruit)"
+                  >
+                    {{ fruit }}
+                    <button matChipRemove [attr.aria-label]="'remove ' + fruit">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                </mat-chip-grid>
+                <input
+                  class="pb-2 -ml-1 mt-3"
+                  placeholder="Adicionar nova funcionalidade"
+                  #fruitInput
+                  [formControl]="fruitCtrl"
+                  [matChipInputFor]="chipGrid"
+                  [matAutocomplete]="auto"
+                  (matChipInputTokenEnd)="add($event)"
+                />
+                <mat-autocomplete
+                  #auto="matAutocomplete"
+                  (optionSelected)="selected($event)"
+                >
+                  <mat-option
+                    *ngFor="let fruit of filteredFruits | async"
+                    [value]="fruit"
+                  >
+                    <p>{{ fruit }}</p>
+                    <small>Descrição da escolha</small>
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div
+              class="flex flex-row gap-4"
+              [ngClass]="{ 'items-center': items.length > 1 }"
+            >
+              <mat-form-field class="w-full block chips">
+                <mat-label>Regras</mat-label>
+                <mat-chip-grid #chipGrid2>
+                  <mat-chip-row
+                    *ngFor="let fruit of selectedFruits"
+                    (removed)="remove(fruit)"
+                  >
+                    {{ fruit }}
+                    <button matChipRemove [attr.aria-label]="'remove ' + fruit">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                </mat-chip-grid>
+                <input
+                  class="pb-2 -ml-1 mt-3"
+                  placeholder="Adicionar nova regra"
+                  [formControl]="fruitCtrl"
+                  [matChipInputFor]="chipGrid2"
+                  [matAutocomplete]="auto2"
+                  (matChipInputTokenEnd)="add($event)"
+                />
+                <mat-autocomplete
+                  #auto2="matAutocomplete"
+                  (optionSelected)="selected($event)"
+                >
+                  <mat-option
+                    *ngFor="let fruit of filteredFruits | async"
+                    [value]="fruit"
+                  >
+                    <p>{{ fruit }}</p>
+                    <small>Descrição da escolha</small>
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+
+              <button mat-icon-button *ngIf="items.length > 1">
+                <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+              </button>
+            </div>
+          </ng-container>
+          <div
+            class="flex items-center justify-end col-start-2"
+            [ngClass]="{ 'mr-14': items.length > 1 }"
+          >
+            <button mat-stroked-button color="primary" class="rounded-md">
+              Adicionar
+            </button>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div
+          class="flex items-center absolute w-full h-20 border-t bg-gray-50 dark:bg-transparent"
+          style="bottom: 0; margin-left: -25px; padding: 15px"
+        >
+          <!-- Delete -->
+          <button mat-button [color]="'warn'">Remover</button>
+          <!-- Cancel -->
+          <button class="ml-auto" mat-button>Voltar</button>
+          <!-- Save -->
+          <button class="ml-2" mat-flat-button [color]="'primary'">
+            Salvar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

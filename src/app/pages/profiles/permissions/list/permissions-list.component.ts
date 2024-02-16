@@ -19,29 +19,26 @@ export class PermissionsListComponent {
   filteredLabels;
   members = [
     {
-      name: 'Dejesus Michael',
+      name: 'Admin',
       desc: 'Dono da porra toda',
     },
     {
-      name: 'Dejesus Michael',
+      name: 'Admin',
       desc: 'Dono da porra toda',
     },
     {
-      name: 'Dejesus Michael',
+      name: 'Admin',
       desc: 'Dono da porra toda',
     },
     {
-      name: 'Dejesus Michael',
+      name: 'Admin',
       desc: 'Dono da porra toda',
     },
     {
-      name: 'Dejesus Michael',
+      name: 'Admin',
       desc: 'Dono da porra toda',
     },
-    {
-      name: 'Dejesus Michael',
-      desc: 'Dono da porra toda',
-    },
+  
   ];
 
   filterLabels(event): void {
@@ -70,9 +67,9 @@ export class PermissionsListComponent {
     {
       id: 'e0175175-2784-48f1-a519-a1d2e397c9b3',
       boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
-      title: 'Research',
+      title: 'Permissão total no sistema',
     },
-    {
+    /* {
       id: '51779701-818a-4a53-bc16-137c3bd7a564',
       boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
       title: 'Wireframing',
@@ -91,6 +88,6 @@ export class PermissionsListComponent {
       id: 'f9eeb436-13a3-4208-a239-0d555960a567',
       boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
       title: 'Bug',
-    },
+    }, */
   ];
 }
