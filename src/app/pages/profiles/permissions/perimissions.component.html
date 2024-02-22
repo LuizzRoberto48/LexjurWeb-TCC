@@ -1,46 +1,28 @@
-<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
-  <mat-drawer-container>
-    <!-- Drawer -->
-    <mat-drawer
-      class="w-full md:w-200 dark:bg-gray-900"
-      [mode]="'over'"
-      [opened]="isOpened"
-      [position]="'end'"
-      (closed)="isOpened = false"
-      #matDrawer
-    >
-      <router-outlet></router-outlet>
-    </mat-drawer>
-    <mat-drawer-content
-      class="flex flex-col flex-auto min-w-0"
-      
-    >
-      <header-content
-        [titleIcon]="infoPage.icon"
-        [title]="infoPage.title"
-        [desc]="infoPage.description"
-        [descIcon]="infoPage.descIcon"
+<div class="flex flex-col w-full">
+  <header-content
+    [titleIcon]="infoPage.icon"
+    [title]="infoPage.title"
+    [desc]="infoPage.description"
+    [descIcon]="infoPage.descIcon"
+  >
+    <div content class="text-end">
+      <button
+        class="bg-white"
+        mat-stroked-button
+        color="primary"
+        (click)="newPermission(); isOpened = true"
       >
-        <div content class="text-end">
-          <button
-            class="bg-white"
-            mat-stroked-button
-            color="primary"
-            (click)="newPermission(); isOpened = true"
-          >
-            <mat-icon
-              class="icon-size-5"
-              [svgIcon]="'heroicons_solid:key'"
-            ></mat-icon>
-            <span class="ml-2">Nova Permissão</span>
-          </button>
-        </div>
-      </header-content>
-      <div
-        class="flex-auto border-t pt-4 sm:pt-6 bg-card shadow sm:rounded-2xl sm:m-10"
-      >
-        <permissions-list></permissions-list>
-      </div>
-    </mat-drawer-content>
-  </mat-drawer-container>
+        <mat-icon
+          class="icon-size-5"
+          [svgIcon]="'heroicons_solid:key'"
+        ></mat-icon>
+        <span class="ml-2">Nova Permissão</span>
+      </button>
+    </div>
+  </header-content>
+  <div
+    class="relative flex-auto border-t pt-4 sm:pt-6 bg-card shadow sm:rounded-2xl sm:m-10"
+  >
+    <router-outlet></router-outlet>
+  </div>
 </div>

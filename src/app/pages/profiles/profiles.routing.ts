@@ -6,6 +6,8 @@ import { UserPermissionFormComponent } from './permissions/form/user-permission-
 import { UserPermissionsComponent } from './permissions/perimissions.component';
 import { UsersComponent } from './users/users.component';
 import { UserDetailComponent } from './users/detail/user-detail.component';
+import { UserPermissionsResolver } from 'app/modules/user-permissions';
+
 
 export const routes: Routes = [
   {
@@ -28,6 +30,7 @@ export const routes: Routes = [
         path: 'permissions',
         component: UserPermissionsComponent,
         data: { id: PERMISSIONID, breadcrumb: 'Permissões' },
+        
         children: [
           {
             path: '',
@@ -38,6 +41,14 @@ export const routes: Routes = [
             path: 'new',
             component: UserPermissionFormComponent,
             data: { id: PERMISSIONID, breadcrumb: 'Nova permissão' },
+          },
+          {
+            path: 'edit/:id',
+            component: UserPermissionFormComponent,
+            data: { id: PERMISSIONID, breadcrumb: 'Editar permissão' },
+            resolve: {
+              data: UserPermissionsResolver,
+            },
           },
         ],
       },

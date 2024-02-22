@@ -1,5 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { GetUserPermission } from 'app/modules/user-permissions/user-permission.model';
+import { UserPermissionsService } from 'app/modules/user-permissions/user-permissions.service';
 import { PERMISSIONID } from 'app/modules/user/profile/profile-helper';
 import { UserService } from 'app/modules/user/user.service';
 
@@ -13,6 +15,7 @@ export class UserPermissionsComponent {
   constructor(
     private _activatedRoute: ActivatedRoute,
     private userService: UserService,
+    private userPermission: UserPermissionsService,
     private _router: Router,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
@@ -22,12 +25,8 @@ export class UserPermissionsComponent {
   }
 
   newPermission(): void {
-    // Go to the new contact
     this._router.navigate(['./new'], {
       relativeTo: this._activatedRoute,
     });
-
-    // Mark for check
-    this._changeDetectorRef.markForCheck();
   }
 }

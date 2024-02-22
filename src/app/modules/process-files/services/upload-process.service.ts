@@ -21,7 +21,6 @@ import {
 } from '../models/upload-process-files';
 import { getLastIndex } from 'app/global/utils/str-manipulations';
 import { UploadFileService } from '@components/upload-file/upload-file.service';
-import { FuseLoadingService } from '@fuse/services/loading';
 
 @Injectable({
   providedIn: 'any',

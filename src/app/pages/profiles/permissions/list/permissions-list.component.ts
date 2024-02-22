@@ -1,6 +1,14 @@
-import { Component } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-import { ActivatedRoute } from '@angular/router';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GetUserPermission } from 'app/modules/user-permissions/user-permission.model';
+import { UserPermissionsService } from 'app/modules/user-permissions/user-permissions.service';
 import { ProfilePanel } from 'app/modules/user/profile/models/panel.model';
 import { PERMISSIONID } from 'app/modules/user/profile/profile-helper';
 import { UserService } from 'app/modules/user/user.service';
@@ -10,84 +18,58 @@ import { UserService } from 'app/modules/user/user.service';
   templateUrl: './permissions-list.component.html',
 })
 export class PermissionsListComponent {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @Output() onEditPermission: EventEmitter<GetUserPermission> =
+    new EventEmitter();
   infoPage: ProfilePanel;
-  constructor(private userService: UserService) {
+  allPermissions: GetUserPermission[];
+  pagePermissions: GetUserPermission[];
+
+  pageSizeOptions: number[] = [10, 15, 20];
+  totalItems = 0;
+  pageSize = 10; // Default page size
+  pagedItems = [];
+  constructor(
+    private userService: UserService,
+    private userPermissionService: UserPermissionsService,
+    private cdr: ChangeDetectorRef,
+    private _router: Router,
+    private _activatedRoute: ActivatedRoute,
+  ) {}
+
+  ngOnInit() {
     this.infoPage = this.userService.panels.find(
       (info) => info.id == PERMISSIONID,
     );
-  }
-  filteredLabels;
-  members = [
-    {
-      name: 'Admin',
-      desc: 'Dono da porra toda',
-    },
-    {
-      name: 'Admin',
-      desc: 'Dono da porra toda',
-    },
-    {
-      name: 'Admin',
-      desc: 'Dono da porra toda',
-    },
-    {
-      name: 'Admin',
-      desc: 'Dono da porra toda',
-    },
-    {
-      name: 'Admin',
-      desc: 'Dono da porra toda',
-    },
-  
-  ];
-
-  filterLabels(event): void {
-    // Get the value
-    const value = event.target.value.toLowerCase();
-
-    // Filter the labels
-    this.labels = this.labels.filter((label) =>
-      label.title.toLowerCase().includes(value),
-    );
+    this.list();
   }
 
-  toggleProductTag(label: any, change: MatCheckboxChange): void {
-    /* if (change.checked) {
-      this.addLabelToCard(label);
-    } else {
-      this.removeLabelFromCard(label);
-    } */
+  list() {
+    this.userPermissionService.findAll().subscribe({
+      next: (items: GetUserPermission[]) => {
+        this.allPermissions = items;
+        this.totalItems = items.length;
+        this.updatePagedItems();
+      },
+    });
   }
 
-  hasLabel(label: any): boolean {
-    return !!this.labels.find((cardLabel) => cardLabel.id === label.id);
+  editPermission(permission: GetUserPermission) {
+    this._router.navigate([`./edit/${permission.id}`], {
+      relativeTo: this._activatedRoute,
+    });
   }
 
-  labels = [
-    {
-      id: 'e0175175-2784-48f1-a519-a1d2e397c9b3',
-      boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
-      title: 'Permissão total no sistema',
-    },
-    /* {
-      id: '51779701-818a-4a53-bc16-137c3bd7a564',
-      boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
-      title: 'Wireframing',
-    },
-    {
-      id: 'e8364d69-9595-46ce-a0f9-ce428632a0ac',
-      boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
-      title: 'Design',
-    },
-    {
-      id: 'caff9c9b-a198-4564-b1f4-8b3df1d345bb',
-      boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
-      title: 'Development',
-    },
-    {
-      id: 'f9eeb436-13a3-4208-a239-0d555960a567',
-      boardId: '2c82225f-2a6c-45d3-b18a-1132712a4234',
-      title: 'Bug',
-    }, */
-  ];
+  updatePagedItems() {
+    const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
+    const endIndex = startIndex + this.paginator.pageSize;
+    this.pagePermissions = this.allPermissions.slice(startIndex, endIndex);
+
+    this.cdr.detectChanges();
+  }
+
+  onPageChange() {
+    this.updatePagedItems();
+  }
+ 
 }

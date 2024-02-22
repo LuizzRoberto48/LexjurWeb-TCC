@@ -4,20 +4,20 @@ import {
   Resolve,
   RouterStateSnapshot,
 } from '@angular/router';
-import { ProcessService } from 'app/modules/process/process.service';
 import { Observable } from 'rxjs';
+import { UserPermissionsService } from '../user-permissions.service';
 
 @Injectable({
   providedIn: 'any',
 })
-export class FormProcessResolver implements Resolve<any> {
-  constructor(private processService: ProcessService) {}
+export class UserPermissionsResolver implements Resolve<any> {
+  constructor(private userPermissions: UserPermissionsService) {}
 
   resolve(
     actroute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<any> {
     const id = actroute.params['id'];
-    return this.processService.getProcessById(id);
+    return this.userPermissions.findById(+id);
   }
 }

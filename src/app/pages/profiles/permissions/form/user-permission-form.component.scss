@@ -4,3 +4,17 @@
   .mat-mdc-form-field-infix {
   display: block !important;
 }
+
+
+.bg-card {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  gap: 16px;
+  min-height: 33vh; /* ou outra altura que faça sentido para o seu layout */
+  //overflow-y: auto; /* ativa a rolagem vertical quando necessário */
+}
+
+.label {
+font-weight: 500 !important;
+ color:rgba(var(--fuse-text-default-rgb), var(--tw-text-opacity)) !important
+}
