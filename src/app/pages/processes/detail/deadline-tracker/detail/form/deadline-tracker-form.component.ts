@@ -27,6 +27,9 @@ import { Location } from '@angular/common';
 import { ProcessService } from 'app/modules/process/process.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DeadlineProcessWithResources } from 'app/modules/resource/model/resource.model';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MY_FORMATS } from 'app/shared/date-picker-formats';
+import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
 
 const DEADLINE = 'Prazo';
 const AUDIENCE = 'Audiência';
@@ -34,6 +37,10 @@ const AUDIENCE = 'Audiência';
 @Component({
   selector: 'deadline-tracker-form',
   templateUrl: './deadline-tracker-form.component.html',
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    { provide: MAT_LUXON_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+  ],
 })
 export class DeadlineTrackerFormComponent implements OnInit, OnDestroy {
   @Input() editId: number;
@@ -49,7 +56,7 @@ export class DeadlineTrackerFormComponent implements OnInit, OnDestroy {
     internalDeadline: new FormControl('', {
       validators: [Validators.required],
     }),
-    criticalDeadline: new FormControl(''),
+    criticalDeadline: new FormControl(),
     type: new FormControl('', { validators: [Validators.required] }),
     hour: new FormControl(null),
     local: new FormControl(''),
@@ -138,30 +145,26 @@ export class DeadlineTrackerFormComponent implements OnInit, OnDestroy {
     this.findSubTypesByType(typeId);
   }
 
-  getInternErrorMessage() {
-    const erros =
-      this.form.get('internalDeadline').errors ||
-      this.form.get('criticalDeadline').errors;
+  getInternErrorMessage(controlName: string) {
+    const erros = this.form.get(controlName);
     const internDateValue = this.form.get('internalDeadline')?.value;
     const criticalDateValue = this.form.get('criticalDeadline')?.value || '';
-
     /* this.internDateMessage = undefined; */
     if (erros && erros['required']) {
       this.form
-        .get('internalDeadline')
+        .get(controlName)
         .setErrors({ compareDates: 'Campo obrigatório' });
       return;
     }
-    const internDate = DateTime.fromFormat(internDateValue, 'yyyy-MM-dd');
-    const criticalDate = DateTime.fromFormat(criticalDateValue, 'yyyy-MM-dd');
-
+    const internDate = DateTime.fromISO(internDateValue);
+    const criticalDate = DateTime.fromISO(criticalDateValue);
     if (internDate > criticalDate) {
-      const erroMsg = 'Prazo interno deve ser menor que o prazo crítico';
+      const erroMsg = 'Prazo interno deve ser menor que o fatal';
       this.form.setErrors({ msg: erroMsg });
-      this.form.get('internalDeadline').setErrors({ compareDates: erroMsg });
+      this.form.get(controlName).setErrors({ compareDates: erroMsg });
       return;
     }
-    this.form.get('internalDeadline').setErrors(null);
+    this.form.get(controlName).setErrors(null);
   }
 
   selectDeadline(deadlineOpt: IDeadlineTrackerTypes) {
@@ -235,6 +238,18 @@ export class DeadlineTrackerFormComponent implements OnInit, OnDestroy {
       });
   }
 
+  navigateToCreate(element: any, isCreate: boolean = false) {
+    this.route.navigate(['edit/' + element.id], {
+      relativeTo: this._activatedRoute.parent,
+      queryParams: { processId: this.processId, isCreated: isCreate },
+      skipLocationChange: true,
+    });
+  }
+
+  navigateToList() {
+    this.route.navigate([`processos/detail/${this.processId}/schedule`]);
+  }
+
   onSubmit() {
     this.isLoading = true;
     const id = this.form.value['id'];
@@ -252,7 +267,7 @@ export class DeadlineTrackerFormComponent implements OnInit, OnDestroy {
     const createObj = this.formToObj(obj);
     this.dTrackerService.create(createObj).subscribe({
       next: (deadline: IDeadlineTracker) => {
-        this.navigateToEdit(deadline);
+        this.navigateToCreate(deadline, true);
         this.notification.success('Prazo criado com sucesso');
       },
       complete: () => {
@@ -261,20 +276,14 @@ export class DeadlineTrackerFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  navigateToEdit(element: IDeadlineTracker) {
-    this.route.navigate(['edit/' + element.id], {
-      relativeTo: this._activatedRoute.parent,
-      queryParams: { processId: this.processId },
-    });
-  }
-
   private updateDeadlineTracker() {
     const obj = this.form.value;
     const updatedObj = this.formToObj(obj);
     this.dTrackerService.update(updatedObj).subscribe({
       next: (deadline: IDeadlineTracker) => {
-        this.onUpdate.emit(deadline);
+        //this.onUpdate.emit(deadline);
         this.notification.success('Prazo alterado com sucesso');
+        this.navigateToList();
       },
       complete: () => {
         this.isLoading = false;
@@ -283,29 +292,32 @@ export class DeadlineTrackerFormComponent implements OnInit, OnDestroy {
   }
 
   private formToObj(form): CreateDeadlineTracker {
-    const { type, hour, criticalDeadline, processNumber, ...deadlineForm } =
-      form;
-    const internalDeadline = this.dTrackerService.internalDateWithHour(
-      form.internalDeadline,
+    const {
+      type,
+      hour,
+      criticalDeadline,
+      processNumber,
+      internalDeadline,
+      ...deadlineForm
+    } = form;
+    let isoInternalDeadline = this.dTrackerService.internalDateWithHour(
+      internalDeadline,
       hour,
     );
     const pwrObj = this.processWithResources.find(
       (p) => p.number == processNumber,
     );
-    const criticalDate = DateTime.fromFormat(
-      criticalDeadline,
-      'yyyy-MM-dd',
-    ).toISO();
-    /* remove criticalDeadline property if type is not 'Prazo' */
-    const isDeadline = this.types.some((t) => t.id === type.id);
-    if (!isDeadline) {
+    let isoCriticalDate = criticalDeadline;
+    if (isoCriticalDate instanceof DateTime) {
+      isoCriticalDate = isoCriticalDate.toUTC().toISO();
+      deadlineForm.criticalDeadline = isoCriticalDate;
+    } else {
       delete deadlineForm.criticalDeadline;
     }
 
     const obj: CreateDeadlineTracker = {
       ...deadlineForm,
-      internalDeadline,
-      criticalDeadline: criticalDate,
+      internalDeadline: isoInternalDeadline,
       processNumber: pwrObj,
     };
     return obj;

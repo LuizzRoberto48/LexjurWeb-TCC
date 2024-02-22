@@ -59,6 +59,18 @@ export class ProcessService {
       );
   }
 
+  getProcessByParams(
+    coreId: number,
+    processId: number,
+    query: any,
+  ): Observable<any> {
+    const params = this.httpParams(query);
+    return this._http.get<any>(
+      `${environment.apiURL}/core/${coreId}/processes/${processId}/search`,
+      { params },
+    );
+  }
+
   set memoryProcess(process: Process) {
     this._process$.next(process);
   }
@@ -96,6 +108,10 @@ export class ProcessService {
       `${environment.apiURL}/processes/${id}`,
       process,
     );
+  }
+
+  delete(id: number) {
+    return this._http.delete<void>(`${environment.apiURL}/processes/${id}`);
   }
 
   findLawAreas(): Observable<LawArea[]> {

@@ -11,9 +11,11 @@ import {
 import { ProcessExpensesService } from 'app/modules/process-expenses/process-expenses.service';
 import { ProcessService } from 'app/modules/process/process.service';
 import { Subscription, tap } from 'rxjs';
-import { MY_FORMATS } from '../../../process-progress/process-progress.module';
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
 import { DateTime } from 'luxon';
+import { MY_FORMATS } from 'app/shared/date-picker-formats';
+import { EXPENSES_PATH } from 'app/modules/process/process-detail.service';
+import { CustomValidators } from 'app/global/forms/custom-validators';
 
 @Component({
   selector: 'process-expense-form',
@@ -127,12 +129,18 @@ export class ProcessExpenseFormComponent {
     if (isoExpDate instanceof DateTime) {
       isoExpDate = isoExpDate.toISO();
     }
-    if (isoPaymentDate) {
+    if (isoPaymentDate instanceof DateTime) {
       isoPaymentDate = isoPaymentDate.toISO();
     }
     obj.paymentDate = isoPaymentDate;
     obj.expirationDate = isoExpDate;
     return obj;
+  }
+
+  navigateToList() {
+    this.route.navigate([
+      `processos/detail/${this.processId}/${EXPENSES_PATH}`,
+    ]);
   }
 
   private createExpense() {
@@ -153,7 +161,7 @@ export class ProcessExpenseFormComponent {
     const obj = this.formToObj();
     this.expenseService.update(obj).subscribe({
       next: (expense: GetProcessExpenses) => {
-        this.onUpdate.emit(expense);
+        this.navigateToList()
         this.notification.success('Despesa alterada com sucesso');
         
       },

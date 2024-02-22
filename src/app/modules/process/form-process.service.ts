@@ -1,15 +1,19 @@
-import { Injectable } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { AdverseStakeholder, CreateProcess, PersonType, Process, ProcessForm } from "app/modules/process/models/process.model";
-import { DateTime } from "luxon";
-import { ProcessService } from "./process.service";
+import { Injectable } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AdverseStakeholder,
+  CreateProcess,
+  PersonType,
+  ProcessForm,
+} from 'app/modules/process/models/process.model';
+import { DateTime } from 'luxon';
+import { ProcessService } from './process.service';
 
 @Injectable({
-  providedIn: 'any'
+  providedIn: 'any',
 })
 export class FormProcessService {
-
-  constructor(private processService: ProcessService) { }
+  constructor(private processService: ProcessService) {}
 
   init() {
     return new FormGroup({
@@ -17,7 +21,9 @@ export class FormProcessService {
       caseNumber: new FormControl('', { validators: [Validators.required] }),
       coreId: new FormControl(null, { validators: [Validators.required] }),
       oldCaseNumber: new FormControl('', { validators: [Validators.required] }),
-      isEletronic: new FormControl(false, { validators: [Validators.required] }),
+      isEletronic: new FormControl(false, {
+        validators: [Validators.required],
+      }),
       eletronicSystemId: new FormControl(''),
       uf: new FormControl('', { validators: [Validators.required] }),
       instance: new FormControl('', { validators: [Validators.required] }),
@@ -35,8 +41,12 @@ export class FormProcessService {
       lawSubAreaId: new FormControl('', { validators: [Validators.required] }),
       clientId: new FormControl('', { validators: [Validators.required] }),
       stakeholderId: new FormControl('', { validators: [Validators.required] }),
-      stakeholderPosition: new FormControl('', { validators: [Validators.required] }),
-      insideLawyerId: new FormControl('', { validators: [Validators.required] }),
+      stakeholderPosition: new FormControl('', {
+        validators: [Validators.required],
+      }),
+      insideLawyerId: new FormControl('', {
+        validators: [Validators.required],
+      }),
       adverseLawyer: new FormGroup({
         id: new FormControl('', { validators: [Validators.required] }),
         name: new FormControl('', { validators: [Validators.required] }),
@@ -45,48 +55,61 @@ export class FormProcessService {
       }),
       adverseStakeholder: new FormGroup({
         id: new FormControl(null),
-        type: new FormControl({value:'', disabled:true}, { validators: [Validators.required] }),
+        type: new FormControl(
+          { value: '', disabled: true },
+          { validators: [Validators.required] },
+        ),
         name: new FormControl('', { validators: [Validators.required] }),
-        email: new FormControl( null, { validators: [Validators.email] }),
+        email: new FormControl(null, { validators: [Validators.email] }),
         cpfCnpj: new FormControl(null),
         phone: new FormControl(null),
-
       }),
-      adversePosition: new FormControl('', { validators: [Validators.required] }),
-      distributionDate: new FormControl('', { validators: [Validators.required] }),
+      adversePosition: new FormControl('', {
+        validators: [Validators.required],
+      }),
+      distributionDate: new FormControl('', {
+        validators: [Validators.required],
+      }),
       quoteDate: new FormControl('', { validators: [Validators.required] }),
       causeValue: new FormControl('', { validators: [Validators.required] }),
-      description: new FormControl('', { validators: [Validators.required] })
-    })
+      description: new FormControl('', { validators: [Validators.required] }),
+    });
   }
 
   get eletronicTypes() {
-    return [{
-      label: 'Sim',
-      value: true
-    },
-    {
-      label: 'Não',
-      value: false
-    }]
+    return [
+      {
+        label: 'Sim',
+        value: true,
+      },
+      {
+        label: 'Não',
+        value: false,
+      },
+    ];
   }
 
   get adverseType() {
-    return Object.values(PersonType)
+    return Object.values(PersonType);
   }
 
   personType(type: PersonType) {
-    return type === PersonType.FISICA ? 'Física' : 'Jurídica'
+    return type === PersonType.FISICA ? 'Física' : 'Jurídica';
   }
 
-  createAdverseStakeholder(adverse:AdverseStakeholder):AdverseStakeholder {
-    adverse.email == '' ? adverse.email = undefined : adverse.email;
-    adverse.phone == '' ? adverse.phone = undefined : adverse.phone;
-    adverse.cpfCnpj == '' ? adverse.cpfCnpj = undefined : adverse.cpfCnpj;
-    return adverse
+  getPersonType(type:PersonType) {
+    return PersonType[type]
+  }
+
+  createAdverseStakeholder(adverse: AdverseStakeholder): AdverseStakeholder {
+    adverse.email == '' ? (adverse.email = undefined) : adverse.email;
+    adverse.phone == '' ? (adverse.phone = undefined) : adverse.phone;
+    adverse.cpfCnpj == '' ? (adverse.cpfCnpj = undefined) : adverse.cpfCnpj;
+    return adverse;
   }
 
   formToObj(form: ProcessForm): CreateProcess {
+    
     const {
       uf,
       countyId,
@@ -100,21 +123,33 @@ export class FormProcessService {
       adverseLawyer,
       causeValue,
       adverseStakeholder,
-      ...process } = form
-
+      ...process
+    } = form;
+    let distributionIsoDate = distributionDate;
+    let quoteIsoDate = quoteDate;
+    
+    if (distributionDate instanceof DateTime) {
+      distributionIsoDate = distributionDate.toISO();
+    }
+    if(quoteDate instanceof DateTime) {
+      quoteIsoDate = quoteDate.toISO()
+    }
+    
     const obj: CreateProcess = {
       ...process,
       adverseStakeholder: this.createAdverseStakeholder(adverseStakeholder),
       lawyerProcess: [insideLawyerId, adverseLawyer.id],
-      distributionDate: DateTime.fromFormat(distributionDate, 'dd/MM/yyyy').toISO(),
-      quoteDate: DateTime.fromFormat(quoteDate, 'dd/MM/yyyy').toISO(),
-      causeValue: causeValue.toString()
-    }
+      distributionDate: distributionIsoDate,
+      quoteDate: quoteIsoDate,
+      causeValue: causeValue.toString(),
+    };
     process.isEletronic ? obj.eletronicSystemId : delete obj.eletronicSystemId;
     return obj;
   }
 
   objToForm(form: FormGroup, obj: any): FormGroup<any> {
+    console.log(obj.AdverseStakeholder.type)
+    console.log(this.getPersonType(obj.AdverseStakeholder.type))
     let process: ProcessForm = {
       ...obj,
       lawAreaId: obj.LawSubArea.lawAreaId,
@@ -128,25 +163,23 @@ export class FormProcessService {
       insideLawyerId: this.processService.getInsideLawyerByProcess(obj).id,
       uf: obj.Forum.County.uf,
       countyId: obj.Forum.countyId,
-      distributionDate: DateTime.fromISO(obj.distributionDate).toFormat('dd/MM/yyyy'),
-      quoteDate: DateTime.fromISO(obj.distributionDate).toFormat('dd/MM/yyyy'),
+      
       adverseStakeholder: {
         id: obj.AdverseStakeholder.id,
-        type: obj.AdverseStakeholder.type,
+        type: this.getPersonType(obj.AdverseStakeholder.type),
         cpfCnpj: obj.AdverseStakeholder.cpfCnpj,
         phone: obj.AdverseStakeholder.phone,
         email: obj.AdverseStakeholder.email,
         name: obj.AdverseStakeholder.name,
-
       },
       adverseLawyer: {
-        id:this.processService.getOutsideLawyerByProcess(obj).id,
+        id: this.processService.getOutsideLawyerByProcess(obj).id,
         ufOab: this.processService.getOutsideLawyerByProcess(obj).ufOab,
         name: this.processService.getOutsideLawyerByProcess(obj).name,
-        oab:this.processService.getOutsideLawyerByProcess(obj).oab
-      }
+        oab: this.processService.getOutsideLawyerByProcess(obj).oab,
+      },
     };
-    form.patchValue(process)
+    form.patchValue(process);
     return form;
   }
 }

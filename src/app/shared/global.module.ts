@@ -9,8 +9,19 @@ import { CapitalizePipe } from 'app/global/pipes/cpitalize.pipe';
 import { TruncatePipe } from 'app/global/pipes/truncate.pipe';
 
 @NgModule({
-  declarations: [ActivePipe, StepsPipe, CapitalizePipe, TruncatePipe],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MaterialModule, GlFormsModule],
+  declarations: [
+    ActivePipe,
+    StepsPipe,
+    CapitalizePipe,
+    TruncatePipe,
+  ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MaterialModule,
+    GlFormsModule,
+  ],
   exports: [
     CommonModule,
     FormsModule,

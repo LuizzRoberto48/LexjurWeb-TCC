@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { FuseNavigationItem } from "@fuse/components/navigation";
-import { BehaviorSubject, Observable, of, switchMap } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 import { ProcessService } from "./process.service";
 
 export const RESOURCE = 'process-details.resources';
@@ -10,6 +10,22 @@ export const FILES = 'process-details.files';
 export const PROGRESS = 'process-details.progress';
 export const EXPENSES = 'process-details.expenses';
 export const PARTS = 'process-details.parts';
+export const ATTACHED = 'process-details.attached';
+export const GUARANTEES = 'process-details.guarantees';
+export const REQUESTS = 'process-details.requests';
+
+export const RESOURCE_PATH = 'resources';
+export const GENERAL_PATH = 'general';
+export const SCHEDULE_PATH = 'schedule';
+export const FILES_PATH = 'files';
+export const PROGRESS_PATH = 'progress';
+export const EXPENSES_PATH = 'expenses';
+export const PARTS_PATH = 'parts';
+export const ATTACHED_PATH = 'attached';
+export const GUARANTEES_PATH = 'guarantees';
+export const REQUESTS_PATH = 'requests';
+
+
 
 @Injectable({
   providedIn: 'any'
@@ -34,43 +50,61 @@ export class ProcessDetailService {
           id: GENERAL,
           title: 'Geral',
           type: 'basic',
-          link: 'general'
+          link: GENERAL_PATH
         },
         {
           id: RESOURCE,
           title: 'Recursos/Incidentes',
           type: 'basic',
-          link: 'resources'
+          link: RESOURCE_PATH
         },
         {
           id: SCHEDULE,
-          title: 'Agendamento',
+          title: 'Agendamentos',
           type: 'basic',
-          link: 'schedule'
+          link: SCHEDULE_PATH
         },
         {
           id: PROGRESS,
-          title: 'Andamento',
+          title: 'Andamentos',
           type: 'basic',
-          link: 'progress'
+          link: PROGRESS_PATH
         },
         {
           id: PARTS,
-          title: 'partes',
+          title: 'Partes',
           type: 'basic',
-          link: 'parts'
+          link: PARTS_PATH
         },
         {
           id: FILES,
           title: 'Arquivos',
           type: 'basic',
-          link: 'files'
+          link: FILES_PATH
         },
         {
           id: EXPENSES,
           title: 'Despesas',
           type: 'basic',
-          link: 'expenses'
+          link: EXPENSES_PATH
+        },
+        {
+          id: ATTACHED,
+          title: 'Apensos',
+          type: 'basic',
+          link: ATTACHED_PATH
+        },
+        {
+          id: GUARANTEES,
+          title: 'Garantias',
+          type: 'basic',
+          link: GUARANTEES_PATH
+        },
+        {
+          id: REQUESTS,
+          title: 'Pedidos',
+          type: 'basic',
+          link: REQUESTS_PATH
         },
       ]
     }]

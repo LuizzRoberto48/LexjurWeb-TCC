@@ -29,15 +29,9 @@ export class ProcessFormDetailComponent {
     this.findProcessNumberFromTarget();
   }
 
-  onObjectUpdated(expense: GetProcessExpenses): void {
-    // Move two steps forward (to the third step)
-    this.horizontalStepper.next();
-    this.horizontalStepper.next();
-    this.onUpdate(expense);
-  }
-
   ngAfterViewInit() {
     this.activeRoute.queryParams.subscribe((param: any) => {
+      if (param['isEdit']) this.horizontalStepper.next();
       if (param['isCreated']) {
         this.horizontalStepper.next();
         this.horizontalStepper.next();

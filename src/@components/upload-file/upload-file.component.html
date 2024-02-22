@@ -1,12 +1,12 @@
 <div class="flex flex-col items-start w-full">
-  <ng-container *ngIf="!file">
+  <ng-container *ngIf="!uploadType">
     <ngx-file-drop
       class="upload"
       dropZoneLabel="Clique ou arraste o arquivo"
       (onFileDrop)="fileDrop($event)"
       (onFileOver)="fileOver($event)"
       (onFileLeave)="fileLeave($event)"
-      [dropZoneClassName]="'content'"
+      [dropZoneClassName]="'file-content'"
       [browseBtnClassName]="'btn'"
     >
       <ng-template
@@ -20,11 +20,12 @@
     </ngx-file-drop>
   </ng-container>
 </div>
-<ng-container *ngIf="file">
+<ng-container *ngIf="uploadType">
   <div class="flex flex-col items-center">
     <upload-file-card
       [uploadType]="uploadType"
       (onClose)="removeFile()"
+      [noDownload]="noDownload"
     ></upload-file-card>
   </div>
 </ng-container>

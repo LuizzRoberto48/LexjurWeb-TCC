@@ -22,8 +22,8 @@ import {
   provideEnvironmentNgxMask,
   provideNgxMask,
 } from 'ngx-mask';
-import { ExpenseFormResolver } from 'app/modules/process-expenses/resolver/deadline-tracker.resolver';
 import { ProcessExpenseInfoComponent } from './detail/info/process-expense-info.component';
+import { ExpenseFormResolver } from 'app/modules/process-expenses/resolver/process-expenses.resolver';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,

@@ -31,6 +31,10 @@ export class ResourceService {
     return this.http.get<GetResource>(`${environment.apiURL}/resources/${id}`);
   }
 
+  getByTypes(): Observable<string[]> {
+    return this.http.get<string[]>(`${environment.apiURL}/resources/types`);
+  }
+
   update(data: CreateResource): Observable<GetResource> {
     return this.http.put<GetResource>(
       `${environment.apiURL}/resources/${data.id}`,

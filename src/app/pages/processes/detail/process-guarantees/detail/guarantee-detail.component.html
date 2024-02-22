@@ -1,0 +1,32 @@
+<div
+  class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden mx-6 my-8"
+>
+  <div class="inset-0 flex flex-col min-w-0 overflow-hidden w-full p-5">
+    <mat-horizontal-stepper [linear]="!isEdit" #horizontalStepper >
+      <mat-step #horizontalStepperStep1 *ngIf="isEdit">
+        <ng-template matStepLabel>Detalhes</ng-template>
+         <ng-container *ngIf="guarantee?.id">
+          <process-guarantee-info [info]="guarantee"></process-guarantee-info>
+        </ng-container>
+      </mat-step>
+      <mat-step [stepControl]="register.form" #horizontalStepperStep2>
+        <ng-template matStepLabel>Cadastro</ng-template>
+        <process-guarantee-form
+          #register
+          (onUpdate)="onUpdate($event)"
+          [editId]="id"
+        ></process-guarantee-form>
+      </mat-step>
+      <mat-step #horizontalStepperStep3>
+        <ng-template matStepLabel>Arquivos</ng-template>
+        <files-list
+          [isFilterTarget]="false"
+          [target]="target"
+          [$processNumber]="$processNumber"
+          [isCreated]="!isEdit"
+        ></files-list>
+      </mat-step>
+      
+    </mat-horizontal-stepper>
+  </div>
+</div>

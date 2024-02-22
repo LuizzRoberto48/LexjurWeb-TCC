@@ -7,11 +7,8 @@ import {
   Output,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
 import { UploadType } from '@components/upload-file/upload.model';
-
 import { DeadlineTrackerService } from 'app/modules/deadline-trackers/deadline-tracker.service';
-
 import {
   GetUploadFile,
   TargetFiles,
@@ -20,17 +17,20 @@ import {
 } from '../../models/upload-process-files';
 import { UploadProcessFileService } from '../../services/upload-process.service';
 import { DateTime } from 'luxon';
-import { blobToFile } from '../../../../global/utils/file.manipulations';
-import { Subscription, map, switchMap, tap } from 'rxjs';
+import { Subscription, switchMap, tap } from 'rxjs';
 import { UploadFileService } from '@components/upload-file/upload-file.service';
-import { ALL } from '../files-list/files-list.component';
 import { DeadlineProcessWithResources } from 'app/modules/resource/model/resource.model';
 import { NotificationService } from '@fuse/components/notification/notification.service';
-
-const lossProbability = ['Possível', 'Provável', 'Remota'];
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MY_FORMATS } from 'app/shared/date-picker-formats';
+import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
 @Component({
   selector: 'files-form',
   templateUrl: './files-form.component.html',
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    { provide: MAT_LUXON_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+  ],
 })
 export class FilesFormComponent implements OnInit {
   @Output() onClose: EventEmitter<boolean> = new EventEmitter();
@@ -39,10 +39,9 @@ export class FilesFormComponent implements OnInit {
 
   processWithResources: DeadlineProcessWithResources[] = [];
   classifications: { id: number; name: string }[] = [];
-  lossProbabilities = lossProbability;
   types: TargetFiles[] = [];
 
-  fileType: { file: File; type: UploadType } = {} as any;
+  fileType = {} as { type: UploadType; file?: File };
   currentFile: File;
   urlFile: string;
   $subsFile: Subscription = new Subscription();
@@ -79,6 +78,7 @@ export class FilesFormComponent implements OnInit {
   }
 
   private isProcessControlEnabled() {
+    if (!this.uploadService?.$currentProcessNumber) return;
     /* Se existir target enviado da listagem ou os tipos forem iguais a processo ou recurso*/
     const hasProcessDisable =
       this.uploadFile?.target != TargetFiles.PROCESSO &&
@@ -98,10 +98,12 @@ export class FilesFormComponent implements OnInit {
         if (file) {
           this.form.controls['id'].setValue(file.id);
           this.uploadFile = file;
+          this.fileType.type = this.uploadService.findCardFile(this.uploadFile);
           this.objToForm();
           this.isEdit = true;
         } else {
           /* create */
+          this.fileType.type = null;
           this.isEdit = false;
         }
         this.isProcessControlEnabled();
@@ -117,18 +119,9 @@ export class FilesFormComponent implements OnInit {
     });
   }
 
-  downloadFile() {
-    if (!this.uploadFile) return;
-    this.fileService.makeDownload(this.urlFile);
-  }
-
   objToForm() {
-    this.getFileFromBucket();
     this.form.patchValue({
       ...this.uploadFile,
-      createAt: DateTime.fromISO(this.uploadFile.createAt).toFormat(
-        'yyyy-MM-dd',
-      ),
     });
     this.setProcessNumberFromEdit();
   }
@@ -156,40 +149,11 @@ export class FilesFormComponent implements OnInit {
         validators: [Validators.required],
       }),
       createAt: new FormControl('', { validators: [Validators.required] }),
-      lossProbability: new FormControl('', {
-        validators: [Validators.required],
-      }),
     });
   }
 
-  setFile(obj: { file: File; type: UploadType }) {
+  changeFile(obj: { file: File; type: UploadType }) {
     this.fileType = obj;
-  }
-
-  getFileFromBucket() {
-    const fileProperties = this.uploadService.findCardFile(this.uploadFile);
-    const subs = this.uploadService
-      .downloadFile(this.uploadFile.bucketKey)
-      .pipe(
-        tap((res: { url: string }) => {
-          this.urlFile = res.url;
-        }),
-        switchMap((res: { url: string }) => {
-          const urlFile = res.url;
-          return this.uploadService.fetchFileAsObservable(
-            urlFile,
-            fileProperties,
-            this.uploadFile.originalName,
-          );
-        }),
-      )
-      .subscribe((file: any) => {
-        this.setFile({ file, type: fileProperties });
-        this.currentFile = file;
-        this.cd.detectChanges();
-      });
-
-    this.subs.push(subs);
   }
 
   removeFile() {
@@ -235,7 +199,7 @@ export class FilesFormComponent implements OnInit {
   }
 
   send() {
-    if (!this.fileType.file) {
+    if (!this.fileType.file && !this.isEdit) {
       this.notificationService.danger('Adicione um arquivo para envio');
       return;
     }
@@ -250,6 +214,7 @@ export class FilesFormComponent implements OnInit {
   }
 
   private createFile(obj: CreateUploadProcessFile) {
+    console.log(this.fileType.file)
     const { id, ...sendObj } = obj;
     this.uploadService.createFile(this.fileType.file, sendObj).subscribe({
       next: (data) => {
@@ -267,22 +232,26 @@ export class FilesFormComponent implements OnInit {
   }
 
   private updateFile(obj: CreateUploadProcessFile) {
-    this.uploadService.updateFile(this.fileType.file, obj).subscribe({
+    this.uploadService.updateFile(obj, this.fileType?.file).subscribe({
       next: (data) => {
-        this.notification.success('Prazo alterado com sucesso');
+        this.notification.success('Arquivo alterado com sucesso');
         this.uploadService.$crudFile.next({ file: data, method: 'update' });
         this.form.reset();
         this.currentFile = null;
       },
-      complete:()=> {
+      complete: () => {
         this.isLoading = false;
         this.cd.detectChanges();
-      }
+      },
     });
   }
 
   private formToObj(form: FormUploadProcessFile): CreateUploadProcessFile {
-    const { processNumber, ...deadlineForm } = form;
+    const { processNumber, createAt, ...deadlineForm } = form;
+    let isoDate = createAt;
+    if (createAt instanceof DateTime) {
+      isoDate = createAt.toUTC().toISO();
+    }
     const pwrObj = this.processWithResources.find(
       (p) => p.number == processNumber,
     );
@@ -290,6 +259,7 @@ export class FilesFormComponent implements OnInit {
     const obj: CreateUploadProcessFile = {
       ...deadlineForm,
       processNumber: pwrObj,
+      createAt: isoDate,
     };
     if (!obj.processNumber) delete obj.processNumber;
     /* Logica para processo e recurso é diferente do resto */

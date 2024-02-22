@@ -1,9 +1,9 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute } from '@angular/router';
 import { TargetFiles } from 'app/modules/process-files/models/upload-process-files';
-import { IProcessProgress, ProcessProgress } from 'app/modules/process-progress/models/progress.model';
+import { IProcessProgress } from 'app/modules/process-progress/models/progress.model';
 import { ProcessProgressService } from 'app/modules/process-progress/progress.service';
-import { ProcessService } from 'app/modules/process/process.service';
 import { Observable, map, of, tap } from 'rxjs';
 
 @Component({
@@ -12,6 +12,7 @@ import { Observable, map, of, tap } from 'rxjs';
   styleUrls: ['./progress-detail.component.scss'],
 })
 export class ProcessProgressDetailComponent {
+  @ViewChild('horizontalStepper') horizontalStepper: MatStepper;
   target: { name: string; id: number } = { name: '', id: null };
   isEdit: boolean = false;
   $processNumber: Observable<string>;
@@ -30,6 +31,17 @@ export class ProcessProgressDetailComponent {
     this.findProcessNumberFromTarget();
     this.target.name = TargetFiles.PROGRESS;
     this.target.id = +this.id;
+  }
+
+  ngAfterViewInit() {
+    this.activeRoute.queryParams.subscribe((param: any) => {
+      if (param['isEdit']) this.horizontalStepper.next();
+      if (param['isCreated']) {
+        this.horizontalStepper.next();
+        this.horizontalStepper.next();
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   editMode() {

@@ -18,12 +18,17 @@
       <div class="flex flex-col">
         <mat-form-field class="flex-auto gt-xs:pl-3">
           <mat-label>Data</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="date"/>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            readonly
+            formControlName="date"
+          />
           <mat-datepicker-toggle
             matIconSuffix
             [for]="picker"
           ></mat-datepicker-toggle>
-          <mat-datepicker #picker ></mat-datepicker>
+          <mat-datepicker #picker></mat-datepicker>
           <mat-error ga-form-field-errors></mat-error>
         </mat-form-field>
       </div>

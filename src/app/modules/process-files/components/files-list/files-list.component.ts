@@ -1,14 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProcessService } from 'app/modules/process/process.service';
-import { Observable, Subscription, map, switchMap } from 'rxjs';
+import { Observable, Subscription, map, switchMap, tap } from 'rxjs';
 import {
   CrudFileMethod,
   GetUploadFile,
-  ProcessFiles,
   TargetFiles,
 } from '../../models/upload-process-files';
 import { UploadProcessFileService } from '../../services/upload-process.service';
 import { findAndReplaceFromArray } from 'app/global/utils/str-manipulations';
+import { UploadFileService } from '@components/upload-file/upload-file.service';
+import { UploadType } from '@components/upload-file/upload.model';
+import { FuseLoadingService } from '@fuse/services/loading';
+import { Router } from '@angular/router';
 
 export const ALL = 'TODOS';
 @Component({
@@ -19,9 +22,11 @@ export class FilesListComponent implements OnInit {
   @Input() target: { name: TargetFiles; id: number };
   @Input() isFilterTarget: boolean = true;
   @Input() $processNumber: Observable<string>;
-  @Input() isCreated:boolean = false;
+  @Input() isCreated: boolean = false;
+  isDownloading: boolean = false;
   isOpened = false;
   $processId: Observable<number> = new Observable();
+  processId: number;
   allFiles: GetUploadFile[] = [];
   selectedFiles: GetUploadFile[] = [];
   selectedTargets: TargetFiles[] = [TargetFiles.TODOS];
@@ -30,23 +35,61 @@ export class FilesListComponent implements OnInit {
   constructor(
     private processService: ProcessService,
     public uploadProcessFile: UploadProcessFileService,
+    private uploadFile: UploadFileService,
+    private loading: FuseLoadingService,
+    private route: Router,
   ) {
     this.$getProcess();
+    this.eventDownloadFromCard();
   }
 
   ngOnInit() {
     this.uploadProcessFile.currentTarget = this.target;
     this.uploadProcessFile.$currentProcessNumber = this.$processNumber; //pode ser numero do processo ou do recurso
-    this.findFiles()
+    this.findFiles();
     this.updatedFilesOnRealTime();
   }
 
   $getProcess() {
     this.$processId = this.processService.$obsevableProcess.pipe(
+      tap((process) => {
+        this.processId = process.id;
+        return process;
+      }),
       map((process) => {
         return process.id;
       }),
     );
+  }
+
+  eventDownloadFromCard() {
+    this.uploadFile.$download.subscribe({
+      next: (fileType: UploadType) => {
+        const uUploadFile = this.uploadProcessFile.toGetUploadFile(
+          fileType,
+          this.selectedFiles,
+        );
+        this.getFileOriginalFile(uUploadFile);
+      },
+    });
+  }
+
+  getFileOriginalFile(uploadFile: GetUploadFile) {
+    this.loading._setLoadingStatus(
+      true,
+      `processos/detail/${this.processId}/files`,
+    );
+    this.uploadProcessFile.getFileFromBucket(uploadFile).subscribe({
+      next: (res) => {
+        this.uploadFile.makeDownload(res.urlFile);
+      },
+      complete: () => {
+        this.loading._setLoadingStatus(
+          false,
+          `processos/detail/${this.processId}/files`,
+        );
+      },
+    });
   }
 
   sendUploadFile(file: GetUploadFile) {
@@ -93,28 +136,29 @@ export class FilesListComponent implements OnInit {
   }
 
   findFiles() {
-    if(this.isCreated) return;
-    //faz de um jeito enviando o targetId
+    if (this.isCreated) return;
     if (this.target?.id) {
-      this.fetchFilesByTarget(this.target?.id)
+      this.fetchFilesByTarget(this.target?.id);
       return;
     }
-    this.fetchFilesByTarget()
+    this.fetchFilesByTarget();
   }
 
   fetchFilesByTarget(targetId?: number): void {
-    this.$processId.pipe(
-      switchMap((processId) =>
-        this.uploadProcessFile.findByTarget(
-          this.target?.name ?? TargetFiles.TODOS,
-          processId,
-          targetId
-        )
+    this.$processId
+      .pipe(
+        switchMap((processId) =>
+          this.uploadProcessFile.findByTarget(
+            this.target?.name ?? TargetFiles.TODOS,
+            processId,
+            targetId,
+          ),
+        ),
       )
-    ).subscribe((res: GetUploadFile[]) => {
-      this.allFiles = res;
-      this.selectedFiles = this.allFiles;
-    });
+      .subscribe((res: GetUploadFile[]) => {
+        this.allFiles = res;
+        this.selectedFiles = this.allFiles;
+      });
   }
 
   onToggleChange(event: any): void {

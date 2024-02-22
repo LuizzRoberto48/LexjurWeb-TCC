@@ -32,13 +32,18 @@ export class DeadlineTrackerService extends BaseHttpService<any> {
     );
   }
 
-  internalDateWithHour(date: string, time?: string): string {
+  internalDateWithHour(date: DateTime | string, time?: string): string {
     const [hour, minute] = (time ?? '00:00').split(':');
-    return DateTime.fromFormat(date, 'yyyy-MM-dd')
-      .set({
-        hour: +hour ?? 0,
-        minute: +minute ?? 0,
-      })
-      .toISO();
+    let isoDate = date;
+    if (date instanceof DateTime) {
+      isoDate = date
+        .set({
+          hour: +hour ?? 0,
+          minute: +minute ?? 0,
+        })
+        .toUTC()
+        .toISO();
+    }
+    return <string>isoDate;
   }
 }

@@ -8,10 +8,6 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '@fuse/components/notification/notification.service';
-import { DeadlineTrackerTypeService } from 'app/modules/deadline-trackers/deadline-tracker-types.service';
-import { DeadlineTrackerService } from 'app/modules/deadline-trackers/deadline-tracker.service';
-import { IDeadlineTrackerTypes } from 'app/modules/deadline-trackers/model/deadline-tracker-type.model';
-import { IDeadlineTracker } from 'app/modules/deadline-trackers/model/deadline-tracker.model';
 import { Subscription, tap } from 'rxjs';
 import { Location } from '@angular/common';
 import { ProcessService } from 'app/modules/process/process.service';
@@ -29,18 +25,8 @@ import {
 } from 'app/modules/process-progress/models/progress.model';
 import { ProcessProgressType } from 'app/modules/process-progress/models/progress_types.model';
 import { DateTime } from 'luxon';
-
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'dd/MM/yyyy',
-  },
-  display: {
-    dateInput: 'dd/MM/yyyy',
-    monthYearLabel: 'MMM yyyy',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM yyyy',
-  },
-};
+import { MY_FORMATS } from 'app/shared/date-picker-formats';
+import { PROGRESS_PATH } from 'app/modules/process/process-detail.service';
 @Component({
   selector: 'progress-form',
   templateUrl: './progress-form.component.html',
@@ -110,6 +96,12 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
     this.$getProcess();
   }
 
+  navigateToList() {
+    this.route.navigate([
+      `processos/detail/${this.processId}/${PROGRESS_PATH}`,
+    ]);
+  }
+
   $getProcess() {
     this.$subs = this.processService.$obsevableProcess
       .pipe(
@@ -119,6 +111,14 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
         }),
       )
       .subscribe();
+  }
+
+  navigateToEdit(element: any, isCreate: boolean = false) {
+    this.route.navigate(['edit/' + element.id], {
+      relativeTo: this._activatedRoute.parent,
+      queryParams: { processId: this.processId, isCreated: isCreate },
+      skipLocationChange: true,
+    });
   }
 
   populateForm(data: IProcessProgress) {
@@ -158,7 +158,7 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
     const obj = this.formToObj();
     this.progressService.create(obj).subscribe({
       next: (progress: ProcessProgress) => {
-        this.navigateToEdit(progress);
+        this.navigateToEdit(progress, true);
         this.notification.success('Andamento criado com sucesso');
       },
       complete: () => {
@@ -167,19 +167,12 @@ export class ProgressFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  navigateToEdit(element: any) {
-    this.route.navigate(['edit/' + element.id], {
-      relativeTo: this._activatedRoute.parent,
-      queryParams: { processId: this.processId },
-    });
-  }
-
   private updateProgress(id: number) {
     const obj = this.formToObj();
     obj.id = id;
     this.progressService.update(obj).subscribe({
       next: (progress: ProcessProgress) => {
-        this.onUpdate.emit(progress);
+        this.navigateToList();
         this.notification.success('Andamento alterado com sucesso');
       },
       complete: () => {

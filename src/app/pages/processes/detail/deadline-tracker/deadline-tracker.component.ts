@@ -13,7 +13,6 @@ import { DeadlineTrackerService } from 'app/modules/deadline-trackers/deadline-t
 import { IDeadlineTracker } from 'app/modules/deadline-trackers/model/deadline-tracker.model';
 import { UntypedFormControl } from '@angular/forms';
 import { DateTime } from 'luxon';
-import { stepProgress } from 'app/global/pipes/steps-progress.pipe';
 import { configDialogResource } from 'app/modules/process/utils';
 
 @Component({
@@ -94,7 +93,7 @@ export class DeadLineTrackerComponent implements OnInit {
 
   customFilterPredicate(data: IDeadlineTracker, value: string) {
     const filter = value.toLocaleLowerCase();
-    const statusLables = stepProgress(data.status);
+    //const statusLables = stepProgress(data.status);
     return (
       data.manager.name.toLowerCase().includes(filter) ||
       data.deadlineTrackerSubType.deadlineTrackerType.label
@@ -105,12 +104,18 @@ export class DeadLineTrackerComponent implements OnInit {
       data.deadlineTrackerSubType.label.toLocaleLowerCase().includes(filter) ||
       DateTime.fromISO(data.internalDeadline)
         .toFormat('dd/MM/yyyy')
-        .includes(filter) ||
-      statusLables.toLocaleLowerCase().includes(filter)
+        .includes(filter)
     );
   }
 
   edit(element: IDeadlineTracker) {
+    this.route.navigate(['edit/' + element.id], {
+      relativeTo: this._activatedRoute.parent,
+      queryParams: { processId: this.processId, isEdit: true },
+    });
+  }
+
+  details(element: IDeadlineTracker) {
     this.route.navigate(['edit/' + element.id], {
       relativeTo: this._activatedRoute.parent,
       queryParams: { processId: this.processId },
@@ -120,7 +125,7 @@ export class DeadLineTrackerComponent implements OnInit {
   removeDialog(element: IDeadlineTracker) {
     const dialogRef = this.__confirmationService.open(configDialogResource());
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
+      if (result == 'confirmed') {
         this.remove(element.id);
       }
     });
@@ -133,7 +138,7 @@ export class DeadLineTrackerComponent implements OnInit {
         next: () => {
           this.notification.success('Prazo removido com sucesso');
           this.getDeadlineTrackerByProcess();
-        }
+        },
       });
   }
 

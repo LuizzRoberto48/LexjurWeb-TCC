@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute } from '@angular/router';
 import { DeadlineTrackerService } from 'app/modules/deadline-trackers/deadline-tracker.service';
@@ -10,7 +16,7 @@ import { Observable, map, of, tap } from 'rxjs';
   selector: 'schedule-detail',
   templateUrl: './deadline-tracker-detail.component.html',
 })
-export class DeadlineTrackerDetailComponent implements OnInit {
+export class DeadlineTrackerDetailComponent implements OnInit, AfterViewInit {
   @ViewChild('horizontalStepper') horizontalStepper: MatStepper;
   id: number;
   isEdit: boolean = false;
@@ -23,9 +29,15 @@ export class DeadlineTrackerDetailComponent implements OnInit {
     private deadlineService: DeadlineTrackerService,
     private cdr: ChangeDetectorRef,
   ) {
-    
     this.editMode();
     this.findProcessNumberFromTarget();
+  }
+
+  onObjectUpdated(deadline: IDeadlineTracker): void {
+    // Move two steps forward (to the third step)
+    this.horizontalStepper.next();
+    this.horizontalStepper.next();
+    this.onUpdate(deadline);
   }
 
   editMode() {
@@ -39,19 +51,18 @@ export class DeadlineTrackerDetailComponent implements OnInit {
     if (!this.id) return;
     this.$processNumber = this.deadlineService.findById(this.id).pipe(
       tap((res) => {
-        this.target.id = res.id
+        this.target.id = res.id;
         this.deadline = res;
         this.cdr.detectChanges();
       }),
       map((res) => {
-        return res?.resource ? res.resource.number : res.process.caseNumber
-      }
-      ),
+        return res?.resource ? res.resource.number : res.process.caseNumber;
+      }),
     );
   }
 
   onUpdate(deadline: IDeadlineTracker) {
-    this.target.id = deadline.id
+    this.target.id = deadline.id;
     this.deadline = deadline;
     this.$processNumber = of(
       deadline?.resource
@@ -64,5 +75,16 @@ export class DeadlineTrackerDetailComponent implements OnInit {
     this.findProcessNumberFromTarget();
     this.target.name = TargetFiles.PRAZO;
     this.target.id = +this.id;
+  }
+
+  ngAfterViewInit() {
+    this.activeRoute.queryParams.subscribe((param: any) => {
+      if (param['isEdit']) this.horizontalStepper.next();
+      if (param['isCreated']) {
+        this.horizontalStepper.next();
+        this.horizontalStepper.next();
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

@@ -35,6 +35,7 @@ export class ResourceFormComponent implements AfterViewInit {
   origins: Origin[] = [];
   forums: Forum[] = [];
   organs: Organ[] = [];
+  rTypes:string[] = []
 
   @ViewChild(GlDialogComponent) dialog: GlDialogComponent;
 
@@ -62,6 +63,7 @@ export class ResourceFormComponent implements AfterViewInit {
     setTimeout(() => {
       this.getOrigins();
       this.getUfs();
+      this.resourcesTypes()
       if (this.data.resource) {
         this.populateForm();
       }
@@ -137,6 +139,14 @@ export class ResourceFormComponent implements AfterViewInit {
 
   get instanceTypes() {
     return Object.values(InstanceType);
+  }
+
+  resourcesTypes() {
+    this.resourceService.getByTypes().subscribe({
+      next: (types) => {
+        this.rTypes = types
+      },
+    });
   }
 
   private getUfs() {

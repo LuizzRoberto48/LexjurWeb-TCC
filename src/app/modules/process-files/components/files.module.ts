@@ -6,6 +6,7 @@ import { FilesListComponent } from './files-list/files-list.component';
 import { FilesFormComponent } from './files-form/files-form.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { UploadModule } from '@components/upload-file/upload-file.module';
+import { FuseLoadingBarModule } from '@fuse/components/loading-bar';
 
 @NgModule({
   declarations: [FilesListComponent, FilesFormComponent],
@@ -15,7 +16,9 @@ import { UploadModule } from '@components/upload-file/upload-file.module';
     FuseAlertModule,
     MatButtonToggleModule,
     UploadModule,
+    FuseLoadingBarModule
   ],
   exports: [FilesListComponent, FilesFormComponent],
+  
 })
 export class FilesModule {}
