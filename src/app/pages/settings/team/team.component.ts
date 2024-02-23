@@ -1,8 +1,12 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { MatBottomSheet } from "@angular/material/bottom-sheet";
+import { ActivatedRoute, Router } from "@angular/router";
+import { FuseMediaWatcherService } from "@fuse/services/media-watcher";
+import { AuthService } from "app/modules/auth/auth.service";
 import { CoreSheedList } from "app/modules/cores/core-sheet/core-sheet.component";
 import { CoreService } from "app/modules/cores/service/core.service";
-import { Subscription } from "rxjs";
+import { LawyerService } from "app/modules/lawyer/lawyer.service";
+import { Subject, Subscription, takeUntil } from "rxjs";
 
 @Component({
     selector:'settings-team',
@@ -11,12 +15,17 @@ import { Subscription } from "rxjs";
 })
 
 export class SettingsTeamComponent{
+    showFiller = false;
     members: any[];
     roles: any[];
 
     constructor(
         private _bottomSheet: MatBottomSheet,
-        private coreService: CoreService
+        private coreService: CoreService,
+        public authService: AuthService,
+        private lawyerService: LawyerService,
+        private _changeDetectorRef: ChangeDetectorRef,
+        private _fuseMediaWatcherService: FuseMediaWatcherService
     ){}
 
     $subsChangedCore: Subscription = new Subscription()
@@ -33,45 +42,39 @@ export class SettingsTeamComponent{
             {
                 avatar: 'assets/images/avatars/blank-profile-picture.png',
                 name  : 'Dejesus Michael',
-                email : 'dejesusmichael@mail.org',
+                email : this.authService.authUser.email,
                 role  : 'administrador'
             },
             {
                 avatar: 'assets/images/avatars/blank-profile-picture.png',
-                name  : 'Mclaughlin Steele',
-                email : 'mclaughlinsteele@mail.me',
-                role  : 'lexjur'
-            },
-            {
-                avatar: 'assets/images/avatars/blank-profile-picture.png',
-                name  : 'Laverne Dodson',
-                email : 'lavernedodson@mail.ca',
+                name  : 'Dejesus Michael',
+                email : this.authService.authUser.email,
                 role  : 'administrador'
             },
             {
                 avatar: 'assets/images/avatars/blank-profile-picture.png',
-                name  : 'Trudy Berg',
-                email : 'trudyberg@mail.us',
-                role  : 'read'
+                name  : 'Dejesus Michael',
+                email : this.authService.authUser.email,
+                role  : 'administrador'
             },
             {
                 avatar: 'assets/images/avatars/blank-profile-picture.png',
-                name  : 'Lamb Underwood',
-                email : 'lambunderwood@mail.me',
-                role  : 'read'
+                name  : 'Dejesus Michael',
+                email : this.authService.authUser.email,
+                role  : 'administrador'
             },
             {
                 avatar: 'assets/images/avatars/blank-profile-picture.png',
-                name  : 'Mcleod Wagner',
-                email : 'mcleodwagner@mail.biz',
-                role  : 'read'
+                name  : 'Dejesus Michael',
+                email : this.authService.authUser.email,
+                role  : 'administrador'
             },
             {
                 avatar: 'assets/images/avatars/blank-profile-picture.png',
-                name  : 'Shannon Kennedy',
-                email : 'shannonkennedy@mail.ca',
-                role  : 'read'
-            }
+                name  : 'Dejesus Michael',
+                email : this.authService.authUser.email,
+                role  : 'administrador'
+            },
         ];
 
         // Setup the roles
@@ -79,19 +82,30 @@ export class SettingsTeamComponent{
             {
                 label      : 'Read',
                 value      : 'read',
-                description: 'Can read and clone this repository. Can also open and comment on issues and pull requests.'
+                description: 'Pode le'
             },
             {
-                label      : 'Administrador',
-                value      : 'administrador',
-                description: 'Can read, clone, and push to this repository. Can also manage issues and pull requests.'
+                label      : 'Create',
+                value      : 'create',
+                description: 'Pode cria'
             },
             {
-                label      : 'Lexjur',
-                value      : 'lexjur',
-                description: 'Can read, clone, and push to this repository. Can also manage issues, pull requests, and repository settings, including adding collaborators.'
-            }
+                label      : 'Delete',
+                value      : 'delete',
+                description: 'pode deleta'
+            },
+            {
+                label      : 'Update',
+                value      : 'update',
+                description: 'Pode altera'
+            },
+            {
+                label      : 'Full',
+                value      : 'full',
+                description: 'Porra toda'
+            },
         ];
+        
     }
 
     ngOnDestroy() {
@@ -103,4 +117,23 @@ export class SettingsTeamComponent{
         return item.id || index;
     }
 
+    drawerMode: 'over' | 'side' = 'side';
+    drawerOpened: boolean = true;
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
+
+    hideOrShowDrawerBySizeOfScreen() {
+        this._fuseMediaWatcherService.onMediaChange$
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe(({ matchingAliases }) => {
+            if (matchingAliases.includes('lg')) {
+              this.drawerMode = 'side';
+              this.drawerOpened = true;
+            }
+            else {
+              this.drawerMode = 'over';
+              this.drawerOpened = false;
+            }
+            this._changeDetectorRef.markForCheck();
+          });
+    }
 }

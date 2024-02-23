@@ -88,7 +88,7 @@ export class SettingsCoresComponent implements AfterViewInit, OnInit{
   }
 
   listCores(){
-    this.coreService.getAll().subscribe({
+    this.coreService.getCoresByUser().subscribe({
       next:(res: any)=>{
         this.coresDataSource.data = res
       }

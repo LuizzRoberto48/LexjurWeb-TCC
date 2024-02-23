@@ -15,6 +15,6 @@ export class AppComponent {
       if (isAuth && !this.coreService.localCore)
         this._bottomSheet.open(CoreSheedList, { disableClose: true })
     })
-
+    
   }
 }
