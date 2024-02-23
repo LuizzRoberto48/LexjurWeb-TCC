@@ -1,0 +1,57 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+  <mat-drawer-container>
+    <!-- Drawer -->
+    <mat-drawer
+      class="w-full md:w-160 dark:bg-gray-900"
+      [mode]="'over'"
+      [opened]="isOpened"
+      [position]="'end'"
+      (closed)="isOpened = false"
+      #matDrawer
+    >
+      <router-outlet></router-outlet>
+    </mat-drawer>
+    <mat-drawer-content class="flex flex-col flex-auto min-w-0">
+      <header-content
+        [titleIcon]="infoPage.icon"
+        [title]="infoPage.title"
+        [desc]="infoPage.description"
+        [descIcon]="infoPage.descIcon"
+      >
+        <div content class="text-end">
+          <button
+            class="bg-white"
+            mat-stroked-button
+            color="primary"
+            routerLink="/users/permissions"
+          >
+            <mat-icon
+              class="icon-size-5"
+              [svgIcon]="'heroicons_solid:key'"
+            ></mat-icon>
+            <span class="ml-2">Permissões</span>
+          </button>
+        </div>
+      </header-content>
+
+      <user-list (openUser)="editUser($event); matDrawer.open()"></user-list>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>
+
+<ng-template #toPermissionsBtn>
+  <div class="text-end">
+    <button
+      class="bg-white"
+      mat-stroked-button
+      color="primary"
+      routerLink="/users/permissions"
+    >
+      <mat-icon
+        class="icon-size-5"
+        [svgIcon]="'heroicons_solid:key'"
+      ></mat-icon>
+      <span class="ml-2">Permissões</span>
+    </button>
+  </div>
+</ng-template>

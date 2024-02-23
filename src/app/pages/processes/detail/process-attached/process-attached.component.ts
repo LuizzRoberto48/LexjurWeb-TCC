@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { SearchModalListComponent } from 'app/global/components/search-process-list/search-modal-list.component';
@@ -38,6 +39,7 @@ export class ProcessAttachedComponent {
   processId!: number;
 
   constructor(
+    protected _activatedRoute: ActivatedRoute,
     private attachedProcess: AttachedProcessService,
     private processService: ProcessService,
     public dialog: MatDialog,

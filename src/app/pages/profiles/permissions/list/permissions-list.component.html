@@ -1,0 +1,41 @@
+<div class="relative w-full max-w-screen-xl mx-auto min-h-[570px]">
+  <ng-container *ngFor="let permission of pagePermissions; index as i">
+    <div class="flex sm:flex-row flex-col sm:items-center py-4 px-3">
+      <div class="flex items-center">
+        <div class="ml-2">
+          <div class="font-medium">{{ permission.name }}</div>
+          <div class="text-secondary">{{ permission.description }}</div>
+        </div>
+      </div>
+      <div class="flex items-center mt-4 sm:mt-0 ml-auto">
+        <!-- Labels -->
+        <div class="w-60">
+          <div class="flex flex-row justify-end flex-wrap mx-1 -mb-2">
+            <ng-container *ngFor="let pRole of permission.permissionRoles">
+              <div
+                class="mx-1 mb-2 py-0.5 px-3 rounded-full text-sm font-medium text-gray-500 bg-gray-100 dark:text-gray-300 dark:bg-gray-700"
+              >
+                {{ pRole.featureRole.label }}
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <button mat-icon-button (click)="editPermission(permission)">
+          <mat-icon
+            class="text-hint"
+            [svgIcon]="'heroicons_outline:arrow-circle-right'"
+          ></mat-icon>
+        </button>
+      </div>
+    </div>
+    <hr class="my-3" />
+  </ng-container>
+  <mat-paginator
+    class="flex flex-col justify-end sm:rounded-2xl w-full"
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange()"
+  >
+  </mat-paginator>
+</div>

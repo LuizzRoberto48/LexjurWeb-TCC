@@ -11,7 +11,6 @@ import { SearchProcessNewModule } from 'app/global/components/search-process-new
 
 const routes: Routes = [
   {
-    title: 'Apenso',
     path: '',
     component: ProcessAttachedComponent,
     data: {

@@ -604,8 +604,8 @@
 
                 /* Chips */
                 .mat-mdc-chip-set {
-                    width: 100%;
-                    margin: 0 -8px;
+                    width: fit-content;
+                    margin: 0px 10px 0 -5px;
                 }
             }
         }
