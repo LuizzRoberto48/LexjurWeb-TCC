@@ -1,0 +1,51 @@
+<div class="border rounded-2xl mt-5">
+  <form class="flex flex-col m-5" [formGroup]="form">
+    <div class="grid w-full mb-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+        <div class="flex flex-col">
+          <mat-form-field class="w-full">
+            <mat-select
+              placeholder="Selecione uma permissão"
+              formControlName="permissionId"
+              (selectionChange)="selectChange($event)"
+            >
+            <mat-option [value]="">
+              Selecione uma opção
+            </mat-option>
+              <mat-option *ngFor="let p of permissions" [value]="p.id">
+                {{ p.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error ga-form-field-errors></mat-error>
+          </mat-form-field>
+        </div>
+        <!-- TODO:Só deve ser mostrado caso seja um usuário master editando algum outro -->
+        <ng-container *ngIf="false">
+          <div class="flex flex-col">
+            <mat-checkbox
+              class="mt-1"
+              [color]="'primary'"
+              formControlName="master"
+              (change)="cbxAdmin()"
+            >
+              Usuário Master
+            </mat-checkbox>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="flex justify-end">
+      <button
+        class="px-8"
+        mat-flat-button
+        [color]="'primary'"
+        [disabled]="!form.valid"
+        type="button"
+        matStepperNext
+        (click)="save()"
+      >
+        Próximo
+      </button>
+    </div>
+  </form>
+</div>

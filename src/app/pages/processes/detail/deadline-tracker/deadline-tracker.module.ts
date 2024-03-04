@@ -20,7 +20,7 @@ import { DeadlineTrackerInfoComponent } from './detail/info/deadline-tracker-inf
 
 const routes: Routes = [
   {
-    title: 'Lista agendamentos',
+    
     path: '',
     component: DeadLineTrackerComponent,
     data: {

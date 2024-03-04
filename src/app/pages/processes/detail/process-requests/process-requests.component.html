@@ -26,6 +26,7 @@
       mat-flat-button
       [color]="'primary'"
       (click)="openDialog()"
+      *hasPermission="'create-ProcessRequest'"
     >
       <span class="ml-2 mr-1">Novo Pedido</span>
     </button>
@@ -84,14 +85,22 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="edit(element)">
+              <button
+                mat-menu-item
+                (click)="edit(element)"
+                *hasPermission="'edit-ProcessRequest'"
+              >
                 <mat-icon
                   class="icon-size-4 text-gray-600"
                   svgIcon="edit"
                 ></mat-icon>
                 <span>Editar</span>
               </button>
-              <button mat-menu-item (click)="removeDialog(element)">
+              <button
+                mat-menu-item
+                (click)="removeDialog(element)"
+                *hasPermission="'remove-ProcessRequest'"
+              >
                 <mat-icon
                   class="icon-size-4 text-gray-600"
                   svgIcon="remove_circle_outline"

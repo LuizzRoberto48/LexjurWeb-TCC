@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/modules/auth/auth.service';
+import { UserPermissionsService } from 'app/modules/user-permissions';
 
 @Component({
   selector: 'auth-sign-in',
@@ -26,6 +27,7 @@ export class AuthSignInComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _authService: AuthService,
     private _formBuilder: UntypedFormBuilder,
+    private userPermission:UserPermissionsService,
     private _router: Router
   ) {
   }
@@ -52,6 +54,7 @@ export class AuthSignInComponent implements OnInit {
         this._router.navigateByUrl(redirectURL);
         this.signInForm.enable();
         this.signInNgForm.resetForm();
+        this.userPermission.findFeatsAndRolesByCurrentUser()
       },
       error: (err: any) => {
         this.alert = {

@@ -44,7 +44,6 @@ export class ProcessPartsFormComponent {
   isEdit() {
     if (this.data.id) {
       this.editParts = this.data.parts;
-      console.log(this.data.parts);
       this.form.patchValue({
         ...this.data.parts,
         personType: this.getPersonType(this.data.parts.personType),

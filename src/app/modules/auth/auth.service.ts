@@ -11,16 +11,15 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { CoreSheedList } from '../cores/core-sheet/core-sheet.component';
 
 @Injectable({
-  providedIn:'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private _authenticated: boolean = false;
 
   constructor(
     private _httpClient: HttpClient,
-    private _bottomSheet: MatBottomSheet
-  ) {
-  }
+    private _bottomSheet: MatBottomSheet,
+  ) {}
 
   set accessToken(token: string) {
     localStorage.setItem('accessToken', token);
@@ -31,13 +30,15 @@ export class AuthService {
   }
 
   get authUser(): TokenInfo {
-    return <TokenInfo>this.decodeUserToken(this.accessToken)
+    return <TokenInfo>this.decodeUserToken(this.accessToken);
   }
 
   forgotPassword(email: string): Observable<any> {
     let params = new HttpParams();
     params = params.append('email', email);
-    return this._httpClient.get(`${environment.apiURL}/auth/forgot`, { params });
+    return this._httpClient.get(`${environment.apiURL}/auth/forgot`, {
+      params,
+    });
   }
 
   resendPassword(user: any): Observable<any> {
@@ -45,35 +46,35 @@ export class AuthService {
   }
 
   signIn(credentials: { email: string; password: string }): Observable<any> {
-
     if (this._authenticated)
       return throwError(() => 'User is already logged in.');
 
-    return this._httpClient.post(`${environment.apiURL}/auth/login`, credentials).pipe(
-      switchMap((response: any) => {
-        // Store the access token in the local storage
-        this.accessToken = response.accessToken;
-        this._bottomSheet.open(CoreSheedList, { disableClose: true })
-        // Set the authenticated flag to true
-        this._authenticated = true;
+    return this._httpClient
+      .post(`${environment.apiURL}/auth/login`, credentials)
+      .pipe(
+        switchMap((response: any) => {
+          // Store the access token in the local storage
+          this.accessToken = response.accessToken;
+          this._bottomSheet.open(CoreSheedList, { disableClose: true });
+          // Set the authenticated flag to true
+          this._authenticated = true;
 
-        // Return a new observable with the response
-        return of(response);
-      })
-    );
+          // Return a new observable with the response
+          return of(response);
+        }),
+      );
   }
-
 
   signOut(): Observable<any> {
     localStorage.removeItem('accessToken');
-    localStorage.removeItem(CORE)
+    localStorage.removeItem(CORE);
     this._authenticated = false;
+
+    /* TODO: melhorar isso, foi feito o reload para remover a inscrição do userPermission */
+    //window.location.reload();
     return of(true);
   }
 
-  signUp(user: { name: string; email: string; password: string; company: string }): Observable<any> {
-    return this._httpClient.post('api/auth/sign-up', user);
-  }
 
   check(): Observable<boolean> {
     const accessToken = <string>localStorage.getItem('accessToken');
@@ -106,9 +107,8 @@ export class AuthService {
   }
 
   isTokenExpired(expToken: number) {
-    const currentDateTime = DateTime.now().toFormat('HH:mm:ss')
+    const currentDateTime = DateTime.now().toFormat('HH:mm:ss');
     const expiresDateTime = DateTime.fromSeconds(expToken).toFormat('HH:mm:ss');
-    return expiresDateTime > currentDateTime ? false : true
+    return expiresDateTime > currentDateTime ? false : true;
   }
-
 }

@@ -35,7 +35,7 @@ const routes: Route[] = [
         redirectTo: GENERAL_PATH,
       },
       {
-        title: 'geral',
+        title: 'Geral',
         path: GENERAL_PATH,
         component: ProcessGeneralComponent,
         data: {
@@ -43,7 +43,7 @@ const routes: Route[] = [
         },
       },
       {
-        title: 'recurso',
+        title: 'Recursos',
         path: RESOURCE_PATH,
         component: ProcessResourcesComponent,
         data: {
@@ -51,7 +51,7 @@ const routes: Route[] = [
         },
       },
       {
-        title: 'agendamento',
+        title: 'Agendamentos',
         path: SCHEDULE_PATH,
         data: {
           breadcrumb: () => 'Agendamentos',
@@ -62,7 +62,7 @@ const routes: Route[] = [
           ),
       },
       {
-        title: 'andamento',
+        title: 'Andamentos',
         path: PROGRESS_PATH,
         data: {
           breadcrumb: () => 'Andamento',
@@ -128,7 +128,7 @@ const routes: Route[] = [
           ),
       },
       {
-        title: 'Apenso',
+        title: 'Apensos',
         path: ATTACHED_PATH,
         data: {
           breadcrumb: () => 'Vínculos',

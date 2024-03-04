@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ProcessService } from 'app/modules/process/process.service';
 import { Observable, map } from 'rxjs';
 
@@ -11,7 +12,10 @@ export class ProcessFilesComponent {
   $processId: Observable<number> = new Observable();
   processId: number;
   @Input() isCreated = false;
-  constructor(private processService: ProcessService) {
+  constructor(
+    private processService: ProcessService,
+    protected _activatedRoute: ActivatedRoute,
+  ) {
     this.$getProcess();
   }
 

@@ -21,7 +21,13 @@
       />
     </mat-form-field>
     <!-- Add product button -->
-    <button class="ml-4" mat-flat-button [color]="'primary'" (click)="open()">
+    <button
+      class="ml-4"
+      mat-flat-button
+      [color]="'primary'"
+      (click)="open()"
+      *hasPermission="'create-ProcessGuarantee'"
+    >
       <span class="ml-2 mr-1">Nova garantia</span>
     </button>
   </div>
@@ -58,21 +64,33 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="details(element)">
+              <button
+                mat-menu-item
+                (click)="details(element)"
+                *hasPermission="'read-ProcessGuarantee'"
+              >
                 <mat-icon
                   class="icon-size-4 text-gray-600"
                   svgIcon="library_books"
                 ></mat-icon>
                 <span>Detalhes</span>
               </button>
-              <button mat-menu-item (click)="edit(element)">
+              <button
+                mat-menu-item
+                (click)="edit(element)"
+                *hasPermission="'edit-ProcessGuarantee'"
+              >
                 <mat-icon
                   class="icon-size-4 text-gray-600"
                   svgIcon="edit"
                 ></mat-icon>
                 <span>Editar</span>
               </button>
-              <button mat-menu-item (click)="removeDialog(element.id)">
+              <button
+                mat-menu-item
+                (click)="removeDialog(element.id)"
+                *hasPermission="'remove-ProcessGuarantee'"
+              >
                 <mat-icon
                   class="icon-size-4 text-gray-600"
                   svgIcon="remove_circle_outline"

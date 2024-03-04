@@ -66,6 +66,13 @@ export const appRoutes: Route[] = [
             (m) => m.SettingsModule,
           ),
       },
+      {
+        path: 'lawyers',
+        loadChildren: () =>
+          import('app/pages/lawyers/lawyer.module').then(
+            (m) => m.LawyerModule,
+          ),
+      },
     ],
   },
 ];

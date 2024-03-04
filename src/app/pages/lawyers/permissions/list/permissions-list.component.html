@@ -1,0 +1,70 @@
+<div
+  class="flex-auto border-t pt-4 sm:pt-4 bg-card shadow sm:rounded-2xl sm:mx-10 sm:my-4"
+>
+  <div class="relative w-full max-w-screen-xl mx-auto" style="min-height: 48vh">
+    <ng-container *ngFor="let permission of pagePermissions; index as i">
+      <div class="flex sm:flex-row flex-col sm:items-center py-4 px-3">
+        <div class="flex items-center">
+          <div class="ml-2">
+            <div class="font-medium">{{ permission.name }}</div>
+            <div class="text-secondary">{{ permission.description }}</div>
+          </div>
+        </div>
+        <div class="flex items-center mt-4 sm:mt-0 ml-auto">
+          <!-- Labels -->
+          <div class="w-60">
+            <div class="flex flex-row justify-end flex-wrap mx-1 -mb-2">
+              <ng-container *ngFor="let pRole of permission.permissionRoles">
+                <div
+                  class="mx-1 mb-2 py-0.5 px-3 rounded-full text-sm font-medium text-gray-500 bg-gray-100 dark:text-gray-300 dark:bg-gray-700"
+                >
+                  {{ pRole.featureRole.label }}
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            *hasPermission="['edit-Permission', 'remove-Permission']"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button
+              mat-menu-item
+              (click)="editPermission(permission)"
+              *hasPermission="'edit-Permission'"
+            >
+              <mat-icon
+                class="icon-size-4 text-gray-600"
+                svgIcon="edit"
+              ></mat-icon>
+              <span>Editar</span>
+            </button>
+            <button
+              mat-menu-item
+              (click)="removeDialog(permission)"
+              *hasPermission="'remove-Permission'"
+            >
+              <mat-icon
+                class="icon-size-4 text-gray-600"
+                svgIcon="remove_circle_outline"
+              ></mat-icon>
+              <span>Remover</span>
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+      <hr class="my-3" />
+    </ng-container>
+  </div>
+  <mat-paginator
+    class="sm:rounded-2xl"
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange()"
+  >
+  </mat-paginator>
+</div>

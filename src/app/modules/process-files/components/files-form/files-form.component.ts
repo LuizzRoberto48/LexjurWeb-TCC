@@ -214,7 +214,6 @@ export class FilesFormComponent implements OnInit {
   }
 
   private createFile(obj: CreateUploadProcessFile) {
-    console.log(this.fileType.file)
     const { id, ...sendObj } = obj;
     this.uploadService.createFile(this.fileType.file, sendObj).subscribe({
       next: (data) => {

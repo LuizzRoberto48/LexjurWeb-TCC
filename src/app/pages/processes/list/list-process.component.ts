@@ -12,7 +12,7 @@ import {
   Process,
 } from 'app/modules/process/models/process.model';
 import { ProcessService } from 'app/modules/process/process.service';
-import { configDialog, configDialogResource } from 'app/modules/process/utils';
+import { configDialogResource } from 'app/modules/process/utils';
 import { Subscription } from 'rxjs';
 
 const MINWIDTH = 1024;
@@ -28,7 +28,7 @@ export class ListProcessComponent {
   pageIndex = 1;
   pageSizeOptions = [20];
 
-  $subsChangedCore: Subscription = new Subscription();
+  $subs: Subscription[] = [];
   coreName: string = '';
 
   pageEvent: PageEvent;
@@ -65,12 +65,13 @@ export class ListProcessComponent {
 
   getCore() {
     let paginator: Paginator = { page: this.pageIndex, size: this.pageSize };
-    this.$subsChangedCore = this.coreService.$obsevableCore.subscribe((res) => {
+    const subs = this.coreService.$obsevableCore.subscribe((res) => {
       if (res?.id) {
         this.coreName = res.name;
         this.getListByCore(res.id, paginator);
       }
     });
+    this.$subs.push(subs);
   }
 
   editProcess(process: GetProcess) {
@@ -116,6 +117,6 @@ export class ListProcessComponent {
   }
 
   ngOnDestroy() {
-    this.$subsChangedCore.unsubscribe();
+    this.$subs.forEach((s) => s.unsubscribe());
   }
 }

@@ -1,0 +1,139 @@
+<div class="flex flex-col w-full mt-5 mb-5">
+  <div class="relative flex flex-col flex-auto items-center px-6">
+    <div class="w-full max-w-3xl">
+      <form [formGroup]="form" class="sm:p-6 sm:pt-4 bg-card shadow sm:rounded-2xl">
+        <!-- Name -->
+        <div class="mt-8">
+          <mat-form-field class="w-full" >
+            <mat-label>Nome </mat-label>
+            <mat-icon
+              matPrefix
+              class="hidden sm:flex icon-size-5"
+              [svgIcon]="'heroicons_solid:key'"
+            ></mat-icon>
+            <input
+              matInput
+              [placeholder]="'Ex: Admin, Estagiário, Coordenador'"
+              [spellcheck]="false"
+              formControlName="name"
+            />
+            <mat-error ga-form-field-errors></mat-error>
+          </mat-form-field>
+        </div>
+        <div class="mt-8">
+          <mat-form-field class="w-full" >
+            <mat-label>Função </mat-label>
+
+            <input
+              matInput
+              [placeholder]="
+                'Ex: Permitir acesso completo somente para as áreas de processos'
+              "
+              [spellcheck]="false"
+              formControlName="desc"
+            />
+          </mat-form-field>
+        </div>
+        <div class="mt-8">
+          <p class="label">Permissões</p>
+        </div>
+        <div
+          class="grid grid-cols-1 sm:grid-cols-1 mt-2 bg-card border rounded-md p-5 gap-4"
+          formArrayName="permissionFeatures"
+        >
+          <ng-container
+            *ngFor="let feature of formFeatures.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <div class="flex flex-row gap-3 items-center">
+              <mat-form-field class="flex-auto gt-xs:pl-3">
+                <mat-label>Funcionalidade</mat-label>
+                <mat-select formControlName="name">
+                  <mat-option
+                    [value]="feature.id"
+                    *ngFor="let feature of features"
+                    >{{ feature.label }}</mat-option
+                  >
+                </mat-select>
+                <mat-error ga-form-field-errors></mat-error>
+              </mat-form-field>
+              <button mat-icon-button (click)="removeFeature(i)">
+                <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+              </button>
+            </div>
+            <div
+              class="flex flex-col gap-4"
+              style="width: 92.5% !important"
+              formArrayName="role"
+            >
+              <mat-form-field class="block chips">
+                <mat-label>Regras</mat-label>
+                <mat-chip-grid #chipGrid>
+                  <mat-chip-row
+                    *ngFor="
+                      let role of getRolesControl(i).controls;
+                      let j = index
+                    "
+                    (removed)="removeRole(role, i)"
+                    [selectable]="true"
+                    [removable]="true"
+                  >
+                    {{ role.value.label }}
+                    <button matChipRemove [attr.aria-label]="'remove'">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                </mat-chip-grid>
+                <input
+                  class="pb-2 -ml-1 mt-3"
+                  #filterInputRole
+                  placeholder="Adicionar nova regra"
+                  (input)="filterRole($event)"
+                  [matChipInputFor]="chipGrid"
+                  [matAutocomplete]="auto"
+                  (matChipInputTokenEnd)="addRole($event.value, i)"
+                />
+                <mat-autocomplete
+                  #auto="matAutocomplete"
+                  (optionSelected)="selected($event, i)"
+                >
+                  <mat-option *ngFor="let role of filteredRoles" [value]="role">
+                    <p>{{ role.label }}</p>
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error ga-form-field-errors></mat-error>
+              </mat-form-field>
+            </div>
+          </ng-container>
+          <div
+            class="flex items-center"
+            [ngClass]="{ 'mr-14': features.length > 1 }"
+          >
+            <button
+              mat-stroked-button
+              color="primary"
+              class="rounded-md"
+              (click)="addFeature()"
+            >
+              Adicionar
+            </button>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-center my-9">
+          <button mat-stroked-button type="button" (click)="toBack()">Cancelar</button>
+          <button
+            class="ml-4"
+            mat-flat-button
+            type="button"
+            [color]="'primary'"
+            (click)="submitForm()"
+          >
+            Salvar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

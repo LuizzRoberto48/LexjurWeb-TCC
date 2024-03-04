@@ -26,6 +26,7 @@
       mat-flat-button
       [color]="'primary'"
       (click)="newResource()"
+      *hasPermission="'create-Resource'"
     >
       <span class="ml-2 mr-1">Novo recurso</span>
     </button>
@@ -109,19 +110,27 @@
             <button
               mat-icon-button
               [matMenuTriggerFor]="menu"
-              aria-label="Example icon-button with a menu"
+              *hasPermission="['edit-Resource', 'remove-Resource']"
             >
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="editResource(element)">
+              <button
+                mat-menu-item
+                (click)="editResource(element)"
+                *hasPermission="'edit-Resource'"
+              >
                 <mat-icon
                   class="icon-size-4 text-gray-600"
                   svgIcon="edit"
                 ></mat-icon>
                 <span>Editar</span>
               </button>
-              <button mat-menu-item (click)="removeDialog(element)">
+              <button
+                mat-menu-item
+                (click)="removeDialog(element)"
+                *hasPermission="'remove-Resource'"
+              >
                 <mat-icon
                   class="icon-size-4 text-gray-600"
                   svgIcon="remove_circle_outline"

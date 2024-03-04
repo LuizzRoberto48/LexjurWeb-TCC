@@ -9,13 +9,12 @@ import {
   provideNgxMask,
 } from 'ngx-mask';
 import { NotificationModule } from '@fuse/components/notification/notification.module';
-import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
 import { BreadcrumbService } from '@components/breadcrumb/breadcrumb.service';
-import { CoreSheetModule } from 'app/modules/cores/core-sheet/core-sheet.module';
 import { processRoutes } from './process.routing';
 import { IConfig } from 'ngx-mask';
 import { GlobalModule } from 'app/shared/global.module';
 import { FormProcessService } from 'app/modules/process/form-process.service';
+import { HeaderContentModule } from '@components/header-content/header-content.module';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -27,9 +26,8 @@ const maskConfig: Partial<IConfig> = {
     RouterModule.forChild(processRoutes),
     NgxMaskDirective,
     NotificationModule,
-    BreadCrumbModule,
-    CoreSheetModule,
     GlobalModule,
+    HeaderContentModule
   ],
   providers: [
     FormProcessService,
