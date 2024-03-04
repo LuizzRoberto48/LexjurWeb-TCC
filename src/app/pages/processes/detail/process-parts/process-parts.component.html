@@ -16,7 +16,7 @@
       <input matInput [autocomplete]="'off'" [placeholder]="'Buscar'" [formControl]="searchInputControl"/>
     </mat-form-field>
     <!-- Add product button -->
-    <button class="ml-4" mat-flat-button [color]="'primary'" (click)="openDialog()">
+    <button class="ml-4" mat-flat-button [color]="'primary'" (click)="openDialog()" *hasPermission="'create-ProcessParts'">
       <span class="ml-2 mr-1">Nova parte</span>
     </button>
   </div>
@@ -53,19 +53,18 @@
             <button
               mat-icon-button
               [matMenuTriggerFor]="menu"
-              aria-label="Example icon-button with a menu"
             >
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="edit(element)">
+              <button mat-menu-item (click)="edit(element)" *hasPermission="'edit-ProcessParts'">
                 <mat-icon
                   class="icon-size-4 text-gray-600"
                   svgIcon="edit"
                 ></mat-icon>
                 <span>Editar</span>
               </button>
-              <button mat-menu-item (click)="removeDialog(element)">
+              <button mat-menu-item (click)="removeDialog(element)" *hasPermission="'remove-ProcessParts'">
                 <mat-icon
                   class="icon-size-4 text-gray-600"
                   svgIcon="remove_circle_outline"

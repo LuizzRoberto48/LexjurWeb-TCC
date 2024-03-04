@@ -148,8 +148,6 @@ export class FormProcessService {
   }
 
   objToForm(form: FormGroup, obj: any): FormGroup<any> {
-    console.log(obj.AdverseStakeholder.type)
-    console.log(this.getPersonType(obj.AdverseStakeholder.type))
     let process: ProcessForm = {
       ...obj,
       lawAreaId: obj.LawSubArea.lawAreaId,

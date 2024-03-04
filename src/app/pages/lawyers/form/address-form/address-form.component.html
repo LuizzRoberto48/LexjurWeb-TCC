@@ -1,0 +1,74 @@
+<div class="border sm:rounded-2xl mt-5">
+  <form class="flex flex-col m-5" [formGroup]="form">
+    <div class="grid w-full mb-10">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="flex flex-col">
+          <mat-form-field class="flex-auto">
+            <input matInput [placeholder]="'CEP'" formControlName="postalCode" />
+            <mat-error ga-form-field-errors></mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <mat-form-field class="w-full">
+            <mat-select [placeholder]="'UF'" formControlName="uf">
+              <mat-option *ngFor="let uf of ufs" [value]="uf.name">
+                {{ uf.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error ga-form-field-errors></mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <mat-form-field class="w-full">
+            <input matInput [placeholder]="'Cidade'" formControlName="city" />
+            <mat-error ga-form-field-errors></mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <mat-form-field class="w-full">
+            <input
+              matInput
+              [placeholder]="'Bairro'"
+              formControlName="district"
+            />
+            <mat-error ga-form-field-errors></mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <mat-form-field class="w-full">
+            <input matInput [placeholder]="'Rua'" formControlName="street" />
+            <mat-error ga-form-field-errors></mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <mat-form-field class="w-full">
+            <input matInput [placeholder]="'Número'" formControlName="number" />
+            <mat-error ga-form-field-errors></mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <mat-form-field class="w-full">
+            <input
+              matInput
+              [placeholder]="'Complemento'"
+              formControlName="complement"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-end">
+      <button
+        class="px-8"
+        mat-flat-button
+        [color]="'primary'"
+        type="button"
+        [disabled]="!form.valid"
+        (click)="save()"
+        matStepperNext
+      >
+        Próximo
+      </button>
+    </div>
+  </form>
+</div>

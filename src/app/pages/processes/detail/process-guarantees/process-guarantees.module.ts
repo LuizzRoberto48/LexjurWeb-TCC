@@ -33,7 +33,6 @@ const maskConfig: Partial<IConfig> = {
 registerLocaleData(localePt);
 const routes: Routes = [
   {
-    title: 'Lista despesas',
     path: '',
     component: ProcessGuaranteesComponent,
     data: {

@@ -1,12 +1,13 @@
 <div
   class="xl:col-span-2 flex flex-col flex-auto overflow-hidden sm:pt-4 min-h-full"
 >
-  <div class="grid grid-cols-2 md:mx-0 sm:mx-2 md:px-5">
+  <div class="grid grid-cols-2 md:mx-0 sm:mx-2 md:px-5 my-3">
     <button
-      class="w-1/4 col-start-2 justify-self-end"
+      class="md:w-2/4 col-start-2 justify-self-end max-w-50 "
       mat-flat-button
       [color]="'primary'"
       (click)="toEdit()"
+      *hasPermission="'edit-Process'"
     >
       <span>Editar processo</span>
     </button>

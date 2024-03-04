@@ -3,4 +3,5 @@ export interface ProfilePanel {
   icon:string;
   title:string;
   description?:string
+  descIcon?:string
 }

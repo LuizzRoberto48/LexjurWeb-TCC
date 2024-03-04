@@ -7,6 +7,11 @@ import { StepsPipe } from 'app/global/pipes/steps-progress.pipe';
 import { GlFormsModule } from 'app/global/forms/gl-forms.module';
 import { CapitalizePipe } from 'app/global/pipes/cpitalize.pipe';
 import { TruncatePipe } from 'app/global/pipes/truncate.pipe';
+import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
+import { JoinArrayPipe } from 'app/global/pipes/join-array.pipe';
+import { HasPermission } from 'app/modules/user-permissions/directives/has-permission.directive';
+
+
 
 @NgModule({
   declarations: [
@@ -14,6 +19,8 @@ import { TruncatePipe } from 'app/global/pipes/truncate.pipe';
     StepsPipe,
     CapitalizePipe,
     TruncatePipe,
+    JoinArrayPipe,
+    HasPermission,
   ],
   imports: [
     CommonModule,
@@ -21,6 +28,7 @@ import { TruncatePipe } from 'app/global/pipes/truncate.pipe';
     ReactiveFormsModule,
     MaterialModule,
     GlFormsModule,
+    BreadCrumbModule,
   ],
   exports: [
     CommonModule,
@@ -31,7 +39,9 @@ import { TruncatePipe } from 'app/global/pipes/truncate.pipe';
     ActivePipe,
     StepsPipe,
     CapitalizePipe,
-    TruncatePipe
+    TruncatePipe,
+    JoinArrayPipe,
+    HasPermission,
   ],
 })
 export class GlobalModule {}
