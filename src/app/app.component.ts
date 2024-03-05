@@ -23,7 +23,8 @@ export class AppComponent {
   loggeId() {
     this.auth.check().subscribe((isAuth) => {
       /* quando refresh na tela, é adicionado as permissões novamente */
-      this.userPermission.findFeatsAndRolesByCurrentUser();
+      if(isAuth)
+        this.userPermission.findFeatsAndRolesByCurrentUser();
 
       if (isAuth && !this.coreService.localCore)
         this._bottomSheet.open(CoreSheedList, { disableClose: true });

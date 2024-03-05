@@ -33,9 +33,10 @@ export class AuthService {
     return <TokenInfo>this.decodeUserToken(this.accessToken);
   }
 
-  forgotPassword(email: string): Observable<any> {
+  forgotPassword(email: string, isFirstAccess:boolean = false): Observable<any> {
     let params = new HttpParams();
     params = params.append('email', email);
+    params = params.append('isFirstAccess', isFirstAccess);
     return this._httpClient.get(`${environment.apiURL}/auth/forgot`, {
       params,
     });
