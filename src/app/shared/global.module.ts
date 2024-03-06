@@ -8,9 +8,20 @@ import { GlFormsModule } from 'app/global/forms/gl-forms.module';
 import { CapitalizePipe } from 'app/global/pipes/cpitalize.pipe';
 import { TruncatePipe } from 'app/global/pipes/truncate.pipe';
 import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
+import { JoinArrayPipe } from 'app/global/pipes/join-array.pipe';
+import { HasPermission } from 'app/modules/user-permissions/directives/has-permission.directive';
+
+
 
 @NgModule({
-  declarations: [ActivePipe, StepsPipe, CapitalizePipe, TruncatePipe],
+  declarations: [
+    ActivePipe,
+    StepsPipe,
+    CapitalizePipe,
+    TruncatePipe,
+    JoinArrayPipe,
+    HasPermission,
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -29,6 +40,8 @@ import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
     StepsPipe,
     CapitalizePipe,
     TruncatePipe,
+    JoinArrayPipe,
+    HasPermission,
   ],
 })
 export class GlobalModule {}

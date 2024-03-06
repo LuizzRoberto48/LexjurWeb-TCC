@@ -1,0 +1,48 @@
+<div class="flex flex-col flex-auto min-w-0">
+  <header-content
+    [titleIcon]="infoPage.icon"
+    [title]="infoPage.title"
+    [desc]="infoPage.description"
+    [descIcon]="infoPage.descIcon"
+  >
+  </header-content>
+  <ng-container *ngTemplateOutlet="PermissionSearch"></ng-container>
+  <div class="flex flex-col flex-auto min-w-0">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<ng-template #PermissionSearch>
+  <div
+    *ngIf="isListPage"
+    class="flex shrink-0 items-center sm:mt-6 py-5 px-6 md:px-6 justify-between sm:mx-6"
+  >
+    <!-- Search -->
+    <mat-form-field
+      class="fuse-mat-dense fuse-mat-rounded min-w-64"
+      [subscriptSizing]="'dynamic'"
+    >
+      <mat-icon
+        class="icon-size-5"
+        matPrefix
+        [svgIcon]="'heroicons_solid:search'"
+      ></mat-icon>
+      <input
+        matInput
+        [autocomplete]="'off'"
+        [placeholder]="'Buscar'"
+        [formControl]="searchInputControl"
+      />
+    </mat-form-field>
+    <div content class="text-end">
+      <button
+        mat-flat-button
+        [color]="'primary'"
+        (click)="newPermission(); isOpened = true"
+        *hasPermission="'create-Permission'"
+      >
+        <span class="ml-2">Nova Permissão</span>
+      </button>
+    </div>
+  </div>
+</ng-template>

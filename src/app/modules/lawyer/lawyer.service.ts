@@ -1,8 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
-import { Observable } from 'rxjs';
-import { BasicLawyer, CreateLawyer, GetLawyer, LawyerFields, UpdateLawyer } from './model/lawyer.model';
+import { Observable, map } from 'rxjs';
+import {
+  BasicLawyer,
+  CreateLawyer,
+  GetLawyer,
+  GetLawyerPageable,
+  LawyerFields,
+} from './model/lawyer.model';
+import { Paginator } from 'app/global/paginator/public-api';
 
 @Injectable({
   providedIn: 'root',
@@ -29,11 +36,19 @@ export class LawyerService {
     );
   }
 
-  private httpParams(params: LawyerFields): HttpParams {
+  private httpParams(...params: any[]): HttpParams {
+    // Merge all objects into a single object
+    const combinedParams = Object.assign({}, ...params);
+
+    // Construct HttpParams from the combined object
     let httpParams = new HttpParams();
-    Object.keys(params).forEach(function (key) {
-      httpParams = httpParams.append(key, params[key]);
+    Object.keys(combinedParams).forEach((key) => {
+      // Ensure the value is not null or undefined before appending
+      if (combinedParams[key] != null) {
+        httpParams = httpParams.append(key, combinedParams[key]);
+      }
     });
+
     return httpParams;
   }
 
@@ -43,15 +58,33 @@ export class LawyerService {
     );
   }
 
-  update(id: number, info: CreateLawyer){
-    return this._http.put(
-      `${environment.apiURL}/lawyers/${id}`, info
-    );
+  update(id: number, info: CreateLawyer) {
+    return this._http.put(`${environment.apiURL}/lawyers/${id}`, info);
   }
 
-  findById(id: number){
-    return this._http.get(
-      `${environment.apiURL}/lawyers/${id}`
-    )
+  findAllInsideLawyersPaginated(
+    paginator: Paginator,
+    fields: LawyerFields = {},
+  ): Observable<GetLawyerPageable> {
+    const params = this.httpParams(paginator, fields);
+    return this._http
+      .get<GetLawyerPageable>(`${environment.apiURL}/lawyers/inside`, {
+        params,
+      })
+      .pipe(
+        map((res) => ({ lawyers: res.lawyers, totalItems: res.totalItems })),
+      );
+  }
+
+  findByUserId(id: number) {
+    return this._http.get(`${environment.apiURL}/lawyers/user/${id}`);
+  }
+
+  findById(id: number) {
+    return this._http.get(`${environment.apiURL}/lawyers/${id}`);
+  }
+
+  create(lawyer:CreateLawyer) {
+    return this._http.post(`${environment.apiURL}/lawyers`, lawyer);
   }
 }

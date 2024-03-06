@@ -11,8 +11,7 @@ import { DetailsComponent } from '../details/details.component';
 import { GlobalModule } from 'app/shared/global.module';
 import { CoresFormComponent } from './cores/cores-form/cores-form.component';
 import { CoreSheetModule } from 'app/modules/cores/core-sheet/core-sheet.module';
-
-
+import { HeaderContentModule } from '@components/header-content/header-content.module';
 
 @NgModule({
   declarations: [
@@ -30,6 +29,7 @@ import { CoreSheetModule } from 'app/modules/cores/core-sheet/core-sheet.module'
     FuseDrawerModule,
     GlobalModule,
     CoreSheetModule,
+    HeaderContentModule
   ]
 })
 export class SettingsModule { }

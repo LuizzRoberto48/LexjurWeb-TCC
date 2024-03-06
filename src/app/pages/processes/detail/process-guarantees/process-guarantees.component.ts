@@ -80,7 +80,6 @@ export class ProcessGuaranteesComponent {
         }),
       )
       .subscribe((guarantees: GetProcessGuarantee[]) => {
-        console.log(guarantees);
         this.dataSource.data = guarantees;
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;

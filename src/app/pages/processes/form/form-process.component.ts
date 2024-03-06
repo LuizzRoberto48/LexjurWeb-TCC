@@ -81,7 +81,7 @@ export class FormProcessComponent implements OnInit {
   filteredOptions: Observable<AdverseStakeholder[]>;
   processId!: number;
   isEdit: boolean = false;
-  adverseNameFilter:string =''
+  adverseNameFilter: string = '';
 
   constructor(
     public formService: FormProcessService,
@@ -92,7 +92,7 @@ export class FormProcessComponent implements OnInit {
 
     private coreService: CoreService,
     private _router: Router,
-    public _route: Router
+    public _route: Router,
   ) {}
 
   ngOnInit(): void {
@@ -101,7 +101,7 @@ export class FormProcessComponent implements OnInit {
     this.getCore();
     this.getLawyerAreas();
     this.getUfs();
-    this.getLawyersByCore(+id);
+
     this.getActionTypes();
     this.getPhases();
     this.getObjects();
@@ -125,6 +125,7 @@ export class FormProcessComponent implements OnInit {
 
   getCore() {
     this.coreService.$obsevableCore.subscribe((res) => {
+      this.getLawyersByCore(res.id);
       this.form.get('coreId').setValue(res.id);
     });
   }
@@ -135,7 +136,7 @@ export class FormProcessComponent implements OnInit {
         console.log(data)
         this.processId = data.id;
         this.form = this.formService.objToForm(this.form, data);
-        this.form.controls['adverseStakeholder'].get('type').enable()
+        this.form.controls['adverseStakeholder'].get('type').enable();
         this.changeLawArea();
         this.changeOrigin();
         this.changeUfs();
@@ -160,7 +161,7 @@ export class FormProcessComponent implements OnInit {
 
   adverseSelected() {
     const group = this.form.get('adverseStakeholder');
-    
+
     const found = this.adverseStakeholders.find(
       (adv) => adv.name.toLowerCase() === group.get('name').value.toLowerCase(),
     );
@@ -273,7 +274,7 @@ export class FormProcessComponent implements OnInit {
       next: (resp) => {
         this.notification.success('Enviado com sucesso');
         this._router.navigateByUrl('/processos');
-      }
+      },
     });
   }
 
@@ -282,7 +283,7 @@ export class FormProcessComponent implements OnInit {
       next: (resp) => {
         this.notification.success('Editado com sucesso');
         this._router.navigateByUrl('/processos');
-      }
+      },
     });
   }
 
@@ -339,8 +340,7 @@ export class FormProcessComponent implements OnInit {
   }
 
   private getLawyersByCore(coreId: number) {
-    const fields: LawyerFields = { coreId };
-    this.lawyerService.findInsideLaywerByFilter(coreId, fields).subscribe({
+    this.lawyerService.findInsideLaywerByFilter(coreId, {}).subscribe({
       next: (res) => {
         this.insideLaywers = res;
       },
@@ -429,24 +429,23 @@ export class FormProcessComponent implements OnInit {
         distinctUntilChanged(),
         switchMap((val) => {
           /* not make search if user click to erase value*/
-          if(!this._isBackspaceKeyPressed(val)){
-            return of([])
+          if (!this._isBackspaceKeyPressed(val)) {
+            return of([]);
           }
-          this.adverseNameFilter = val
+          this.adverseNameFilter = val;
           if (val && val.length > 1) {
             return this._filter(val || '');
           } else {
             return of([]);
           }
-          
         }),
         tap((res) => {
           this.adverseStakeholders = res;
-        })
+        }),
       );
   }
 
-  _isBackspaceKeyPressed(val:string) {
+  _isBackspaceKeyPressed(val: string) {
     const isBack = this.adverseNameFilter.length < val.length;
     this.adverseNameFilter = val;
     return isBack;

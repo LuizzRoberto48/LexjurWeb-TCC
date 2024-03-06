@@ -1,0 +1,111 @@
+<div class="border rounded-2xl mt-5">
+  <form class="flex flex-col m-5" [formGroup]="form">
+    <div class="grid w-full mb-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+        <div class="flex flex-col">
+          <mat-form-field class="flex-auto">
+            <input
+              matInput
+              placeholder="Nome Completo"
+              formControlName="name"
+            />
+            <mat-icon
+              class="icon-size-5"
+              matPrefix
+              [svgIcon]="'heroicons_solid:user'"
+            ></mat-icon>
+            <mat-error ga-form-field-errors></mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <mat-form-field class="flex-auto">
+            <input
+              matInput
+              placeholder="Email Principal"
+              formControlName="email"
+            />
+            <mat-icon
+              class="icon-size-5"
+              matPrefix
+              [svgIcon]="'heroicons_solid:mail'"
+            ></mat-icon>
+            <mat-error ga-form-field-errors></mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+        <div class="flex flex-col">
+          <mat-form-field class="w-full">
+            <input
+              placeholder="Data de nascimento"
+              matInput
+              [matDatepicker]="picker"
+              formControlName="birthday"
+              readonly
+            />
+            <mat-icon
+              class="icon-size-5"
+              matPrefix
+              [svgIcon]="'heroicons_solid:cake'"
+            ></mat-icon>
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <mat-form-field class="w-full">
+            <mat-icon
+              class="icon-size-5"
+              [svgIcon]="'heroicons_solid:office-building'"
+              matPrefix
+            ></mat-icon>
+            <input matInput placeholder="OAB" formControlName="oab" />
+            <mat-error ga-form-field-errors></mat-error>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <mat-form-field class="w-full">
+            <mat-icon
+              class="icon-size-5"
+              [svgIcon]="'heroicons_solid:briefcase'"
+              matPrefix
+            ></mat-icon>
+            <mat-select placeholder="'Uf da OAB'" formControlName="ufOab">
+              <mat-option *ngFor="let uf of ufs" [value]="uf.name">
+                {{ uf.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error ga-form-field-errors></mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-1 gap-4 mb-3">
+        <div class="flex flex-col">
+          <mat-form-field class="w-full">
+            <textarea
+              formControlName="notes"
+              matInput
+              placeholder="Fale um pouco mais sobre você"
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-end">
+      <button
+        class="px-8"
+        mat-flat-button
+        [color]="'primary'"
+        [disabled]="!form.valid"
+        type="button"
+        matStepperNext
+        (click)="save()"
+      >
+        Próximo
+      </button>
+    </div>
+  </form>
+</div>

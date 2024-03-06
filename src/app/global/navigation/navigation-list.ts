@@ -16,10 +16,10 @@ export const NavigationList: FuseNavigationItem[] = [
     link : '/processos'
   },
   {
-    id   : 'users',
+    id   : 'lawyers',
     title: 'Usuários',
     type : 'basic',
     icon : 'heroicons_outline:identification',
-    link : '/users'
+    link : '/lawyers'
   }
 ];

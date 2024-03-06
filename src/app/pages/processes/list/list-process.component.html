@@ -6,16 +6,22 @@
     descIcon="heroicons_outline:archive"
     hasCoreBtn="true"
   >
-  <div content class="text-end">
-    <button item class="bg-white" mat-stroked-button color="primary" routerLink="/processos/new">
-      <mat-icon
-        class="icon-size-5 "
-        [svgIcon]="'heroicons_solid:archive'"
-        
-      ></mat-icon>
-      <span class="ml-2">Criar Processo</span>
-    </button>
-  </div>
+    <div content class="text-end">
+      <button
+        item
+        class="bg-white"
+        mat-stroked-button
+        color="primary"
+        routerLink="/processos/new"
+        *hasPermission="'create-Process'"
+      >
+        <mat-icon
+          class="icon-size-5"
+          [svgIcon]="'heroicons_solid:archive'"
+        ></mat-icon>
+        <span class="ml-2">Criar Processo</span>
+      </button>
+    </div>
   </header-content>
   <div
     class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden mx-6 my-8"
@@ -148,25 +154,26 @@
               mat-icon-button
               [matMenuTriggerFor]="menu"
               aria-label="Example icon-button with a menu"
+              
             >
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="toDetail(process)">
+              <button mat-menu-item (click)="toDetail(process)" *hasPermission="'read-Process'">
                 <mat-icon
                   class="icon-size-4 text-gray-600"
                   svgIcon="library_books"
                 ></mat-icon>
                 <span>Detalhes</span>
               </button>
-              <button mat-menu-item (click)="editProcess(process)">
+              <button mat-menu-item (click)="editProcess(process)" *hasPermission="'edit-Process'">
                 <mat-icon
                   class="icon-size-4 text-gray-600"
                   svgIcon="edit"
                 ></mat-icon>
                 <span>Editar</span>
               </button>
-              <button mat-menu-item (click)="removeProcessDialog(process)">
+              <button mat-menu-item (click)="removeProcessDialog(process)" *hasPermission="'delete-Process'">
                 <mat-icon
                   class="icon-size-4 text-gray-600"
                   svgIcon="remove_circle_outline"

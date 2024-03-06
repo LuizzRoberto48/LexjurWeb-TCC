@@ -1,0 +1,67 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+  <mat-drawer-container class="min-h-full">
+    <!-- Drawer -->
+    <mat-drawer
+      class="w-full md:w-160 dark:bg-gray-900"
+      [mode]="'over'"
+      [opened]="isOpened"
+      [position]="'end'"
+      (closed)="onCloseDrawyer();isOpened = false"
+      #matDrawer
+    >
+      <!-- Só abra o painel quando a rota for igual ao detalhe de advogado-->
+      <ng-container *ngIf="infoPage.id == 'LawyerDetail'">
+        <router-outlet></router-outlet>
+      </ng-container>
+    </mat-drawer>
+    <mat-drawer-content class="flex flex-col flex-auto min-w-0">
+      <header-content
+        [titleIcon]="infoPage?.icon"
+        [title]="infoPage.title"
+        [desc]="infoPage.description"
+        [descIcon]="infoPage.descIcon"
+      >
+        <div content class="text-end">
+          <button
+            class="bg-white"
+            mat-stroked-button
+            color="primary"
+            routerLink="/lawyers/permissions"
+          >
+            <mat-icon
+              class="icon-size-5"
+              [svgIcon]="'heroicons_solid:key'"
+            ></mat-icon>
+            <span class="ml-2">Permissões</span>
+          </button>
+        </div>
+      </header-content>
+      <!-- Só pode alterar a página quando a rota for para criação de um novo advogado-->
+      <ng-container *ngIf="infoPage.id == 'LawyerCreate' || infoPage.id == 'LawyerEdit'; else elseBlock">
+        <router-outlet></router-outlet>
+      </ng-container>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>
+
+<!-- TEMPLATES -->
+<ng-template #elseBlock>
+  <lawyer-list (openUser)="editOrCreateLaywer($event)"></lawyer-list>
+</ng-template>
+
+<ng-template #toPermissionsBtn>
+  <div class="text-end">
+    <button
+      class="bg-white"
+      mat-stroked-button
+      color="primary"
+      routerLink="/users/permissions"
+    >
+      <mat-icon
+        class="icon-size-5"
+        [svgIcon]="'heroicons_solid:key'"
+      ></mat-icon>
+      <span class="ml-2">Permissões</span>
+    </button>
+  </div>
+</ng-template>

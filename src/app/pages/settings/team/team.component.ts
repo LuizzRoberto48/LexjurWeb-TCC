@@ -57,24 +57,6 @@ export class SettingsTeamComponent{
                 email : this.authService.authUser.email,
                 role  : 'administrador'
             },
-            {
-                avatar: 'assets/images/avatars/blank-profile-picture.png',
-                name  : 'Dejesus Michael',
-                email : this.authService.authUser.email,
-                role  : 'administrador'
-            },
-            {
-                avatar: 'assets/images/avatars/blank-profile-picture.png',
-                name  : 'Dejesus Michael',
-                email : this.authService.authUser.email,
-                role  : 'administrador'
-            },
-            {
-                avatar: 'assets/images/avatars/blank-profile-picture.png',
-                name  : 'Dejesus Michael',
-                email : this.authService.authUser.email,
-                role  : 'administrador'
-            },
         ];
 
         // Setup the roles

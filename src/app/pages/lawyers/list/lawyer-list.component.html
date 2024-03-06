@@ -1,0 +1,86 @@
+<div class="flex flex-col flex-auto min-w-0">
+  <div
+    class="flex shrink-0 items-center sm:mt-4 py-5 px-6 md:px-6 justify-between sm:mx-5"
+  >
+    <!-- Search -->
+    <mat-form-field
+      class="fuse-mat-dense fuse-mat-rounded min-w-64"
+      [subscriptSizing]="'dynamic'"
+    >
+      <mat-icon
+        class="icon-size-5"
+        matPrefix
+        [svgIcon]="'heroicons_solid:search'"
+      ></mat-icon>
+      <input
+        matInput
+        [autocomplete]="'off'"
+        [placeholder]="'Buscar'"
+        [formControl]="crtlSearch"
+      />
+    </mat-form-field>
+    <!-- Add product button -->
+    <button
+      class="ml-4"
+      mat-flat-button
+      [color]="'primary'"
+      (click)="newLaywer()"
+      *hasPermission="'create-Person'"
+    >
+      <span class="ml-2 mr-1">Novo Usuário</span>
+    </button>
+  </div>
+  <div
+    class="flex-auto border-t pt-4 sm:pt-4 bg-card shadow sm:rounded-2xl sm:mx-10 sm:my-5"
+  >
+    <div class="relative w-full max-w-screen-xl mx-auto" style="min-height: 45vh;">
+      <ng-container *ngFor="let laywer of lawyers">
+        <div class="flex flex-row sm:items-center py-4 px-5">
+          <div class="flex items-center">
+            <div
+              class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden"
+            >
+              <ng-container *ngIf="laywer?.avatar">
+                <img
+                  class="object-cover w-full h-full"
+                  [src]="member.avatar"
+                  alt="Contact avatar"
+                />
+              </ng-container>
+              <ng-container *ngIf="!laywer?.avatar">
+                <div
+                  class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                >
+                  {{ laywer.name.charAt(0) }}
+                </div>
+              </ng-container>
+            </div>
+            <div class="ml-4">
+              <div class="font-medium">{{ laywer.name }}</div>
+              <div class="text-secondary">{{ laywer.user.email }}</div>
+              <div class="text-secondary">{{ laywer.oab }}</div>
+            </div>
+          </div>
+          <div class="flex items-center mt-4 sm:mt-0 ml-auto">
+            <button mat-icon-button (click)="editUser(laywer)">
+              <mat-icon
+                class="text-hint"
+                [svgIcon]="'heroicons_outline:arrow-circle-right'"
+              ></mat-icon>
+            </button>
+          </div>
+        </div>
+        <hr class="my-3" />
+      </ng-container>
+    </div>
+    <mat-paginator
+      class="rounded-2xl"
+      
+      [length]="length"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="handlePageEvent($event)"
+    >
+    </mat-paginator>
+  </div>
+</div>

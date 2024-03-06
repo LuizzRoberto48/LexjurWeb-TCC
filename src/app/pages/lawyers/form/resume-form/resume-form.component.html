@@ -1,0 +1,97 @@
+<div class="border sm:rounded-2xl p-3 mt-5">
+  <div class="p-3">
+    <h1
+      class="flex flex-row font-semibold tracking-wide uppercase text-blue-800"
+    >
+      Informações básicas
+      <span
+        class="flex items-center m-w-15 justify-center font-bold text-sm px-3 py-1 tracking-wide uppercase bg-gray-500 text-white sm:rounded-2xl"
+        style="margin-top: -5px; margin-left: 10px"
+      >
+        <span class="leading-relaxed whitespace-nowrap">{{
+          info?.permission?.name
+        }}</span>
+      </span>
+    </h1>
+    <div class="grid sm:grid-cols-3 grid-cols-1 gap-4 mt-4">
+      <p class="text-gray-700 font-bold">
+        Nome:
+        <span class="font-light">{{ info?.basic.name }}</span>
+      </p>
+      <p class="text-gray-700 font-bold">
+        E-mail:
+        <span class="font-light">{{ info?.basic.email }}</span>
+      </p>
+      <p class="text-gray-700 font-bold">
+        Data de nascimento:
+        <span class="font-light">{{
+          info?.basic.birthday | date : 'dd/MM/yyyy'
+        }}</span>
+      </p>
+      <p class="text-gray-700 font-bold">
+        OAB:
+        <span class="font-light">{{ info.basic.oab }}</span>
+      </p>
+      <p class="text-gray-700 font-bold">
+        Uf OAB:
+        <span class="font-light">{{ info?.basic.ufOAB }}</span>
+      </p>
+    </div>
+  </div>
+  <div class="p-3">
+    <h1 class="font-semibold tracking-wide uppercase text-blue-800">
+      Endereço
+    </h1>
+    <div class="grid sm:grid-cols-3 grid-cols-1 gap-4 mt-4">
+      <p class="text-gray-700 font-bold">
+        CEP:
+        <span class="font-light">{{ info?.address.cep }}</span>
+      </p>
+      <p class="text-gray-700 font-bold">
+        UF:
+        <span class="font-light">{{ info?.address.uf }}</span>
+      </p>
+      <p class="text-gray-700 font-bold">
+        Cidade:
+        <span class="font-light">{{ info?.address.city }}</span>
+      </p>
+      <p class="text-gray-700 font-bold">
+        Bairro:
+        <span class="font-light">{{ info?.address.district }}</span>
+      </p>
+      <p class="text-gray-700 font-bold">
+        Rua:
+        <span class="font-light">{{ info?.address.street }}</span>
+      </p>
+      <p class="text-gray-700 font-bold">
+        Número:
+        <span class="font-light">{{ info?.address.number }}</span>
+      </p>
+      <p class="text-gray-700 font-bold">
+        Complemento:
+        <span class="font-light">{{ info?.address?.complement || '' }}</span>
+      </p>
+    </div>
+  </div>
+  <div class="p-3">
+    <h1 class="font-semibold tracking-wide uppercase text-blue-800">Núcleos</h1>
+    <div class="grid grid-cols-1 gap-4 mt-4">
+      <p class="text-gray-700 font-bold">
+        Núcleos:
+        <span class="font-light">{{ cores | joinArray }}</span>
+      </p>
+    </div>
+  </div>
+  <div class="flex justify-end mx-3 mb-3">
+    <button
+      class="px-8"
+      mat-flat-button
+      [color]="'primary'"
+      type="button"
+      matStepperNext
+      (click)="send()"
+    >
+      Confirmar
+    </button>
+  </div>
+</div>

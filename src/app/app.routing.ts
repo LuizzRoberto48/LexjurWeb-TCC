@@ -67,10 +67,10 @@ export const appRoutes: Route[] = [
           ),
       },
       {
-        path: 'users',
+        path: 'lawyers',
         loadChildren: () =>
-          import('app/pages/profiles/profiles.module').then(
-            (m) => m.ProfilesModule,
+          import('app/pages/lawyers/lawyer.module').then(
+            (m) => m.LawyerModule,
           ),
       },
     ],
