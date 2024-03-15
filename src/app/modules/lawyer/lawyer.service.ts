@@ -25,6 +25,12 @@ export class LawyerService {
     );
   }
 
+  findAllInsideLawyers() {
+    return this._http.get<GetLawyer[]>(
+      `${environment.apiURL}/lawyers/inside_lawyers`,
+    );
+  }
+
   findInsideLaywerByFilter(
     coreId: number,
     fields: LawyerFields,
@@ -84,7 +90,7 @@ export class LawyerService {
     return this._http.get(`${environment.apiURL}/lawyers/${id}`);
   }
 
-  create(lawyer:CreateLawyer) {
+  create(lawyer: CreateLawyer) {
     return this._http.post(`${environment.apiURL}/lawyers`, lawyer);
   }
 }

@@ -73,6 +73,13 @@ export const appRoutes: Route[] = [
             (m) => m.LawyerModule,
           ),
       },
+      {
+        path: 'exporter',
+        loadChildren: () =>
+          import('app/pages/exporter/exporter.module').then(
+            (m) => m.ExporterModule,
+          ),
+      },
     ],
   },
 ];

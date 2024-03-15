@@ -22,7 +22,7 @@ import {
   Stakeholder,
   Subject,
   SubObject,
-} from './models/process.model';
+} from '../models/process.model';
 import { Paginator } from 'app/global/paginator/public-api';
 
 @Injectable({

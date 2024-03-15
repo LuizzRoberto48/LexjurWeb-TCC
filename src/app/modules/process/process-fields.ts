@@ -1,0 +1,42 @@
+/* 
+***** Quando houver um @ entre strings, quer dizer que há uma separação nas tabelas no banco ******
+*/
+
+export const processFields = [
+  {name:'phase', label: 'Fase'},
+  {name:'actionType', label: 'Tipo de ação'},
+  {name:'organ', label: 'Orgão'},
+  {name:'organNumber', label: 'Número do órgão'},
+  {name:'county', label: 'Comarca'},
+  {name:'forum', label: 'Foro'},
+  {name:'cnj', label: 'CNJ'},
+  {name:'caseNumber', label: 'Número do processo'},
+  {name:'oldCaseNumber', label: 'Número antigo do processo'},
+  {name:'eletronicSystem', label: 'Sistema Eletrônico'},
+  {name:'lawArea', label: 'Área do direito'},
+  {name:'lawSubArea', label: 'Subarea do direito'},
+  {name:'origin', label: 'Origem'},
+  {name:'uf', label: 'UF'},
+  {name:'insideLawyer', label: 'Advogado responsável'},
+  {name:'core', label: 'Núcleo'},
+  {name:'instance', label: 'Instância'},
+  {name:'object', label: 'Objeto'},
+  {name:'subObject', label: 'Sub objeto'},
+  {name:'subject', label: 'Assunto'},
+  {name:'client', label: 'Cliente'},
+  {name:'stakeholder', label: 'Parte Interessada'},
+  {name:'stakeholderPosition', label: 'Posição da Parte Interessada'},
+  {name:'adverseStakeholder@Type', label: 'Parte Adversa (Tipo)'},
+  {name:'adverseStakeholder@Name', label: 'Nome da Parte Adversa'},
+  {name:'adversePosition', label: 'Posição da Parte Adversa'},
+  {name:'adverseStakeholder@cpfCnpj', label: 'CPF/CNPJ – Parte Adversa'},
+  {name:'adverseStakeholder@phone', label: 'Telefone Parte Adversa'},
+  {name:'adverseLawyer@name', label: 'Nome advogado adverso'},
+  {name:'adverseLawyer@oab', label: 'OAB advogado adverso'},
+  {name:'adverseLawyer@ufOab', label: 'UF OAB advogado adverso'},
+  {name:'distributionDate', label: 'Data da Distribuição'},
+  {name:'quoteDate', label: 'Data da Citação'},
+  {name:'causeValue', label: 'Valor da causa'},
+  {name:'description', label: 'Breve Relato'},
+  
+]

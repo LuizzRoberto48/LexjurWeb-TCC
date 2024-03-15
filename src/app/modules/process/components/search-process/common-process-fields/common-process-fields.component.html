@@ -1,0 +1,51 @@
+<form [formGroup]="form" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+  <div class="flex flex-col">
+    <mat-form-field class="flex-auto gt-xs:pl-3">
+      <mat-label>Status do processo</mat-label>
+      <mat-select
+        formControlName="status"
+        (selectionChange)="selectChanged('status', $event, 'status')"
+      >
+        <mat-option [value]="''"></mat-option>
+        <mat-option [value]="opt" *ngFor="let opt of status">{{
+          opt
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="flex flex-col">
+    <mat-form-field class="flex-auto gt-xs:pl-3">
+      <mat-label>Advogado responsável</mat-label>
+      <mat-select
+        formControlName="insideLawyerId"
+        (selectionChange)="
+          selectChanged('insideLawyer', $event, 'insideLaywers')
+        "
+      >
+        <mat-option [value]="''"></mat-option>
+        <mat-option [value]="opt.id" *ngFor="let opt of insideLaywers">{{
+          opt.name
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="flex flex-col">
+    <mat-form-field class="w-full">
+      <mat-label>Data do cadastro</mat-label>
+      <mat-date-range-input
+        [formGroup]="rangeDate"
+        [rangePicker]="range"
+        [comparisonStart]="rangeDate.value.start"
+        [comparisonEnd]="rangeDate.value.end"
+      >
+        <input matStartDate placeholder="Início" formControlName="startDate" readonly (dateChange)="rangeDateChange('startDate')"/>
+        <input matEndDate placeholder="Fim" formControlName="endDate" (dateChange)="rangeDateChange('endDate')" readonly/>
+      </mat-date-range-input>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="range"
+      ></mat-datepicker-toggle>
+      <mat-date-range-picker #range></mat-date-range-picker>
+    </mat-form-field>
+  </div>
+</form>

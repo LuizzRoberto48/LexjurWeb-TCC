@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { ProcessService } from 'app/modules/process/process.service';
+import { ProcessService } from 'app/modules/process/services/process.service';
 import { Observable, Subscription } from 'rxjs';
 
 @Component({

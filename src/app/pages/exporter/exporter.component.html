@@ -1,0 +1,111 @@
+<div class="inset-0 flex flex-col min-w-0 overflow-hidden w-full">
+  <header-content
+    [titleIcon]="'heroicons_outline:exporter_2'"
+    [title]="'Exportador'"
+    [desc]="'Exportar relatórios para uma planilha excel'"
+  >
+  </header-content>
+  <search-process
+    [title]="'Filtrar'"
+    (emitSearchValues)="searchValues($event)"
+  ></search-process>
+  <div
+    class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden mx-6 my-8 p-8"
+  >
+    <div
+      class="grid grid-cols-1 sm:grid-cols-1 mt-2 border rounded-md p-5 gap-4"
+    >
+      <p class="text-lg">
+        Selecione colunas que você deseja visualizar no relatório:
+      </p>
+      <div class="flex flex-col">
+        <mat-form-field class="block chips">
+          <mat-chip-grid #chipGrid>
+            <mat-chip-row
+              *ngFor="let field of filterProcessFields"
+              (removed)="removeProcessField(field)"
+              [selectable]="true"
+              [removable]="true"
+            >
+              {{ field.label }}
+              <button matChipRemove [attr.aria-label]="'remove'">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          </mat-chip-grid>
+          <input
+            class="pb-2 -ml-1 mt-3"
+            #filterInput
+            placeholder="Adicionar uma coluna"
+            (input)="filterField($event)"
+            [matChipInputFor]="chipGrid"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selectProcessField($event)"
+            (opened)="(processFields)"
+          >
+            <mat-option
+              *ngFor="let field of processFields"
+              [value]="field.name"
+            >
+              <p>{{ field.label }}</p>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <div class="flex flex-row gap-4">
+          <a class="flex text-warn" (click)="removeAllProcessFields()">
+            <mat-icon
+              class="icon-size-6 pr-1 text-warn"
+              [svgIcon]="'heroicons_outline:trash'"
+            ></mat-icon>
+            Remover tudo
+          </a>
+          <a class="flex text-green-700" (click)="addAllProcessFields()">
+            <mat-icon
+              class="icon-size-6 pr-1 text-green-700"
+              [svgIcon]="'heroicons_outline:plus-circle'"
+            ></mat-icon
+            >Adicionar tudo</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 mt-2 border rounded-md p-5">
+      <p class="text-lg">Filtros selecionados:</p>
+      <div class="grid lg:grid-cols-3 grid-cols-1 mt-4">
+        <p class="text-gray-700 font-bold mb-5">
+          Status:
+          <span class="font-light mb-3">{{ status?.value ?? '--' }}</span>
+        </p>
+        <p class="text-gray-700 font-bold mb-5">
+          Advogado responsável:
+          <span class="font-light mb-3">{{ insideLawyer?.value ?? '--' }}</span>
+        </p>
+        <p class="text-gray-700 font-bold mb-3">
+          Data de criação:
+          <span class="font-light" *ngIf="startDate"
+            >{{ startDate?.value | date : 'dd/MM/yyyy' }} até
+            {{ endDate?.value | date : 'dd/MM/yyyy' }}</span
+          >
+        </p>
+      </div>
+    </div>
+    <!-- Actions -->
+    <div class="flex items-end justify-end my-9">
+      <button
+        class="bg-excell text-white font-semibold"
+        mat-flat-button
+        type="button"
+      >
+        <mat-icon
+          class="icon-size-6 pr-1"
+          [svgIcon]="'heroicons_outline:document-download'"
+        ></mat-icon>
+        Gerar Excel
+      </button>
+    </div>
+  </div>
+</div>

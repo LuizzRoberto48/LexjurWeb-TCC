@@ -7,13 +7,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Process } from 'app/modules/process/models/process.model';
-import { ProcessService } from 'app/modules/process/process.service';
+
 import { Subscription, switchMap, tap } from 'rxjs';
 import { DeadlineTrackerService } from 'app/modules/deadline-trackers/deadline-tracker.service';
 import { IDeadlineTracker } from 'app/modules/deadline-trackers/model/deadline-tracker.model';
 import { UntypedFormControl } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { configDialogResource } from 'app/modules/process/utils';
+import { ProcessService } from 'app/modules/process/services/process.service';
 
 @Component({
   selector: 'deadline-tracker',

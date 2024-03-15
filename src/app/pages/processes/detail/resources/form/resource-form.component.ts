@@ -15,7 +15,7 @@ import {
   Organ,
   Origin,
 } from 'app/modules/process/models/process.model';
-import { ProcessService } from 'app/modules/process/process.service';
+import { ProcessService } from 'app/modules/process/services/process.service';
 import {
   CreateResource,
   GetResource,

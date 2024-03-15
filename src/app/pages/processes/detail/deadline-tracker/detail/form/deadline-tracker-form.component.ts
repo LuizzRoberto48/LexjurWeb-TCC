@@ -24,12 +24,13 @@ import { BasicLawyer } from 'app/modules/lawyer/model/lawyer.model';
 import { DateTime } from 'luxon';
 import { Subscription, delay, switchMap, tap } from 'rxjs';
 import { Location } from '@angular/common';
-import { ProcessService } from 'app/modules/process/process.service';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { DeadlineProcessWithResources } from 'app/modules/resource/model/resource.model';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_FORMATS } from 'app/shared/date-picker-formats';
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
+import { ProcessService } from 'app/modules/process/services/process.service';
 
 const DEADLINE = 'Prazo';
 const AUDIENCE = 'Audiência';

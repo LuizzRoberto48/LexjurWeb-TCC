@@ -3,7 +3,6 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 
 import { AttachedProcessService } from 'app/modules/attached-process/attached-process.service';

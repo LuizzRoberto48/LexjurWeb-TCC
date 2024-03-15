@@ -10,7 +10,8 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { GetProcessExpenses } from 'app/modules/process-expenses/expenses.model';
 import { ProcessExpensesService } from 'app/modules/process-expenses/process-expenses.service';
 import { Process } from 'app/modules/process/models/process.model';
-import { ProcessService } from 'app/modules/process/process.service';
+import { ProcessService } from 'app/modules/process/services/process.service';
+
 import { configDialogResource } from 'app/modules/process/utils';
 import { DateTime } from 'luxon';
 import { Subscription, switchMap, tap } from 'rxjs';

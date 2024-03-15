@@ -8,7 +8,7 @@ import { NotificationService } from '@fuse/components/notification/notification.
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { GetProcessParts } from 'app/modules/process-parts/dto/process-parts.dto';
 import { Process } from 'app/modules/process/models/process.model';
-import { ProcessService } from 'app/modules/process/process.service';
+import { ProcessService } from 'app/modules/process/services/process.service';
 import { configDialogResource } from 'app/modules/process/utils';
 import { Subscription, switchMap, tap } from 'rxjs';
 import { ProcessRequestsFormComponent } from './form/process-requests-form.component';

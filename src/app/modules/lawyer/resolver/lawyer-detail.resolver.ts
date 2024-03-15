@@ -4,7 +4,6 @@ import {
   Resolve,
   RouterStateSnapshot,
 } from '@angular/router';
-import { ProcessService } from 'app/modules/process/process.service';
 import { Observable } from 'rxjs';
 import { LawyerService } from '../lawyer.service';
 

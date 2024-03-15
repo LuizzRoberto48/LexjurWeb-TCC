@@ -9,7 +9,7 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { GetProcessParts } from 'app/modules/process-parts/dto/process-parts.dto';
 import { ProcessPartsService } from 'app/modules/process-parts/process-parts.service';
 import { PersonType, Process } from 'app/modules/process/models/process.model';
-import { ProcessService } from 'app/modules/process/process.service';
+import { ProcessService } from 'app/modules/process/services/process.service';
 import { configDialogResource } from 'app/modules/process/utils';
 import { Subscription, switchMap, tap } from 'rxjs';
 import { ProcessPartsFormComponent } from './form/process-parts-form.component';

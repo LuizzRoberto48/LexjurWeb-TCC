@@ -7,11 +7,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { SearchModalListComponent } from 'app/global/components/search-process-list/search-modal-list.component';
+
 import { GetAttachedProcess } from 'app/modules/attached-process/attached-process.model';
 import { AttachedProcessService } from 'app/modules/attached-process/attached-process.service';
+import { SearchModalListComponent } from 'app/modules/process/components/search-process-list/search-modal-list.component';
 import { Process } from 'app/modules/process/models/process.model';
-import { ProcessService } from 'app/modules/process/process.service';
+import { ProcessService } from 'app/modules/process/services/process.service';
 import { configDialogResource } from 'app/modules/process/utils';
 import { Subscription, switchMap } from 'rxjs';
 

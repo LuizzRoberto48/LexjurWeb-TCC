@@ -2,7 +2,9 @@
 /*  @ Import/write your custom styles here.
 /*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
 /* ----------------------------------------------------------------------------------------------------- */
-
+.bg-excell {
+  background-color:#008739 !important;
+}
 
 .theme-default .light .mat-mdc-snack-bar-container, .theme-default.light .mat-mdc-snack-bar-container {
   &.success {

@@ -10,7 +10,8 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { GetProcessGuarantee } from 'app/modules/process-guarantees/model/guarantees.model';
 import { ProcessGuaranteeService } from 'app/modules/process-guarantees/process-guarantee.service';
 import { Process } from 'app/modules/process/models/process.model';
-import { ProcessService } from 'app/modules/process/process.service';
+import { ProcessService } from 'app/modules/process/services/process.service';
+
 import { configDialogResource } from 'app/modules/process/utils';
 import { DateTime } from 'luxon';
 import { Subscription, switchMap, tap } from 'rxjs';

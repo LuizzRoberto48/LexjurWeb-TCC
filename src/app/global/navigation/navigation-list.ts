@@ -21,5 +21,12 @@ export const NavigationList: FuseNavigationItem[] = [
     type : 'basic',
     icon : 'heroicons_outline:identification',
     link : '/lawyers'
+  },
+  {
+    id   : 'exporter',
+    title: 'Exportador',
+    type : 'basic',
+    icon : 'heroicons_outline:exporter_2',
+    link : '/exporter'
   }
 ];
