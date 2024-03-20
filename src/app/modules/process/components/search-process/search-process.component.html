@@ -9,7 +9,7 @@
     <ng-container
       [ngTemplateOutlet]="isAppendProcessFilter ? appendForm : commonForm"
     ></ng-container>
-    <div class="flex items-center justify-end">
+    <div class="flex items-center justify-end" *ngIf="hasSeachBtn">
       <button
         class="ml-4"
         mat-flat-button

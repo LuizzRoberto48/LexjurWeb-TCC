@@ -1,10 +1,11 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { NotificationService } from '@fuse/components/notification/notification.service';
+import { getEnumKeyByEnumValue } from 'app/global/utils/str-manipulations';
+import { ExportProcess } from 'app/modules/process/models/export-process';
+import { ProcessStatus } from 'app/modules/process/models/process.model';
 import { processFields } from 'app/modules/process/process-fields';
+import { ExportProcessService } from 'app/modules/process/services/export-process.service';
 
 @Component({
   selector: 'exporter',
@@ -14,7 +15,7 @@ import { processFields } from 'app/modules/process/process-fields';
 export class ExporterComponent {
   @ViewChild('filterInput') filterInput;
   status: { name: string; value: string };
-  insideLawyer: { name: string; value: string };
+  insideLawyer: { id?: number; name: string; value: string };
   startDate: { name: string; value: string };
   endDate: { name: string; value: string };
   filterProcessFields: { name: string; label: string }[] = [];
@@ -22,7 +23,11 @@ export class ExporterComponent {
     (a, b) => a.label.localeCompare(b.label),
   );
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private exportService: ExportProcessService,
+    private notificationService: NotificationService,
+  ) {
     this.filterProcessFields = this.processFields;
   }
 
@@ -44,8 +49,15 @@ export class ExporterComponent {
     this.filterProcessFields = [];
   }
 
+  isValidateBuildExcel(): boolean {
+    if (this.status?.name || this.insideLawyer?.id || this.endDate?.value)
+      return true;
+
+    return false;
+  }
+
   selectProcessField(event: MatAutocompleteSelectedEvent) {
-    this.processFields = processFields
+    this.processFields = processFields;
     const field = event.option.value;
 
     const existField = this.processFields.find((f) => f.name == field);
@@ -55,7 +67,7 @@ export class ExporterComponent {
     if (haveField) return;
 
     this.filterProcessFields.push(existField);
-    this.filterInput.nativeElement.value = ''
+    this.filterInput.nativeElement.value = '';
   }
 
   filterField(event: any) {
@@ -65,5 +77,33 @@ export class ExporterComponent {
     );
   }
 
-  
+  export() {
+    if (!this.isValidateBuildExcel()) {
+      this.notificationService.danger(
+        'Você precisa adicionar ao menos um filtro para exportar os processos para excel.',
+      );
+      return;
+    }
+    const body: ExportProcess = {
+      ...(this.insideLawyer?.id && { insideLawyer: this.insideLawyer.id }),
+      ...(this.status?.value && {
+        status: getEnumKeyByEnumValue(ProcessStatus, this.status.value),
+      }),
+      ...(this.startDate?.value &&
+        this.endDate?.value && {
+          rangeDate: {
+            start: this.startDate.value,
+            end: this.endDate.value,
+          },
+        }),
+      columns: this.filterProcessFields,
+    };
+    this.exportService.exportExcel(body).subscribe({
+      next: (res: any) => {
+        const { blob, filename } =
+          this.exportService.transformResponseToBlob(res);
+        this.exportService.saveFile(blob, filename);
+      },
+    });
+  }
 }

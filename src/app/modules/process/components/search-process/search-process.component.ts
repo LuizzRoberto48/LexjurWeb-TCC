@@ -20,6 +20,7 @@ export class SearchProcessNewComponent {
   @Input() title = 'Buscar Processos';
   @Input() isAppendProcessFilter = false;
   @Input() isExpandable = true;
+  @Input() hasSeachBtn = true;
 
   status!:{name:string, label:string}
   $subs: Subscription[] = [];
@@ -46,6 +47,7 @@ export class SearchProcessNewComponent {
 
   search() {
     const coreId = this.core.id;
+    console.log(this.form.value)
     const subs = this.process
       .pipe(
         switchMap((process: Process) => {

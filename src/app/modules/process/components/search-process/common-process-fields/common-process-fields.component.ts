@@ -27,13 +27,13 @@ export class CommonProcessFieldsComponent {
   insideLaywers: GetLawyer[] = [];
   constructor(
     private searchProcess: SearchProcessService,
-    private lawyerService: LawyerService
+    private lawyerService: LawyerService,
   ) {
     this.getLawyers();
   }
 
   get rangeDate() {
-    return this.searchProcess.filtersForm.controls['rangeDate']
+    return this.searchProcess.filtersForm.controls['rangeDate'];
   }
 
   get form() {
@@ -51,10 +51,13 @@ export class CommonProcessFieldsComponent {
       },
     });
   }
-  
-  rangeDateChange(controlName:string) {
-    const date  = <DateTime>this.form.controls['rangeDate'].get(controlName).value;
-    const isoDate = date.toUTC().toISO();
+
+  rangeDateChange(controlName: string) {
+    const date = <DateTime>(
+      this.form.controls['rangeDate'].get(controlName).value
+    );
+    if (!date) return;
+    const isoDate = date.toUTC().set({ hour: 0 }).toISO();
     this.changedForm.emit({
       value: isoDate,
       name: controlName,

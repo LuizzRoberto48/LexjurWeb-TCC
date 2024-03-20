@@ -45,7 +45,6 @@ export class LawyerService {
   private httpParams(...params: any[]): HttpParams {
     // Merge all objects into a single object
     const combinedParams = Object.assign({}, ...params);
-
     // Construct HttpParams from the combined object
     let httpParams = new HttpParams();
     Object.keys(combinedParams).forEach((key) => {
@@ -54,7 +53,6 @@ export class LawyerService {
         httpParams = httpParams.append(key, combinedParams[key]);
       }
     });
-
     return httpParams;
   }
 
