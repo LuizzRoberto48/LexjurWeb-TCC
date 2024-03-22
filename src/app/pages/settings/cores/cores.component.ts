@@ -41,6 +41,7 @@ export class SettingsCoresComponent implements AfterViewInit, OnInit{
     this.listCores();
   }
 
+  //TODO: Migrar para tela dedicada de núcleos
   createCore(): void {
    const dialogRef = this.dialog.open(CoresFormComponent, {
       width: '40rem',
@@ -56,8 +57,10 @@ export class SettingsCoresComponent implements AfterViewInit, OnInit{
     })
   }
 
-  goToTeam(panel: string): void {
-    this.settingsComponent.goToPanel(panel)
+  goToTeam(panel: string, item: any): void {
+    const {id, name} = item
+    this.coreService.updateLocalStorage({id, name});
+    this.settingsComponent.goToPanel(panel);
   }
 
   editCore(item: any): void {
@@ -77,7 +80,7 @@ export class SettingsCoresComponent implements AfterViewInit, OnInit{
       }
     })
   }
-  
+  //TODO: Migrar para tela dedicada de núcleos
   remove(id: number){
     this.coreService.remove(id).subscribe({
       next: (res: any)=>{

@@ -62,6 +62,10 @@ export class LawyerService {
     return this._http.put(`${environment.apiURL}/lawyers/${id}`, info);
   }
 
+  updateCurrentLawyer(info: CreateLawyer) {
+    return this._http.put(`${environment.apiURL}/lawyers/current`, info);
+  }
+
   findAllInsideLawyersPaginated(
     paginator: Paginator,
     fields: LawyerFields = {},

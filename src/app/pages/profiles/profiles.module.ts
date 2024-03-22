@@ -12,7 +12,6 @@ import { UserPermissionsComponent } from './permissions/perimissions.component';
 import { UsersComponent } from './users/users.component';
 import { UserFormComponent } from './users/form/user-form.component';
 import { UserListComponent } from './users/list/user-list.component';
-import { UserInfoComponent } from './users/info/user-info.component';
 import { UserDetailComponent } from './users/detail/user-detail.component';
 
 @NgModule({
@@ -24,7 +23,6 @@ import { UserDetailComponent } from './users/detail/user-detail.component';
     UserPermissionFormComponent,
     UserFormComponent,
     UserListComponent,
-    UserInfoComponent,
     UserDetailComponent,
   ],
   imports: [
@@ -33,5 +31,9 @@ import { UserDetailComponent } from './users/detail/user-detail.component';
     RouterModule.forChild(routes),
     HeaderContentModule,
   ],
+  //TIRAR DEPOIS
+  exports: [
+    UserDetailComponent
+  ]
 })
 export class ProfilesModule {}

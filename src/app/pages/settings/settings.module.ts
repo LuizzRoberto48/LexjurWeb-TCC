@@ -7,11 +7,12 @@ import { FuseDrawerModule } from '@fuse/components/drawer';
 import { SettingsAccountComponent } from './account/account.component';
 import { SettingsCoresComponent } from './cores/cores.component';
 import { SettingsTeamComponent } from './team/team.component';
-import { DetailsComponent } from '../details/details.component';
 import { GlobalModule } from 'app/shared/global.module';
 import { CoresFormComponent } from './cores/cores-form/cores-form.component';
 import { CoreSheetModule } from 'app/modules/cores/core-sheet/core-sheet.module';
 import { HeaderContentModule } from '@components/header-content/header-content.module';
+import { ProfilesModule } from '../profiles/profiles.module';
+import { DetailsComponent } from 'app/global/components/details/details.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,9 @@ import { HeaderContentModule } from '@components/header-content/header-content.m
     FuseDrawerModule,
     GlobalModule,
     CoreSheetModule,
-    HeaderContentModule
+    HeaderContentModule,
+    //TIRAR DEPOIS
+    ProfilesModule
   ]
 })
 export class SettingsModule { }

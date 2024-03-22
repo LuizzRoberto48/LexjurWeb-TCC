@@ -1,121 +1,60 @@
-import { ChangeDetectorRef, Component } from "@angular/core";
-import { MatBottomSheet } from "@angular/material/bottom-sheet";
-import { ActivatedRoute, Router } from "@angular/router";
-import { FuseMediaWatcherService } from "@fuse/services/media-watcher";
-import { AuthService } from "app/modules/auth/auth.service";
-import { CoreSheedList } from "app/modules/cores/core-sheet/core-sheet.component";
-import { CoreService } from "app/modules/cores/service/core.service";
-import { LawyerService } from "app/modules/lawyer/lawyer.service";
-import { Subject, Subscription, takeUntil } from "rxjs";
+import {
+  Component,
+  EventEmitter,
+  Output,
+} from '@angular/core';
+import { AuthService } from 'app/modules/auth/auth.service';
+import { CoreService } from 'app/modules/cores/service/core.service';
+import { LawyerService } from 'app/modules/lawyer/lawyer.service';
+import { Subscription } from 'rxjs';
 
 @Component({
-    selector:'settings-team',
-    templateUrl:'./team.component.html',
-    styleUrls: ['./team.component.scss']
+  selector: 'settings-team',
+  templateUrl: './team.component.html',
+  styleUrls: ['./team.component.scss'],
 })
+export class SettingsTeamComponent {
+  @Output() openDrawer = new EventEmitter<any>();
+  @Output() lawyerInfo = new EventEmitter<any>();
 
-export class SettingsTeamComponent{
-    showFiller = false;
-    members: any[];
-    roles: any[];
+  lawyers = [] as any;
+  pageSizeOptions = [12, 24, 36];
 
-    constructor(
-        private _bottomSheet: MatBottomSheet,
-        private coreService: CoreService,
-        public authService: AuthService,
-        private lawyerService: LawyerService,
-        private _changeDetectorRef: ChangeDetectorRef,
-        private _fuseMediaWatcherService: FuseMediaWatcherService
-    ){}
+  constructor(
+    private coreService: CoreService,
+    public authService: AuthService,
+    private lawyerService: LawyerService,
+  ) {}
 
-    $subsChangedCore: Subscription = new Subscription()
-    coreName: string
+  $subsChangedCore: Subscription = new Subscription();
+  coreName: string;
 
-    ngOnInit(): void
-    {
-        this.$subsChangedCore = this.coreService.$obsevableCore.subscribe(res => {
-            this.coreName = res?.name
-        })
+  ngOnInit(): void {
+    this.$subsChangedCore = this.coreService.$obsevableCore.subscribe((res) => {
+      this.coreName = res?.name;
+      this.findLawyersByCore(res.id);
+    });
+  }
 
-        // Setup the team members
-        this.members = [
-            {
-                avatar: 'assets/images/avatars/blank-profile-picture.png',
-                name  : 'Dejesus Michael',
-                email : this.authService.authUser.email,
-                role  : 'administrador'
-            },
-            {
-                avatar: 'assets/images/avatars/blank-profile-picture.png',
-                name  : 'Dejesus Michael',
-                email : this.authService.authUser.email,
-                role  : 'administrador'
-            },
-            {
-                avatar: 'assets/images/avatars/blank-profile-picture.png',
-                name  : 'Dejesus Michael',
-                email : this.authService.authUser.email,
-                role  : 'administrador'
-            },
-        ];
+  findLawyersByCore(id: number) {
+    this.lawyerService.findLawyersByCore(id).subscribe({
+      next: (lawyers) => {
+        this.lawyers = lawyers;
+        console.log(lawyers);
+      },
+    });
+  }
 
-        // Setup the roles
-        this.roles = [
-            {
-                label      : 'Read',
-                value      : 'read',
-                description: 'Pode le'
-            },
-            {
-                label      : 'Create',
-                value      : 'create',
-                description: 'Pode cria'
-            },
-            {
-                label      : 'Delete',
-                value      : 'delete',
-                description: 'pode deleta'
-            },
-            {
-                label      : 'Update',
-                value      : 'update',
-                description: 'Pode altera'
-            },
-            {
-                label      : 'Full',
-                value      : 'full',
-                description: 'Porra toda'
-            },
-        ];
-        
-    }
+  drawerActions(value: any, lawyer: any) {
+    this.openDrawer.emit(value);
+    this.getLawyerInfo(lawyer.id);
+  }
 
-    ngOnDestroy() {
-        this.$subsChangedCore.unsubscribe()
-    }
-
-    trackByFn(index: number, item: any): any
-    {
-        return item.id || index;
-    }
-
-    drawerMode: 'over' | 'side' = 'side';
-    drawerOpened: boolean = true;
-    private _unsubscribeAll: Subject<any> = new Subject<any>();
-
-    hideOrShowDrawerBySizeOfScreen() {
-        this._fuseMediaWatcherService.onMediaChange$
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe(({ matchingAliases }) => {
-            if (matchingAliases.includes('lg')) {
-              this.drawerMode = 'side';
-              this.drawerOpened = true;
-            }
-            else {
-              this.drawerMode = 'over';
-              this.drawerOpened = false;
-            }
-            this._changeDetectorRef.markForCheck();
-          });
-    }
+  getLawyerInfo(id: number) {
+    this.lawyerService.findById(id).subscribe({
+      next: (lawyer) => {
+        this.lawyerInfo.emit(lawyer);
+      }
+    })
+  }
 }

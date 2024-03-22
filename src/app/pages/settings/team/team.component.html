@@ -1,161 +1,72 @@
-<<<<<<< HEAD
-    <!-- Team members -->
-    <div>
-        <button
-        class="bg-gray-300"
-        mat-flat-button
-        type="button"
-        changeCore
-        >
-        Núcleo: <span>{{coreName}}</span>
-        </button>
-    </div>
-    <div class="w-full max-w-3xl">
-        <div class="flex flex-col mt-8 divide-y border-t border-b">
-            <ng-container *ngFor="let member of members; trackBy: trackByFn;">
-                <div class="flex flex-col sm:flex-row sm:items-center py-4">
-                    <div class="flex items-center">
-                        <div class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden">
-                            <ng-container *ngIf="member.avatar">
-                                <img
-                                    class="object-cover w-full h-full"
-                                    [src]="member.avatar"
-                                    alt="Contact avatar"/>
-                            </ng-container>
-                            <ng-container *ngIf="!member.avatar">
-                                <div class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
-                                    {{member.name.charAt(0)}}
-                                </div>
-                            </ng-container>
-                        </div>
-                        <div class="ml-4">
-                            <div class="font-medium">{{member.name}}</div>
-                            <div class="text-secondary">{{member.email}}</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center mt-4 sm:mt-0 sm:ml-auto">
-                        <div class="order-2 sm:order-1 ml-4 sm:ml-0 w-48">
-                            <mat-form-field
-                                class="fuse-mat-dense w-100"
-                                [subscriptSizing]="'dynamic'">
-                                <mat-select
-                                    [panelClass]="'h-auto max-h-none'"
-                                    [value]="member.role"
-                                    disableOptionCentering
-                                    #roleSelect="matSelect">
-                                    <mat-select-trigger class="text-md">
-                                        <span>Role:</span>
-                                        <span class="ml-1 font-medium">{{roleSelect.value | titlecase}}</span>
-                                    </mat-select-trigger>
-                                    <ng-container *ngFor="let role of roles">
-                                        <mat-option
-                                            class="h-auto py-4 leading-none"
-                                            [value]="role.value">
-                                            <div class="font-medium">{{role.label}}</div>
-                                            <div class="mt-1.5 text-sm whitespace-normal leading-normal text-secondary">{{role.description}}</div>
-                                        </mat-option>
-                                    </ng-container>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-
-                        <!--Action Buttons-->
-                        <div class="order-1 sm:order-2 sm:ml-3">
-                            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                                <mat-icon>more_vert</mat-icon>
-                            </button>
-                            <mat-menu #menu="matMenu">
-                                <button mat-menu-item (click)="drawer.open()">
-                                    <mat-icon class="icon-size-4 text-gray-600" svgIcon="library_books"></mat-icon>
-                                    <span>Detalhes</span>
-                                </button>
-                            </mat-menu>
-                        </div>
-                    </div>
-                </div>
-            </ng-container>
-        </div>
-    </div>
-=======
 <!-- Team members -->
 <div>
-  <button class="bg-gray-300" mat-flat-button type="button" changeCore>
+  <button
+    class="mt-4 lg:mt-6 bg-gray-300"
+    mat-flat-button
+    type="button"
+    changeCore
+  >
     Núcleo: <span>{{ coreName }}</span>
   </button>
 </div>
-<div class="w-full max-w-3xl">
-  <div class="flex flex-col mt-8 divide-y border-t border-b">
-    <ng-container *ngFor="let member of members; trackBy: trackByFn">
-      <div class="flex flex-col sm:flex-row sm:items-center py-4">
-        <div class="flex items-center">
-          <div
-            class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden"
-          >
-            <ng-container *ngIf="member.avatar">
-              <img
-                class="object-cover w-full h-full"
-                [src]="member.avatar"
-                alt="Contact avatar"
-              />
-            </ng-container>
-            <ng-container *ngIf="!member.avatar">
+<div class="w-full">
+  <div class="flex flex-col mt-4 sm:mt-0 divide-y">
+    <div
+      class="flex-auto border-t pt-4 sm:pt-4 bg-card shadow sm:rounded-2xl sm:mx-0 sm:my-5"
+    >
+      <div
+        class="relative w-full max-w-screen-xl"
+        style="min-height: 45vh"
+      >
+        <ng-container *ngFor="let lawyer of lawyers">
+          <div class="flex flex-row sm:items-center py-4 px-5">
+            <div class="flex items-center">
               <div
-                class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden"
               >
-                {{ member.name.charAt(0) }}
-              </div>
-            </ng-container>
-          </div>
-          <div class="ml-4">
-            <div class="font-medium">{{ member.name }}</div>
-            <div class="text-secondary">{{ member.email }}</div>
-          </div>
-        </div>
-        <div class="flex items-center mt-4 sm:mt-0 sm:ml-auto">
-          <div class="order-2 sm:order-1 ml-4 sm:ml-0">
-            <mat-form-field
-              class="fuse-mat-dense w-100"
-              [subscriptSizing]="'dynamic'"
-            >
-              <mat-select
-                [panelClass]="'w-72 min-w-72 max-w-72 h-auto max-h-none'"
-                [value]="member.role"
-                disableOptionCentering
-                #roleSelect="matSelect"
-              >
-                <mat-select-trigger class="text-md w-100">
-                  <span>Role:</span>
-                  <span class="ml-1 font-medium">{{
-                    roleSelect.value | titlecase
-                  }}</span>
-                </mat-select-trigger>
-                <ng-container *ngFor="let role of roles">
-                  <mat-option
-                    class="h-auto py-4 leading-none"
-                    [value]="role.value"
-                  >
-                    <div class="font-medium">{{ role.label }}</div>
-                    <div
-                      class="mt-1.5 text-sm whitespace-normal leading-normal text-secondary"
-                    >
-                      {{ role.description }}
-                    </div>
-                  </mat-option>
+                <ng-container *ngIf="false">
+                  <img
+                    class="object-cover w-full h-full"
+                    [src]="lawyer.avatar"
+                    alt="Contact avatar"
+                  />
                 </ng-container>
-              </mat-select>
-            </mat-form-field>
+                <ng-container *ngIf="true">
+                  <div
+                    class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                  >
+                    {{ lawyer?.name.charAt(0) }}
+                  </div>
+                </ng-container>
+              </div>
+              <div class="ml-4">
+                <div class="font-medium">{{ lawyer?.name }}</div>
+                <div class="text-secondary">{{ lawyer.user?.email }}</div>
+                <div class="text-secondary">{{ lawyer?.oab }}</div>
+              </div>
+            </div>
+            <div class="flex items-center mt-4 sm:mt-0 ml-auto">
+              <button
+                mat-icon-button
+                (click)="drawerActions(openDrawer, lawyer)"
+              >
+                <mat-icon
+                  class="text-hint"
+                  [svgIcon]="'heroicons_outline:arrow-circle-right'"
+                ></mat-icon>
+              </button>
+            </div>
           </div>
-          <div class="order-1 sm:order-2 sm:ml-3">
-            <button mat-icon-button>
-              <mat-icon
-                class="text-hint"
-                [svgIcon]="'heroicons_outline:trash'"
-              ></mat-icon>
-            </button>
-          </div>
-        </div>
+          <hr class="my-3" />
+        </ng-container>
       </div>
-    </ng-container>
+      <mat-paginator
+        class="rounded-2xl"
+        [pageSizeOptions]="pageSizeOptions"
+        aria-label="Select page"
+      >
+        >
+      </mat-paginator>
+    </div>
   </div>
 </div>
->>>>>>> master

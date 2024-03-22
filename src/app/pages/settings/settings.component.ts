@@ -12,9 +12,12 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './settings.component.html'
 })
 export class SettingsComponent {
+  
   @ViewChild('drawer') drawer: MatDrawer;
+  lawyerInfo = {} as any; 
   drawerMode: 'over' | 'side' = 'side';
   drawerOpened: boolean = true;
+  drawerTeamOpened: boolean = false;
   panels: any[] = [];
   selectedPanel: string = 'account';
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -71,5 +74,20 @@ export class SettingsComponent {
   ngOnDestroy(): void {
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
+  }
+
+  drawerOpen(value: any){
+    this.drawerOpened = false;
+    this.drawerTeamOpened = true;
+  }
+
+  drawerClose(){
+    this.hideOrShowDrawerBySizeOfScreen();
+    //this.drawerOpened = true;
+    this.drawerTeamOpened = false;
+  }
+
+  getLawyerInfo(lawyer: any){
+    this.lawyerInfo = lawyer;
   }
 }

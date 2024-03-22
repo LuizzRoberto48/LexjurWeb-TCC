@@ -20,7 +20,7 @@ export class ProfileHelper {
       },
       {
         id: COREID,
-        icon: 'heroicons_outline:lock-closed',
+        icon: 'heroicons_outline:cube',
         title: 'Meus núcleos',
         description: 'Gerêncie os núcleos que você é administrador'
       },
@@ -32,14 +32,14 @@ export class ProfileHelper {
       },
       {
         id: PERMISSIONID,
-        icon: 'heroicons_solid:lock-closed',
+        icon: 'heroicons_outline:lock-closed',
         title: 'Permissões',
-        description: 'Gerencie as permissões dos seus usuários',
+        description: 'Veja suas permissões na Lexjur',
         descIcon: 'heroicons_solid:key'
       },
       {
         id:USERID,
-        icon: 'heroicons_solid:identification',
+        icon: 'heroicons_outline:identification',
         title: 'Usuários',
         description: 'Gerencie os usuários da sua empresa',
         descIcon: 'heroicons_solid:user-group'

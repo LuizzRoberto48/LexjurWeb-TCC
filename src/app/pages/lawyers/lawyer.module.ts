@@ -37,6 +37,15 @@ registerLocaleData(localePt);
     MatStepperModule,
     LawyerFormModule
   ],
+  exports: [
+    LawyerComponent,
+    LawyerContainerComponent,
+    LawyerPermissionsComponent,
+    PermissionsListComponent,
+    LawyerPermissionFormComponent,
+    LawyerListComponent,
+    LawyerDetailComponent,
+  ],
   providers:[
     
     DrawerService,
