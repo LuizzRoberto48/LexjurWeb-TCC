@@ -7,7 +7,8 @@ import { getEnumKeyByEnumValue } from 'app/global/utils/str-manipulations';
 import { GetProcessParts } from 'app/modules/process-parts/dto/process-parts.dto';
 import { ProcessPartsService } from 'app/modules/process-parts/process-parts.service';
 import { PersonType } from 'app/modules/process/models/process.model';
-import { ProcessService } from 'app/modules/process/process.service';
+import { ProcessService } from 'app/modules/process/services/process.service';
+
 
 @Component({
   selector: 'process-parts-form',

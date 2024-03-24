@@ -7,13 +7,13 @@
     [hasCoreBtn]="false"
   ></header-content>
   
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form" novalidate>
     <div
     class="xl:col-span-2 flex flex-col flex-auto bg-card shadow sm:rounded-2xl overflow-hidden px-5 py-3 sm:m-5"
     >
     <div class="grid grid-cols-2 md:mx-0 sm:mx-2 md:px-5 mt-5" *ngIf="isEdit">
       <button
-        class="md:w-1/4 col-start-2 justify-self-end"
+        class=" col-start-2 justify-self-end"
         mat-flat-button
         [color]="'primary'"
         (click)="toDetail()"
@@ -24,37 +24,57 @@
       <label class="text-primary-600 font-semibold"
         >Distribuição do processo</label
       >
-      <mat-checkbox
-        formControlName="isCNJ"
-        [color]="'primary'"
-        style="left: -10px"
-        class="mt-4"
-      >
-        CNJ
-      </mat-checkbox>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
-        <div class="flex flex-col">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4 mb-3">
+        <mat-checkbox
+          formControlName="isCNJ"
+          [color]="'primary'"
+          style="left: -10px"
+          class="mt-4"
+        >
+          CNJ
+        </mat-checkbox>
+        <div class="flex flex-col items-start justify-start">
+          <mat-label
+            class="font-medium"
+            style="
+              color: rgba(
+                var(--fuse-text-default-rgb),
+                var(--tw-text-opacity)
+              ) !important;
+            "
+            >Processo eletrônico</mat-label
+          >
+          <mat-radio-group color="primary" formControlName="isEletronic">
+            <mat-radio-button
+              [value]="eletronic.value"
+              *ngFor="let eletronic of isEletronicTypes"
+              >{{ eletronic.label }}</mat-radio-button
+            >
+          </mat-radio-group>
+        </div>
+        <div class="flex flex-col" *ngIf="form.get('isEletronic').value">
           <mat-form-field class="flex-auto gt-xs:pl-3">
-            <mat-label>Fase atual</mat-label>
-            <mat-select formControlName="phaseId">
-              <mat-option [value]="phase.id" *ngFor="let phase of phases">{{
-                phase.name
+            <mat-label>Sistema eletrônico</mat-label>
+            <mat-select formControlName="eletronicSystemId">
+              <mat-option [value]="es.id" *ngFor="let es of eletronicSystems">{{
+                es.name | titlecase
               }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
+
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
         <div class="flex flex-col">
-          <mat-form-field class="flex-auto gt-xs:pl-3">
-            <mat-label>Área do direito</mat-label>
-            <mat-select
-              formControlName="lawAreaId"
-              (selectionChange)="changeLawArea()"
-            >
-              <mat-option [value]="area.id" *ngFor="let area of lawAreas">{{
-                area.name
-              }}</mat-option>
-            </mat-select>
+          <mat-form-field class="w-full">
+            <mat-label>Número do processo</mat-label>
+            <input matInput type="text" formControlName="caseNumber" />
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <mat-form-field class="w-full">
+            <mat-label>Número Antigo do Processo</mat-label>
+            <input matInput type="text" formControlName="oldCaseNumber" />
           </mat-form-field>
         </div>
         <div class="flex flex-col">
@@ -89,6 +109,46 @@
             <input matInput type="text" formControlName="organNumber" />
           </mat-form-field>
         </div>
+        <div class="flex flex-col">
+          <mat-form-field class="flex-auto gt-xs:pl-3">
+            <mat-label>Fase atual</mat-label>
+            <mat-select formControlName="phaseId">
+              <mat-option [value]="phase.id" *ngFor="let phase of phases">{{
+                phase.name
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <mat-form-field class="flex-auto gt-xs:pl-3">
+            <mat-label>Área do direito</mat-label>
+            <mat-select
+              formControlName="lawAreaId"
+              (selectionChange)="changeLawArea()"
+            >
+              <mat-option [value]="area.id" *ngFor="let area of lawAreas">{{
+                area.name
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        
+        <div class="flex flex-col">
+          <mat-form-field class="flex-auto gt-xs:pl-3">
+            <mat-label>Sub área do direito</mat-label>
+            <mat-select
+              [placeholder]="'Language'"
+              formControlName="lawSubAreaId"
+            >
+              <mat-option
+                [value]="subarea.id"
+                *ngFor="let subarea of lawSubAreas"
+                >{{ subarea.name }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        
         <div class="flex flex-col">
           <mat-form-field class="flex-auto gt-xs:pl-3">
             <mat-label>UF</mat-label>
@@ -135,18 +195,6 @@
           </mat-form-field>
         </div>
         <div class="flex flex-col">
-          <mat-form-field class="w-full">
-            <mat-label>Número Antigo do Processo</mat-label>
-            <input matInput type="text" formControlName="oldCaseNumber" />
-          </mat-form-field>
-        </div>
-        <div class="flex flex-col">
-          <mat-form-field class="w-full">
-            <mat-label>Número do processo</mat-label>
-            <input matInput type="text" formControlName="caseNumber" />
-          </mat-form-field>
-        </div>
-        <div class="flex flex-col">
           <mat-form-field class="flex-auto gt-xs:pl-3">
             <mat-label>Advogado responsável</mat-label>
             <mat-select formControlName="insideLawyerId">
@@ -182,21 +230,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="flex flex-col">
-          <mat-form-field class="flex-auto gt-xs:pl-3">
-            <mat-label>Sub área do direito</mat-label>
-            <mat-select
-              [placeholder]="'Language'"
-              formControlName="lawSubAreaId"
-            >
-              <mat-option
-                [value]="subarea.id"
-                *ngFor="let subarea of lawSubAreas"
-                >{{ subarea.name }}</mat-option
-              >
-            </mat-select>
-          </mat-form-field>
-        </div>
+        
         <div class="flex flex-col">
           <mat-form-field class="flex-auto gt-xs:pl-3">
             <mat-label>Objeto</mat-label>
@@ -220,35 +254,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="flex flex-col items-center justify-start">
-          <mat-label
-            class="font-medium"
-            style="
-              color: rgba(
-                var(--fuse-text-default-rgb),
-                var(--tw-text-opacity)
-              ) !important;
-            "
-            >Processo eletrônico</mat-label
-          >
-          <mat-radio-group color="primary" formControlName="isEletronic">
-            <mat-radio-button
-              [value]="eletronic.value"
-              *ngFor="let eletronic of isEletronicTypes"
-              >{{ eletronic.label }}</mat-radio-button
-            >
-          </mat-radio-group>
-        </div>
-        <div class="flex flex-col" *ngIf="form.get('isEletronic').value">
-          <mat-form-field class="flex-auto gt-xs:pl-3">
-            <mat-label>Sistema eletrônico</mat-label>
-            <mat-select formControlName="eletronicSystemId">
-              <mat-option [value]="es.id" *ngFor="let es of eletronicSystems">{{
-                es.name | titlecase
-              }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+        
       </div>
     </div>
 
@@ -385,7 +391,7 @@
         <ng-container formGroupName="adverseLawyer">
           <div class="flex flex-col">
             <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>UF OAB</mat-label>
+              <mat-label>UF OAB Advogado Adverso</mat-label>
               <mat-select
                 formControlName="ufOab"
                 (selectionChange)="changedUfOab()"
@@ -398,7 +404,13 @@
           </div>
           <div class="flex flex-col">
             <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>Nome</mat-label>
+              <mat-label>OAB Advogado Adverso</mat-label>
+              <input matInput type="text" formControlName="oab" />
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Nome Advogado Adverso</mat-label>
               <mat-select
                 formControlName="name"
                 (selectionChange)="changedLawyerOabAdverse()"
@@ -412,12 +424,7 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="flex flex-col">
-            <mat-form-field class="flex-auto gt-xs:pl-3">
-              <mat-label>OAB </mat-label>
-              <input matInput type="text" formControlName="oab" />
-            </mat-form-field>
-          </div>
+          
         </ng-container>
       </div>
     </div>

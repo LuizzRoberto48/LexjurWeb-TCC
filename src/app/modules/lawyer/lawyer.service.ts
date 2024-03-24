@@ -25,6 +25,12 @@ export class LawyerService {
     );
   }
 
+  findAllInsideLawyers() {
+    return this._http.get<GetLawyer[]>(
+      `${environment.apiURL}/lawyers/inside_lawyers`,
+    );
+  }
+
   findInsideLaywerByFilter(
     coreId: number,
     fields: LawyerFields,
@@ -39,7 +45,6 @@ export class LawyerService {
   private httpParams(...params: any[]): HttpParams {
     // Merge all objects into a single object
     const combinedParams = Object.assign({}, ...params);
-
     // Construct HttpParams from the combined object
     let httpParams = new HttpParams();
     Object.keys(combinedParams).forEach((key) => {
@@ -48,7 +53,6 @@ export class LawyerService {
         httpParams = httpParams.append(key, combinedParams[key]);
       }
     });
-
     return httpParams;
   }
 
@@ -84,7 +88,7 @@ export class LawyerService {
     return this._http.get(`${environment.apiURL}/lawyers/${id}`);
   }
 
-  create(lawyer:CreateLawyer) {
+  create(lawyer: CreateLawyer) {
     return this._http.post(`${environment.apiURL}/lawyers`, lawyer);
   }
 }

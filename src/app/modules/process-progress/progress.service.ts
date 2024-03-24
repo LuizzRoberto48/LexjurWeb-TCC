@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { BaseHttpService } from 'app/global/base-http/base-http.service';
 import { ParamsModel } from 'app/global/base-http/base-http.model';
-import { ProcessService } from '../process/process.service';
+import { ProcessService } from '../process/services/process.service';
 import { Observable, switchMap } from 'rxjs';
 import { Process } from '../process/models/process.model';
 import { DateTime } from 'luxon';

@@ -8,14 +8,16 @@ import {
   CreateProcessExpenses,
   GetProcessExpenses,
 } from 'app/modules/process-expenses/expenses.model';
-import { ProcessService } from 'app/modules/process/process.service';
+
 import { Subscription, tap } from 'rxjs';
 
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
 import { DateTime } from 'luxon';
 import { ProcessGuaranteeService } from 'app/modules/process-guarantees/process-guarantee.service';
 import { MY_FORMATS } from 'app/shared/date-picker-formats';
-import { GUARANTEES_PATH } from 'app/modules/process/process-detail.service';
+import { ProcessService } from 'app/modules/process/services/process.service';
+import { GUARANTEES_PATH } from 'app/modules/process/services/process-detail.service';
+
 
 @Component({
   selector: 'process-guarantee-form',

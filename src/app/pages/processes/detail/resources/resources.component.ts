@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, switchMap, tap } from 'rxjs';
 import { ResourceFormComponent } from '../resources/form/resource-form.component';
-import { ProcessService } from 'app/modules/process/process.service';
+
 import { Process } from 'app/modules/process/models/process.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -14,6 +14,7 @@ import { configDialogResource } from 'app/modules/process/utils';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { ResourceService } from 'app/modules/resource/resource.service';
 import { GetResource } from 'app/modules/resource/model/resource.model';
+import { ProcessService } from 'app/modules/process/services/process.service';
 @Component({
   selector: 'app-process-resources',
   templateUrl: './resources.component.html',

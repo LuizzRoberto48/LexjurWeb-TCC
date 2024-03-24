@@ -19,7 +19,9 @@
           </div>
 
           <div class="flex items-center">
-            <mat-icon class="icon-size-5" [svgIcon]="descIcon"></mat-icon>
+            <ng-container *ngIf="descIcon">
+              <mat-icon class="icon-size-5" [svgIcon]="descIcon"></mat-icon>
+            </ng-container>
             <div class="ml-1.5 leading-6 truncate text-secondary">
               {{ desc }}
             </div>

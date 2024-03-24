@@ -6,7 +6,19 @@ import { BreadcrumbService } from '@components/breadcrumb/breadcrumb.service';
 
 import { ProcessDetailComponent } from './detail.component';
 import { FuseNavigationModule } from '@fuse/components/navigation';
-import { ATTACHED_PATH, EXPENSES_PATH, FILES_PATH, GENERAL_PATH, GUARANTEES_PATH, PARTS_PATH, PROGRESS_PATH, ProcessDetailService, REQUESTS_PATH, RESOURCE_PATH, SCHEDULE_PATH } from 'app/modules/process/process-detail.service';
+import {
+  ATTACHED_PATH,
+  EXPENSES_PATH,
+  FILES_PATH,
+  GENERAL_PATH,
+  GUARANTEES_PATH,
+  PARTS_PATH,
+  PROGRESS_PATH,
+  ProcessDetailService,
+  REQUESTS_PATH,
+  RESOURCE_PATH,
+  SCHEDULE_PATH,
+} from 'app/modules/process/services/process-detail.service';
 import { ProcessResourcesComponent } from './resources/resources.component';
 import { ProcessGeneralComponent } from './general/general.component';
 import { FormProcessResolver } from 'app/modules/process/resolver/process.resolver';

@@ -3,8 +3,8 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
 import { FuseNavigationItem } from '@fuse/components/navigation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { ProcessDetailService } from 'app/modules/process/process-detail.service';
-import { ProcessService } from 'app/modules/process/process.service';
+import { ProcessDetailService } from 'app/modules/process/services/process-detail.service';
+import { ProcessService } from 'app/modules/process/services/process.service';
 import { BehaviorSubject, map, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 @Component({

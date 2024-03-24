@@ -9,13 +9,13 @@ import {
   GetProcessExpenses,
 } from 'app/modules/process-expenses/expenses.model';
 import { ProcessExpensesService } from 'app/modules/process-expenses/process-expenses.service';
-import { ProcessService } from 'app/modules/process/process.service';
+
 import { Subscription, tap } from 'rxjs';
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
 import { DateTime } from 'luxon';
 import { MY_FORMATS } from 'app/shared/date-picker-formats';
-import { EXPENSES_PATH } from 'app/modules/process/process-detail.service';
-import { CustomValidators } from 'app/global/forms/custom-validators';
+import { ProcessService } from 'app/modules/process/services/process.service';
+import { EXPENSES_PATH } from 'app/modules/process/services/process-detail.service';
 
 @Component({
   selector: 'process-expense-form',

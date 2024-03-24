@@ -14,26 +14,49 @@ import { LJError } from './error.model';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private notification:NotificationService) {}
+  constructor(private notification: NotificationService) {}
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
-    return next.handle(request).pipe(
-      catchError((error: HttpErrorResponse) => {
-        const errorResponse = this.mapError(error);
-        this.notification.danger(errorResponse.message)
-        return throwError(() => errorResponse); // Use throwError creator function
-      }),
-    );
+    return next
+      .handle(request)
+      .pipe(catchError((error: HttpErrorResponse) => this.handleError(error)));
   }
 
-  private mapError(error: HttpErrorResponse): LJError {
-    return {
-      error: error.error.error || 'Unknown Error',
-      message: error.error.message || 'An error occurred',
-      statusCode: error.status,
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    if (
+      error.error instanceof Blob &&
+      error.error.type === 'application/json'
+    ) {
+      this.blobError(error.error);
+    } else {
+      this.standardError(error);
+    }
+    return throwError(() => error);
+  }
+
+  private blobError(blob: Blob): void {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const errorData = JSON.parse(reader.result as string);
+        this.notification.danger(
+          errorData.message ||
+            'Um erro desconhecido ocorreu. Contacte nosso suporte',
+        );
+      } catch {
+        this.notification.danger('Erro na resposta com o servidor');
+      }
     };
+    reader.onerror = () =>
+      this.notification.danger('Erro na resposta com o servidor');
+    reader.readAsText(blob);
+  }
+
+  private standardError(error: HttpErrorResponse): void {
+    const errorMessage = error?.error?.message || error.message || 'Ocorreu um erro desconhecido';
+    this.notification.danger(errorMessage);
   }
 }
 

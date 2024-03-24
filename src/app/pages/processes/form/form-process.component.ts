@@ -26,7 +26,7 @@ import {
   Subject,
   SubObject,
 } from 'app/modules/process/models/process.model';
-import { ProcessService } from 'app/modules/process/process.service';
+import { ProcessService } from 'app/modules/process/services/process.service';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -40,7 +40,7 @@ import {
 } from 'rxjs';
 
 import { Ufs, UfsModel } from 'app/global/utils/get-ufs';
-import { FormProcessService } from 'app/modules/process/form-process.service';
+import { FormProcessService } from 'app/modules/process/services/form-process.service';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';

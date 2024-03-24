@@ -3,15 +3,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { GlDialogComponent } from '@components/gl-dialog/gl-dialog.component';
 import { NotificationService } from '@fuse/components/notification/notification.service';
-import { GetProcessParts } from 'app/modules/process-parts/dto/process-parts.dto';
 import { ProcessRequestsService } from 'app/modules/process-requests/process-requests.service';
-import { ProcessService } from 'app/modules/process/process.service';
 import { LossProbabilityEnum } from 'app/modules/process-files/models/upload-process-files';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
 import { MY_FORMATS } from 'app/shared/date-picker-formats';
 import { GetProcessRequest } from 'app/modules/process-requests/model/process-requests.model';
-import { DateTime } from 'luxon';
+
 @Component({
   selector: 'process-requests-form',
   templateUrl: './process-requests-form.component.html',

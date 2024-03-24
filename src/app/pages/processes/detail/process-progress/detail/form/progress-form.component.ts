@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { Subscription, tap } from 'rxjs';
 import { Location } from '@angular/common';
-import { ProcessService } from 'app/modules/process/process.service';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { DeadlineProcessWithResources } from 'app/modules/resource/model/resource.model';
 import { ProcessProgressService } from 'app/modules/process-progress/progress.service';
@@ -26,7 +26,9 @@ import {
 import { ProcessProgressType } from 'app/modules/process-progress/models/progress_types.model';
 import { DateTime } from 'luxon';
 import { MY_FORMATS } from 'app/shared/date-picker-formats';
-import { PROGRESS_PATH } from 'app/modules/process/process-detail.service';
+import { ProcessService } from 'app/modules/process/services/process.service';
+import { PROGRESS_PATH } from 'app/modules/process/services/process-detail.service';
+
 @Component({
   selector: 'progress-form',
   templateUrl: './progress-form.component.html',

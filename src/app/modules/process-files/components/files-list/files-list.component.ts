@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ProcessService } from 'app/modules/process/process.service';
+import { ProcessService } from 'app/modules/process/services/process.service';
 import { Observable, Subscription, map, switchMap, tap } from 'rxjs';
 import {
   CrudFileMethod,
