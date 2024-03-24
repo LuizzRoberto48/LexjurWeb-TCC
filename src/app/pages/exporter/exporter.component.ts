@@ -98,12 +98,14 @@ export class ExporterComponent {
         }),
       columns: this.filterProcessFields,
     };
+    
     this.exportService.exportExcel(body).subscribe({
       next: (res: any) => {
         const { blob, filename } =
           this.exportService.transformResponseToBlob(res);
         this.exportService.saveFile(blob, filename);
       },
+      error: () => {},
     });
   }
 }

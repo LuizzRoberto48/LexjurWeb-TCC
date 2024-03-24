@@ -41,7 +41,6 @@ export class ErrorInterceptor implements HttpInterceptor {
     reader.onload = () => {
       try {
         const errorData = JSON.parse(reader.result as string);
-        console.log(errorData);
         this.notification.danger(
           errorData.message ||
             'Um erro desconhecido ocorreu. Contacte nosso suporte',
