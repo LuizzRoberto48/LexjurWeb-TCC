@@ -5,28 +5,22 @@
         <p class="text-primary-600 font-bold">{{ title }}</p>
       </mat-panel-title>
     </mat-expansion-panel-header>
-
-    <ng-container
-      [ngTemplateOutlet]="isAppendProcessFilter ? appendForm : commonForm"
-    ></ng-container>
-    <div class="flex items-center justify-end" *ngIf="hasSeachBtn">
-      <button
-        class="ml-4"
-        mat-flat-button
-        type="button"
-        [color]="'primary'"
-        (click)="search()"
-      >
-        Buscar
-      </button>
+    <div class="px-8 py-3">
+      <common-process-fields
+        (changedForm)="onChangedCommonForm($event)"
+        [displayControls]="displayControls"
+      ></common-process-fields>
+      <div class="flex items-center justify-end">
+        <button
+          *ngIf="hasFilterBtn"
+          mat-flat-button
+          type="button"
+          [color]="'primary'"
+          (click)="sendFilters()"
+        >
+          {{ filterBtnText }}
+        </button>
+      </div>
     </div>
   </mat-expansion-panel>
 </mat-accordion>
-
-<ng-template #appendForm>
-  <append-process-fields></append-process-fields>
-</ng-template>
-
-<ng-template #commonForm>
-  <common-process-fields (changedForm)="onChangedCommonForm($event)"></common-process-fields>
-</ng-template>

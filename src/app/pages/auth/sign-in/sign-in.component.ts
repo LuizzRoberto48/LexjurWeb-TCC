@@ -72,7 +72,7 @@ export class AuthSignInComponent implements OnInit {
         error: (err: any) => {
           console.log(err)
           /* primeiro acesso, enviar solicitação de troca de senha */
-          if (err.statusCode == 406) {
+          if (err.status == 406) {
             this.firstAcessToChangePassword();
           }
           this.alert = {

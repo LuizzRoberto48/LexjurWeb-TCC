@@ -39,9 +39,9 @@ export class ProcessService {
 
   getProcessByCore(
     coreId: number,
-    paginator: Paginator,
+    queryParams:{}
   ): Observable<GetProcessPageable> {
-    const params = this.httpParams(paginator);
+    const params = this.httpParams(queryParams);
     return this._http
       .get<GetProcessPageable>(
         `${environment.apiURL}/core/${coreId}/processes`,
@@ -75,7 +75,7 @@ export class ProcessService {
     this._process$.next(process);
   }
 
-  private httpParams(params: Paginator): HttpParams {
+  private httpParams(params: {}= {}): HttpParams {
     let httpParams = new HttpParams();
     Object.keys(params).forEach(function (key) {
       httpParams = httpParams.append(key, params[key]);

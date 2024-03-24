@@ -1,35 +1,101 @@
 <form [formGroup]="form" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-  <div class="flex flex-col">
+  <div class="flex flex-col" *ngIf="displayControls?.includes('id')">
+    <mat-form-field class="w-full">
+      <mat-label>Id</mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="id"
+        (blur)="changedId('id')"
+      />
+    </mat-form-field>
+  </div>
+  <div class="flex flex-col" *ngIf="displayControls?.includes('caseNumber')">
+    <mat-form-field class="w-full">
+      <mat-label>Número do caso</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="caseNumber"
+        (blur)="changedInput('caseNumber')"
+      />
+    </mat-form-field>
+  </div>
+  <div class="flex flex-col" *ngIf="displayControls.includes('uf')">
+    <mat-form-field class="flex-auto gt-xs:pl-3">
+      <mat-label>UF</mat-label>
+      <mat-select
+        formControlName="uf"
+        (selectionChange)="changeUfs('uf', $event, 'uf')"
+      >
+        <mat-option [value]="'--Selecione--'">--Selecione--</mat-option>
+        <mat-option [value]="opt.name" *ngFor="let opt of ufs">{{
+          opt.name
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="flex flex-col" *ngIf="displayControls.includes('county')">
+    <mat-form-field class="flex-auto gt-xs:pl-3">
+      <mat-label>Comarca</mat-label>
+      <mat-select
+        formControlName="county"
+        (selectionChange)="selectChanged('county', $event.value, 'counties')"
+      >
+        <mat-option [value]="'--Selecione--'">--Selecione--</mat-option>
+        <mat-option [value]="opt.id" *ngFor="let opt of counties">{{
+          opt.name
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="flex flex-col" *ngIf="displayControls.includes('client')">
+    <mat-form-field class="flex-auto gt-xs:pl-3">
+      <mat-label>Cliente</mat-label>
+      <mat-select
+        formControlName="client"
+        (selectionChange)="selectChanged('client', $event.value, 'clients')"
+      >
+        <mat-option [value]="'--Selecione--'">--Selecione--</mat-option>
+        <mat-option [value]="opt.id" *ngFor="let opt of clients">{{
+          opt.name
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="flex flex-col" *ngIf="displayControls.includes('status')">
     <mat-form-field class="flex-auto gt-xs:pl-3">
       <mat-label>Status do processo</mat-label>
       <mat-select
         formControlName="status"
-        (selectionChange)="selectChanged('status', $event, 'status')"
+        (selectionChange)="selectChanged('status', $event.value, 'status')"
+        [placeholder]="'--Selecione--'"
       >
-        <mat-option [value]="''"></mat-option>
+        <mat-option [value]="'--Selecione--'">--Selecione--</mat-option>
         <mat-option [value]="opt" *ngFor="let opt of status">{{
           opt
         }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
-  <div class="flex flex-col">
+  <div class="flex flex-col" *ngIf="displayControls.includes('insideLawyerId')">
     <mat-form-field class="flex-auto gt-xs:pl-3">
       <mat-label>Advogado responsável</mat-label>
       <mat-select
         formControlName="insideLawyerId"
         (selectionChange)="
-          selectChanged('insideLawyer', $event, 'insideLaywers')
+          selectChanged('insideLawyer', $event.value, 'insideLaywers')
         "
+        [placeholder]="'--Selecione--'"
       >
-        <mat-option [value]="''"></mat-option>
+        <mat-option [value]="'--Selecione--'">--Selecione--</mat-option>
         <mat-option [value]="opt.id" *ngFor="let opt of insideLaywers">{{
           opt.name
         }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
-  <div class="flex flex-col">
+  <div class="flex flex-col" *ngIf="displayControls.includes('rangeDate')">
     <mat-form-field class="w-full">
       <mat-label>Data do cadastro</mat-label>
       <mat-date-range-input
@@ -38,8 +104,20 @@
         [comparisonStart]="rangeDate.value.start"
         [comparisonEnd]="rangeDate.value.end"
       >
-        <input matStartDate placeholder="Início" formControlName="startDate" readonly (dateChange)="rangeDateChange('startDate')"/>
-        <input matEndDate placeholder="Fim" formControlName="endDate" (dateChange)="rangeDateChange('endDate')" readonly/>
+        <input
+          matStartDate
+          placeholder="Início"
+          formControlName="startDate"
+          readonly
+          (dateChange)="rangeDateChange('startDate')"
+        />
+        <input
+          matEndDate
+          placeholder="Fim"
+          formControlName="endDate"
+          (dateChange)="rangeDateChange('endDate')"
+          readonly
+        />
       </mat-date-range-input>
       <mat-datepicker-toggle
         matIconSuffix

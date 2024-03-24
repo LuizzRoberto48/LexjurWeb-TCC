@@ -7,8 +7,9 @@
   </header-content>
   <search-process
     [title]="'Filtrar'"
-    (emitSearchValues)="searchValues($event)"
-    [hasSeachBtn]="false"
+    [hasFilterBtn]="false"
+    (emitSearchValue)="searchValues($event)"
+    [displayControls]="['status', 'insideLawyerId', 'rangeDate']"
   ></search-process>
   <div
     class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden mx-6 my-8 p-8"

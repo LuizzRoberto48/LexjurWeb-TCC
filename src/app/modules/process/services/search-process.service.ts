@@ -11,12 +11,12 @@ export class SearchProcessService {
     {
       id: new FormControl(''),
       caseNumber: new FormControl(''),
-      uf: new FormControl(''),
-      county: new FormControl(''),
-      client: new FormControl(''),
-      status: new FormControl(''),
+      uf: new FormControl('--Selecione--'),
+      county: new FormControl('--Selecione--'),
+      client: new FormControl('--Selecione--'),
+      status: new FormControl('--Selecione--'),
       createAt: new FormControl(''),
-      insideLawyerId: new FormControl(''),
+      insideLawyerId: new FormControl('--Selecione--'),
       rangeDate: new FormGroup({
         startDate: new FormControl<Date | null>(null),
         endDate: new FormControl<Date | null>(null),
@@ -28,13 +28,34 @@ export class SearchProcessService {
   constructor(private notification: NotificationService) {}
 
   changedId() {
-    const id = this.filtersForm.controls['id'].value;
-    /* TODO:change to all attributes in the filter form  disabled*/
-    const controlsToToggle = ['caseNumber', 'uf', 'county', 'client'];
-    controlsToToggle.forEach((controlName) => {
-      id
-        ? this.filtersForm.controls[controlName].disable()
-        : this.filtersForm.controls[controlName].enable();
+    const id = this.filtersForm.get('id').value;
+
+    // Define which controls should be reset to '--Selecione--' when `id` has a value
+    const selectControls = [
+      'uf',
+      'county',
+      'client',
+      'status',
+      'insideLawyerId',
+    ];
+
+    // Iterate over all form controls except 'id'
+    Object.keys(this.filtersForm.controls).forEach((controlName) => {
+      const control = this.filtersForm.get(controlName);
+
+      if (controlName !== 'id') {
+        // Skip 'id' control
+        if (id) {
+          // Reset select controls to '--Selecione--', others to their default value
+          const resetValue = selectControls.includes(controlName)
+            ? '--Selecione--'
+            : '';
+          control.reset(resetValue);
+          control.disable();
+        } else {
+          control.enable();
+        }
+      }
     });
   }
 

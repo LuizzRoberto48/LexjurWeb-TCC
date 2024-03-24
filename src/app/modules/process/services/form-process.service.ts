@@ -8,6 +8,7 @@ import {
 } from 'app/modules/process/models/process.model';
 import { DateTime } from 'luxon';
 import { ProcessService } from './process.service';
+import { getEnumKeyByEnumValue } from 'app/global/utils/str-manipulations';
 
 @Injectable({
   providedIn: 'any',
@@ -97,19 +98,21 @@ export class FormProcessService {
     return type === PersonType.FISICA ? 'Física' : 'Jurídica';
   }
 
-  getPersonType(type:PersonType) {
-    return PersonType[type]
+  getPersonType(type: PersonType) {
+    return PersonType[type];
   }
 
   createAdverseStakeholder(adverse: AdverseStakeholder): AdverseStakeholder {
-    adverse.email == '' ? (adverse.email = undefined) : adverse.email;
-    adverse.phone == '' ? (adverse.phone = undefined) : adverse.phone;
-    adverse.cpfCnpj == '' ? (adverse.cpfCnpj = undefined) : adverse.cpfCnpj;
+    adverse.email == '' ? !adverse.email : adverse.email;
+    adverse.phone == '' ? !adverse.phone : adverse.phone;
+    adverse.cpfCnpj == '' ? !adverse.cpfCnpj : adverse.cpfCnpj;
+    adverse.type = getEnumKeyByEnumValue(PersonType, adverse?.type) ?? '';
+
     return adverse;
   }
 
   formToObj(form: ProcessForm): CreateProcess {
-    
+    //getEnumKeyByEnumValue(ProcessStatus, status.value)
     const {
       uf,
       countyId,
@@ -127,14 +130,13 @@ export class FormProcessService {
     } = form;
     let distributionIsoDate = distributionDate;
     let quoteIsoDate = quoteDate;
-    
+
     if (distributionDate instanceof DateTime) {
       distributionIsoDate = distributionDate.toISO();
     }
-    if(quoteDate instanceof DateTime) {
-      quoteIsoDate = quoteDate.toISO()
+    if (quoteDate instanceof DateTime) {
+      quoteIsoDate = quoteDate.toISO();
     }
-    
     const obj: CreateProcess = {
       ...process,
       adverseStakeholder: this.createAdverseStakeholder(adverseStakeholder),
@@ -161,7 +163,7 @@ export class FormProcessService {
       insideLawyerId: this.processService.getInsideLawyerByProcess(obj).id,
       uf: obj.Forum.County.uf,
       countyId: obj.Forum.countyId,
-      
+
       adverseStakeholder: {
         id: obj.AdverseStakeholder.id,
         type: this.getPersonType(obj.AdverseStakeholder.type),

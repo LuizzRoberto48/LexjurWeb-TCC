@@ -56,8 +56,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   private standardError(error: HttpErrorResponse): void {
-    const errorMessage =
-      error.error instanceof ErrorEvent ? error.error.message : error.message;
+    const errorMessage = error?.error?.message || error.message || 'Ocorreu um erro desconhecido';
     this.notification.danger(errorMessage);
   }
 }

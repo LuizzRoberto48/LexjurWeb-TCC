@@ -10,11 +10,13 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 import { GetAttachedProcess } from 'app/modules/attached-process/attached-process.model';
 import { AttachedProcessService } from 'app/modules/attached-process/attached-process.service';
+import { LocalCore } from 'app/modules/cores/model/get-core';
+import { CoreService } from 'app/modules/cores/service/core.service';
 import { SearchModalListComponent } from 'app/modules/process/components/search-process-list/search-modal-list.component';
 import { Process } from 'app/modules/process/models/process.model';
 import { ProcessService } from 'app/modules/process/services/process.service';
 import { configDialogResource } from 'app/modules/process/utils';
-import { Subscription, switchMap } from 'rxjs';
+import { Observable, Subscription, forkJoin, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'process-attached',
@@ -46,6 +48,7 @@ export class ProcessAttachedComponent {
     public dialog: MatDialog,
     private __confirmationService: FuseConfirmationService,
     private notification: NotificationService,
+    private coreService: CoreService,
   ) {
     this.findByProcess();
   }
@@ -115,6 +118,78 @@ export class ProcessAttachedComponent {
         this.findByProcess();
       },
     });
+  }
+
+  get core(): LocalCore {
+    return this.coreService.localCore;
+  }
+
+  get process(): Observable<any> {
+    return this.processService.$obsevableProcess;
+  }
+
+  openListDialog(processes) {
+    const dialog = this.dialog.open(SearchModalListComponent, {
+      data: processes,
+      minWidth: '40vw',
+      minHeight: '30wh',
+    });
+
+    dialog.afterClosed().subscribe({
+      next:() => {
+        this.findByProcess()
+      }
+    })
+  }
+
+  searchList(event: any[]) {
+    const id = event.find((ev) => ev.name == 'id' && ev.value);
+    const caseNumber = event.find((ev) => ev.name == 'caseNumber' && ev.value);
+    const uf = event.find((ev) => ev.name == 'uf' && ev.value);
+    const county = event.find((ev) => ev.name == 'county' && ev.id);
+    const client = event.find((ev) => ev.name == 'client' && ev.id);
+    const body = {
+      ...(id && { id: id.value }),
+      ...(caseNumber && { caseNumber: caseNumber.value }),
+      ...(uf && { uf: uf.value }),
+      ...(county && { county: county.id }),
+      ...(client && { client: client.id }),
+    };
+    if (Object.keys(body).length === 0) {
+      this.notification.waning('Adicione ao menos um filtro para sua busca');
+      return;
+    }
+    this.processAttachedSearch(body);
+  }
+
+  processAttachedSearch(params) {
+    const coreId = this.core.id;
+    const subs = this.process
+      .pipe(
+        switchMap((process: Process) => {
+          const processes$ = this.processService.getProcessByParams(
+            coreId,
+            process.id,
+            params,
+          );
+          return forkJoin({
+            currentProcessId: of(process.id),
+            processes: processes$,
+          });
+        }),
+      )
+      .subscribe({
+        next: (obj: { currentProcessId: number; processes: Process[] }) => {
+          const { currentProcessId, processes } = obj;
+
+          if (!processes.length) {
+            this.notification.waning('Não foi encontrado nenhum processo');
+            return;
+          }
+          this.openListDialog({ processes, currentProcessId });
+        },
+      });
+    this.$subs.push(subs);
   }
 
   ngOnDestroy() {

@@ -1,12 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CoreService } from 'app/modules/cores/service/core.service';
-import { Observable, Subscription, forkJoin, of, switchMap } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { LocalCore } from 'app/modules/cores/model/get-core';
 import { SearchModalListComponent } from '../search-process-list/search-modal-list.component';
 import { MatDialog } from '@angular/material/dialog';
-import { NotificationService } from '@fuse/components/notification/notification.service';
 import { ProcessService } from '../../services/process.service';
-import { Process } from '../../models/process.model';
 import { SearchProcessService } from '../../services/search-process.service';
 
 @Component({
@@ -15,21 +13,26 @@ import { SearchProcessService } from '../../services/search-process.service';
   styleUrls: ['./search-process.component.scss'],
 })
 export class SearchProcessNewComponent {
-  @Output() emitSearchValues: EventEmitter<{ name: string; value: string }> =
+  @Output() emitSearchValue: EventEmitter<{ name: string; value: string }> =
     new EventEmitter();
+  @Output() emitSearchList: EventEmitter<{ name: string; value: string }[]> =
+    new EventEmitter();
+  searchList: { id?: number; name: string; value: string }[] = [];
+
   @Input() title = 'Buscar Processos';
   @Input() isAppendProcessFilter = false;
   @Input() isExpandable = true;
-  @Input() hasSeachBtn = true;
+  @Input() hasFilterBtn = false;
+  @Input() filterBtnText = 'Filtrar';
+  @Input() displayControls: string[] = [];
 
-  status!:{name:string, label:string}
+  status!: { name: string; label: string };
   $subs: Subscription[] = [];
 
   constructor(
     private processService: ProcessService,
     private coreService: CoreService,
     public dialog: MatDialog,
-    private notification: NotificationService,
     private searchProcess: SearchProcessService,
   ) {}
 
@@ -42,42 +45,24 @@ export class SearchProcessNewComponent {
   }
 
   get form() {
-    return this.searchProcess.filtersForm
+    return this.searchProcess.filtersForm;
   }
 
-  search() {
-    const coreId = this.core.id;
-    console.log(this.form.value)
-    const subs = this.process
-      .pipe(
-        switchMap((process: Process) => {
-          const processes$ = this.processService.getProcessByParams(
-            coreId,
-            process.id,
-            this.form.value,
-          );
-          return forkJoin({
-            currentProcessId: of(process.id),
-            processes: processes$,
-          });
-        }),
-      )
-      .subscribe({
-        next: (obj: { currentProcessId: number; processes: Process[] }) => {
-          const { currentProcessId, processes } = obj;
-          if (!this.searchProcess.validSearch()) return;
-          if (!processes.length) {
-            this.notification.waning('Não foi encontrado nenhum processo');
-            return;
-          }
-          this.openDialog({ processes, currentProcessId });
-        },
-      });
-    this.$subs.push(subs);
+  onChangedCommonForm(event: { id?: number; value: string; name: string }) {
+    if (event.name === 'id') {
+      this.searchList = [event];
+      return
+    }
+    // Remove the old element with the same name if it exists
+    this.searchList = this.searchList.filter(
+      (e) => e.name !== event.name && e.value !== '' && e.value !== null,
+    );
+    this.searchList.push(event);
+    this.emitSearchValue.emit(event);
   }
 
-  onChangedCommonForm(event:any) {
-    this.emitSearchValues.emit(event)
+  sendFilters() {
+    this.emitSearchList.emit(this.searchList);
   }
 
   openDialog(processes) {

@@ -5,17 +5,17 @@ import { Router } from '@angular/router';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Paginator } from 'app/global/paginator/public-api';
+import { getEnumKeyByEnumValue } from 'app/global/utils/str-manipulations';
 import { CoreService } from 'app/modules/cores/service/core.service';
 import {
   GetProcess,
   GetProcessPageable,
   Process,
+  ProcessStatus,
 } from 'app/modules/process/models/process.model';
 import { ProcessService } from 'app/modules/process/services/process.service';
 import { configDialogResource } from 'app/modules/process/utils';
 import { Subscription } from 'rxjs';
-
-const MINWIDTH = 1024;
 
 @Component({
   selector: 'app-form-process',
@@ -30,7 +30,7 @@ export class ListProcessComponent {
 
   $subs: Subscription[] = [];
   coreName: string = '';
-
+  filterProcess: { id?: number; value: string; name: string }[] = [];
   pageEvent: PageEvent;
   recentTransactionsDataSource: MatTableDataSource<any> =
     new MatTableDataSource();
@@ -46,10 +46,6 @@ export class ListProcessComponent {
     'action',
   ];
 
-  trackByFn(index: number, item: any): any {
-    return item.id || index;
-  }
-
   constructor(
     public route: Router,
     private processService: ProcessService,
@@ -63,12 +59,31 @@ export class ListProcessComponent {
     this.getCore();
   }
 
-  getCore() {
-    let paginator: Paginator = { page: this.pageIndex, size: this.pageSize };
+  searchList(event: any[]) {
+    const status = event.find((ev) => ev.name == 'status' && ev.value);
+    const insideLawyer = event.find((ev) => ev.name == 'insideLawyer' && ev.value);
+    const startDate = event.find((ev) => ev.name == 'startDate' && ev.value);
+    const endDate = event.find((ev) => ev.name == 'endDate' && ev.value);
+    const body = {
+      ...(insideLawyer?.id && { insideLawyer: insideLawyer.id }),
+      ...(status && {
+        status: getEnumKeyByEnumValue(ProcessStatus, status.value),
+      }),
+      ...(startDate?.value && { startDate: startDate.value }),
+      ...(endDate?.value && { endDate: endDate.value }),
+    };
+    
+    this.getCore(body)
+  }
+
+  getCore(params = {}) {
+    const paginator: Paginator = { page: this.pageIndex, size: this.pageSize };
+    const allParams = {...paginator, ...params}
+    
     const subs = this.coreService.$obsevableCore.subscribe((res) => {
       if (res?.id) {
         this.coreName = res.name;
-        this.getListByCore(res.id, paginator);
+        this.getListByCore(res.id, allParams);
       }
     });
     this.$subs.push(subs);
@@ -78,8 +93,8 @@ export class ListProcessComponent {
     this.route.navigate([`processos/edit/${process.id}`]);
   }
 
-  getListByCore(id: number, paginator: Paginator) {
-    this.processService.getProcessByCore(id, paginator).subscribe({
+  getListByCore(id: number, queryParams: {}) {
+    this.processService.getProcessByCore(id, queryParams).subscribe({
       next: (res: GetProcessPageable) => {
         this.length = res.totalItems;
         this.recentTransactionsDataSource.data = res.process;
@@ -107,7 +122,6 @@ export class ListProcessComponent {
   }
 
   remove(id: number) {
-    //let paginator: Paginator = { page: 1, size: 20 };
     this.processService.delete(id).subscribe({
       next: () => {
         this.notification.success('processo removido com sucesso');
