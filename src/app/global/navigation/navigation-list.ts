@@ -9,6 +9,13 @@ export const NavigationList: FuseNavigationItem[] = [
       link : '/dashboard'
   },
   {
+    id   : 'lawyers',
+    title: 'Usuários',
+    type : 'basic',
+    icon : 'heroicons_outline:identification',
+    link : '/lawyers'
+  },
+  {
     id   : 'processes',
     title: 'Processos',
     type : 'basic',

@@ -133,6 +133,7 @@ export class FormProcessComponent implements OnInit {
   getEditProcess() {
     this.route.data.subscribe({
       next: ({ data }) => {
+        console.log(data)
         this.processId = data.id;
         this.form = this.formService.objToForm(this.form, data);
         this.form.controls['adverseStakeholder'].get('type').enable();
@@ -219,6 +220,7 @@ export class FormProcessComponent implements OnInit {
 
   changedUfOab() {
     const uf = this.form.get('adverseLawyer.ufOab').value;
+    console.log(uf)
     this.findAdverseLawyerByUf(uf);
   }
 

@@ -59,20 +59,20 @@ export interface LawyerFields {
   logicalOperator?: 'AND' | 'OR';
 }
 
-export interface CreateLawyer {
+export type CreateLawyer = {
   address: AddressLawyerForm;
-  cores: number[];
+  cores?: number[];
   id?: number;
   oab: string;
   ufOab: string;
   name: string;
   birthday?: string;
-  notes: string;
-  user: UserLawyer;
-}
+  notes?: string;
+  user?: UserLawyer;
+};
 
 export interface UserLawyer {
-  permissionId: number;
+  permissionId?: number;
   email: string;
 }
 

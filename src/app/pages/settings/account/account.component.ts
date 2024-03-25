@@ -34,9 +34,27 @@ export class SettingsAccountComponent implements OnInit {
     private notification: NotificationService,
   ) {}
 
+  formToObject(): CreateLawyer {
+    const formValues = this.accountForm.getRawValue();
+    return {
+      name: formValues.name,
+      oab: formValues.oab,
+      address: {
+        postalCode: formValues.postalCode,
+        street: formValues.street,
+        number: formValues.number,
+        city: formValues.city,
+        complement: formValues.complement,
+        district: formValues.district,
+        uf: formValues.uf,
+      },
+      ufOab: formValues.ufOab,
+      
+    };
+  }
+
   update() {
-    const id = this.authService.authUser.sub;
-    this.lawyerService.update(id, this.accountForm.value).subscribe(
+    this.lawyerService.updateCurrentLawyer(this.formToObject()).subscribe(
       (res) => {
         this.notification.success('Salvo com sucesso');
       },
