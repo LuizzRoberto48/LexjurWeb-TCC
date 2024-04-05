@@ -75,7 +75,6 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'agendamentos',
-        data: { breadcrumb: 'Usuários' },
         loadChildren: () =>
           import('app/pages/schedules/schedules.module').then(
             (m) => m.SchedulesModule,
