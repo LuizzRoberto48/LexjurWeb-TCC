@@ -6,7 +6,7 @@ export const routes: Route[] = [
     path: '',
     component: ExporterComponent,
     data: {
-      breadcrumb: 'Exportador',
+      breadcrumb: 'Relatórios',
     },
   },
 ];
