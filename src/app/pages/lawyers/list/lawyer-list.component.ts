@@ -22,9 +22,9 @@ import {
 export class LawyerListComponent {
   @Output() openUser: EventEmitter<any> = new EventEmitter();
   length = 0;
-  pageSize = 20;
+  pageSize = 12;
   pageIndex = 1;
-  pageSizeOptions = [20];
+  pageSizeOptions = [12, 24, 36];
   lawyers: GetLawyerSmall[] = [];
   crtlSearch: FormControl = new FormControl();
   $subs: Subscription[] = [];

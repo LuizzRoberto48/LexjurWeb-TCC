@@ -19,6 +19,7 @@ import { NotificationService } from '@fuse/components/notification/notification.
 export class SettingsCoresComponent implements AfterViewInit, OnInit{
   displayedColumns: string[] = ['name', 'description', 'action'];
   coresDataSource: MatTableDataSource<any> = new MatTableDataSource();
+  length = 0;
   pageSizeOptions = [12, 24, 36];
 
   cores: any[]
