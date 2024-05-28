@@ -29,6 +29,7 @@ import { DeadlineTrackerService } from 'app/modules/deadline-trackers/deadline-t
 import { GlobalModule } from 'app/shared/global.module';
 import { DeadlineTrackerTypeService } from 'app/modules/deadline-trackers/deadline-tracker-types.service';
 import { DeadlineTrackerSubTypeService } from 'app/modules/deadline-trackers/deadline-tracker-subtypes.service';
+import { CompleteProcessFormComponent } from '../complete-process-form/complete-process-form.component';
 
 const routes: Route[] = [
   {
@@ -160,6 +161,7 @@ const routes: Route[] = [
     ProcessResourcesComponent,
     ProcessGeneralComponent,
     ResourceFormComponent,
+    CompleteProcessFormComponent
   ],
   providers: [
     BreadcrumbService,

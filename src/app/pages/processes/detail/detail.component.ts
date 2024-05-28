@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { FuseNavigationItem } from '@fuse/components/navigation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { ProcessDetailService } from 'app/modules/process/services/process-detail.service';
 import { ProcessService } from 'app/modules/process/services/process.service';
-import { BehaviorSubject, map, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'process-detail',
@@ -20,7 +20,7 @@ export class ProcessDetailComponent {
   menuData: FuseNavigationItem[];
   panels: any[] = [];
   selectedPanel: string = 'account';
-  currentPanel: FuseNavigationItem = {} as FuseNavigationItem
+  currentPanel: string = ''
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -63,10 +63,18 @@ export class ProcessDetailComponent {
   }
 
   activatedRoute($event) {
-    $event._activatedRoute?.title.subscribe(res => {
-      this.currentPanel = res
-      this._changeDetectorRef.detectChanges()
-    })
+    this.setCurrentPanel();
+  }
+
+  setCurrentPanel(): void {
+    let route = this.activeRoute.firstChild;
+    while (route?.firstChild) {
+      route = route.firstChild;
+    }
+    route?.title.subscribe(data => {
+      this.currentPanel = data
+      this._changeDetectorRef.detectChanges();
+    });
   }
 
 

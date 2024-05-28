@@ -1,8 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Process, ProcessStatus } from 'app/modules/process/models/process.model';
 import { ProcessService } from 'app/modules/process/services/process.service';
+import { CompleteProcessFormComponent } from '../../complete-process-form/complete-process-form.component';
 
 @Component({
   selector: 'app-process-general',
@@ -16,7 +18,8 @@ export class ProcessGeneralComponent {
   /* This activatedRoute must be here to detail component see title of this component */
   constructor(private processService: ProcessService,
     protected _activatedRoute: ActivatedRoute,
-    public route: Router) { }
+    public route: Router,
+    public dialog: MatDialog) { }
 
   ngOnInit() {
     this.getEditProcess()
@@ -42,5 +45,19 @@ export class ProcessGeneralComponent {
 
   toEdit() {
     this.route.navigate([`/processos/edit/${this.process.id}`]);
+  }
+
+  finished() {
+    this.openDialog()
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(CompleteProcessFormComponent, {
+      //data,
+      minWidth: '40vw',
+    });
+    /* dialogRef.afterClosed().subscribe((result) => {
+      if (result) this.findByProcess();
+    }); */
   }
 }

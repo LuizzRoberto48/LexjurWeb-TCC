@@ -1,0 +1,67 @@
+<gl-dialog
+  [title]="'Encerrar processo'"
+  [isDisableClose]="true"
+  (emitClick)="btnClicked($event)"
+>
+  <ng-container body>
+    <div class="flex flex-col">
+      <div class="grid w-full">
+        <div class="grid grid-cols-1">
+          <p>Poderá ser encerrado ?</p>
+          <mat-radio-group aria-label="Select an option">
+            <mat-radio-button value="1">Sim</mat-radio-button>
+            <mat-radio-button value="2">Não</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="grid grid-cols-1 mt-4">
+          <p>Aguarda autorização para encerramento ?</p>
+          <mat-radio-group aria-label="Select an option">
+            <mat-radio-button value="1">Sim</mat-radio-button>
+            <mat-radio-button value="2">Não</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+          <div class="flex flex-col ">
+            <mat-form-field class="flex-auto gt-xs:pl-3">
+              <mat-label>Tipo encerramento</mat-label>
+              <mat-select formControlName="request">
+                <mat-option [value]="opt" *ngFor="let opt of []">{{
+                  opt
+                }}</mat-option>
+              </mat-select>
+              <mat-error ga-form-field-errors></mat-error>
+            </mat-form-field>
+          </div>
+          <div class="flex flex-col">
+            <mat-form-field class="w-full">
+              <mat-label>Data encerramento</mat-label>
+              <input matInput />
+              <mat-error ga-form-field-errors></mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="flex flex-col">
+            <mat-form-field class="w-full">
+              <mat-label>Valor provisionado </mat-label>
+              <input
+                matInput
+                type="text"
+                prefix="R$ "
+                mask="separator.2"
+                thousandSeparator="."
+                decimalMarker=","
+              />
+              <mat-error ga-form-field-errors></mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 gap-4 mt-4">
+          <mat-form-field class="w-full">
+            <mat-label>Observação </mat-label>
+            <textarea matInput ></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</gl-dialog>
