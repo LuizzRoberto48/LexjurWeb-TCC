@@ -25,9 +25,9 @@ export class PermissionsListComponent {
   allPermissions: GetUserPermission[];
   pagePermissions: GetUserPermission[];
 
-  pageSizeOptions: number[] = [10, 15, 20];
+  pageSizeOptions: number[] = [12, 24, 36];
   totalItems = 0;
-  pageSize = 10; // Default page size
+  pageSize = 12; // Default page size
   pagedItems = [];
   constructor(
     private userService: UserService,

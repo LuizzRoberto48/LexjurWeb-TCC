@@ -24,9 +24,9 @@ import { Subscription } from 'rxjs';
 export class ListProcessComponent {
   screenWidth: string;
   length = 0;
-  pageSize = 20;
+  pageSize = 12;
   pageIndex = 1;
-  pageSizeOptions = [20];
+  pageSizeOptions = [12, 24, 36];
 
   $subs: Subscription[] = [];
   coreName: string = '';

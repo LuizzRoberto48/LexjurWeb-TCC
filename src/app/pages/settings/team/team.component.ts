@@ -18,6 +18,7 @@ export class SettingsTeamComponent {
   @Output() lawyerInfo = new EventEmitter<any>();
 
   lawyers = [] as any;
+  length = 0;
   pageSizeOptions = [12, 24, 36];
 
   constructor(

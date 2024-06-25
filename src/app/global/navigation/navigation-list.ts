@@ -23,15 +23,15 @@ export const NavigationList: FuseNavigationItem[] = [
     link : '/processos'
   },
   {
-    id   : 'lawyers',
-    title: 'Usuários',
+    id   : 'schedules',
+    title: 'Agendamentos',
     type : 'basic',
-    icon : 'heroicons_outline:identification',
-    link : '/lawyers'
+    icon : 'heroicons_outline:clipboard-check',
+    link : '/agendamentos'
   },
   {
     id   : 'exporter',
-    title: 'Exportador',
+    title: 'Relatórios',
     type : 'basic',
     icon : 'heroicons_outline:exporter_2',
     link : '/exporter'

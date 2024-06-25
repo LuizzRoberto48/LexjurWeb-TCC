@@ -124,6 +124,9 @@
         [for]="range"
       ></mat-datepicker-toggle>
       <mat-date-range-picker #range></mat-date-range-picker>
+      <button class="visibility" mat-icon-button (click)="resetDate()">
+        <mat-icon> close </mat-icon>
+      </button>
     </mat-form-field>
   </div>
 </form>
