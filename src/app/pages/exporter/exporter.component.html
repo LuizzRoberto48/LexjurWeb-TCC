@@ -75,26 +75,6 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 mt-2 border rounded-md p-5">
-      <p class="text-lg">Filtros selecionados:</p>
-      <div class="grid lg:grid-cols-3 grid-cols-1 mt-4">
-        <p class="text-gray-700 font-bold mb-5">
-          Status:
-          <span class="font-light mb-3">{{ status?.value ?? '--' }}</span>
-        </p>
-        <p class="text-gray-700 font-bold mb-5">
-          Advogado responsável:
-          <span class="font-light mb-3">{{ insideLawyer?.value ?? '--' }}</span>
-        </p>
-        <p class="text-gray-700 font-bold mb-3">
-          Data de criação:
-          <span class="font-light" *ngIf="startDate"
-            >{{ startDate?.value | date : 'dd/MM/yyyy' }} até
-            {{ endDate?.value | date : 'dd/MM/yyyy' }}</span
-          >
-        </p>
-      </div>
-    </div>
     <!-- Actions -->
     <div class="flex items-end justify-end my-9">
       <button

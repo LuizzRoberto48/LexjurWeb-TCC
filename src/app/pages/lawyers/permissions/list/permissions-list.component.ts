@@ -32,9 +32,9 @@ export class PermissionsListComponent {
   filterPermissions: GetUserPermission[] = [];
 
   subs: Subscription[] = [];
-  pageSizeOptions: number[] = [10];
+  pageSizeOptions: number[] = [12, 24, 36];
   totalItems = 0;
-  pageSize = 5; // Default page size
+  pageSize = 12; // Default page size
   pagedItems = [];
   constructor(
     private userService: UserService,

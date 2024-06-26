@@ -77,6 +77,10 @@ export class CommonProcessFieldsComponent {
     });
   }
 
+  resetDate() {
+    return this.searchProcess.filtersForm.controls['rangeDate'].reset();
+  }
+
   selectChanged(formValue: string, event, elToList: string) {
     const element = this[elToList].find(
       (el) => el?.id == event || el == event || el?.name == event,
