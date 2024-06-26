@@ -124,6 +124,13 @@
                 ></mat-icon>
                 <span>Editar</span>
               </button>
+              <button mat-menu-item (click)="finished(element)">
+                <mat-icon
+                  class="icon-size-4 text-gray-600"
+                  svgIcon="check"
+                ></mat-icon>
+                <span>Concluir</span>
+              </button>
               <button mat-menu-item (click)="removeDialog(element)" *hasPermission="'remove-ProcessDeadline'">
                 <mat-icon
                   class="icon-size-4 text-gray-600"

@@ -143,6 +143,14 @@ export class DeadLineTrackerComponent implements OnInit {
       });
   }
 
+  finished(element: IDeadlineTracker) {
+    console.log(element);
+    this.route.navigate(['finished/' + element.id], {
+      relativeTo: this._activatedRoute.parent,
+      queryParams: { processId: this.processId },
+    });
+  }
+
   ngOnDestroy(): void {
     this.$subs.unsubscribe();
     this.$searchSubs.unsubscribe();

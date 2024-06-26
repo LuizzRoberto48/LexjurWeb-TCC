@@ -16,6 +16,7 @@ import { DeadlineFormResolver } from 'app/modules/deadline-trackers/resolver/dea
 import { FilesModule } from 'app/modules/process-files/components/files.module';
 import { UploadProcessFileService } from 'app/modules/process-files/services/upload-process.service';
 import { DeadlineTrackerInfoComponent } from './detail/info/deadline-tracker-info.component';
+import { CompleteDeadlineTrackerComponent } from './detail/complete-deadline-tracker/complete-deadline-tracker.component';
 
 
 const routes: Routes = [
@@ -46,6 +47,14 @@ const routes: Routes = [
       data: DeadlineFormResolver,
     },
   },
+  {
+    title: 'Conclusão do agendamento',
+    path: 'finished/:id',
+    component: CompleteDeadlineTrackerComponent,
+    data: {
+      breadcrumb: () => 'Concluir',
+    },
+  },
 ];
 
 @NgModule({
@@ -53,7 +62,8 @@ const routes: Routes = [
     DeadlineTrackerDetailComponent,
     DeadLineTrackerComponent,
     DeadlineTrackerFormComponent,
-    DeadlineTrackerInfoComponent
+    DeadlineTrackerInfoComponent,
+    CompleteDeadlineTrackerComponent
   ],
   imports: [
     CommonModule,
