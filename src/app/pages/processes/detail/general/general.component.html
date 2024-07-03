@@ -16,9 +16,14 @@
           <div>
             <p class="text-gray-900 font-medium">
               Status:
-              <span class="font-light">{{
-                processStatus(process.status)
-              }}</span>
+              <span
+                class="inline-flex items-center font-bold text-sm px-2.5 py-0.5 rounded-full tracking-wide uppercase"
+                [ngClass]="(process.status | stepProgress).cssClass"
+              >
+                <span class="leading-relaxed whitespace-nowrap">{{
+                  (processStatus(process.status) | stepProgress).label
+                }}</span>
+              </span>
             </p>
           </div>
           <div>
@@ -218,14 +223,21 @@
         <hr />
         <div class="flex flex-row justify-between items-center px-10 mb-3">
           <button
-            class="max-w-50"
             mat-flat-button
-            ngClass="bg-green-600 text-white font-bold"
+            class="max-w-50 text-white"
+            [ngClass]="{'bg-green-600': process.status != 'FINISHED', 'bg-red-600': process.status == 'FINISHED'}"
             (click)="finished()"
             *hasPermission="'edit-Process'"
           >
-            <mat-icon>check</mat-icon>
-            <span>Concluir processo</span>
+            <ng-container *ngIf="process.status == 'FINISHED'">
+              <span>Processo encerrado</span>
+            </ng-container>
+            <ng-container *ngIf="process.status != 'FINISHED'">
+              <div class="flex items-center gap-2">
+                <mat-icon>check</mat-icon>
+                <span>Concluir processo</span>
+              </div>
+            </ng-container>
           </button>
           <button
             class="max-w-50"

@@ -33,6 +33,10 @@ export class ProcessService {
   $obsevableProcess = this._process$.asObservable();
   constructor(private _http: HttpClient) {}
 
+  updateProcessMemory(process) {
+    this._process$.next({...process })
+  }
+
   getProcessById(id: number): Observable<Process> {
     return this._http.get<Process>(`${environment.apiURL}/processes/${id}`);
   }

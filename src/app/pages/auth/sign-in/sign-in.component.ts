@@ -88,7 +88,6 @@ export class AuthSignInComponent implements OnInit {
       .forgotPassword(this.signInForm.get('email').value, true)
       .subscribe({
         next: (res: { expToken: string }) => {
-          console.log(res)
           this._router.navigateByUrl(`sign-in/reset-password/${res.expToken}`);
         },
       });

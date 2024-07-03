@@ -30,6 +30,10 @@ import { GlobalModule } from 'app/shared/global.module';
 import { DeadlineTrackerTypeService } from 'app/modules/deadline-trackers/deadline-tracker-types.service';
 import { DeadlineTrackerSubTypeService } from 'app/modules/deadline-trackers/deadline-tracker-subtypes.service';
 import { CompleteProcessFormComponent } from '../complete-process-form/complete-process-form.component';
+import { IConfig, NgxMaskDirective, provideEnvironmentNgxMask, provideNgxMask } from 'ngx-mask';
+import { MY_FORMATS } from 'app/shared/date-picker-formats';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
 
 const routes: Route[] = [
   {
@@ -155,6 +159,11 @@ const routes: Route[] = [
   },
 ];
 
+const maskConfig: Partial<IConfig> = {
+  validation: false,
+};
+
+
 @NgModule({
   declarations: [
     ProcessDetailComponent,
@@ -170,6 +179,10 @@ const routes: Route[] = [
     DeadlineTrackerService,
     DeadlineTrackerTypeService,
     DeadlineTrackerSubTypeService,
+    provideNgxMask(),
+    provideEnvironmentNgxMask(maskConfig),
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    { provide: MAT_LUXON_DATE_ADAPTER_OPTIONS, useValue: { useUtc: false } },
   ],
   imports: [
     CommonModule,
@@ -178,6 +191,7 @@ const routes: Route[] = [
     GlobalModule,
     FuseNavigationModule,
     GlDialogModule,
+    NgxMaskDirective
   ],
 })
 export class ProcessDetailModule {}
