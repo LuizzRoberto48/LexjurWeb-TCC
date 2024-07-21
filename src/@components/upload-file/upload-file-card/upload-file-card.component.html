@@ -28,6 +28,7 @@
         [class.bg-red-600]="uploadType.extensions === 'pdf'"
         [class.bg-gray-600]="uploadType.extensions === 'png'"
         [class.bg-amber-600]="uploadType.extensions === 'jpeg'"
+        [class.bg-amber-700]="uploadType.extensions === 'jpg'"
       >
         {{ uploadType?.name.toUpperCase() }}
       </div>

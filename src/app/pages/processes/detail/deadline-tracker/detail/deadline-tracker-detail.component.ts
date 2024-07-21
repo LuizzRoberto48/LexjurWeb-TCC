@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DeadlineTrackerService } from 'app/modules/deadline-trackers/deadline-tracker.service';
 import { IDeadlineTracker } from 'app/modules/deadline-trackers/model/deadline-tracker.model';
 import { TargetFiles } from 'app/modules/process-files/models/upload-process-files';
+import { UploadProcessFileService } from 'app/modules/process-files/services/upload-process.service';
 import { Observable, map, of, tap } from 'rxjs';
 
 @Component({
@@ -28,9 +29,11 @@ export class DeadlineTrackerDetailComponent implements OnInit, AfterViewInit {
     private activeRoute: ActivatedRoute,
     private deadlineService: DeadlineTrackerService,
     private cdr: ChangeDetectorRef,
+    public uploadService: UploadProcessFileService,
   ) {
     this.editMode();
     this.findProcessNumberFromTarget();
+    this.uploadService.sendFinishedFile(false);
   }
 
   onObjectUpdated(deadline: IDeadlineTracker): void {

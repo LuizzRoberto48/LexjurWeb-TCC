@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { ProcessService } from 'app/modules/process/services/process.service';
 import { Observable, Subscription, map, switchMap, tap } from 'rxjs';
 import {
@@ -23,6 +23,11 @@ export class FilesListComponent implements OnInit {
   @Input() isFilterTarget: boolean = true;
   @Input() $processNumber: Observable<string>;
   @Input() isCreated: boolean = false;
+  @Input() isSearchInput:boolean = false;
+  @Input() isFinished = false;
+  @Input() title = 'Meus arquivos'
+  @Input() minHeight = '66vh'
+   
   isDownloading: boolean = false;
   isOpened = false;
   $processId: Observable<number> = new Observable();
@@ -37,7 +42,7 @@ export class FilesListComponent implements OnInit {
     public uploadProcessFile: UploadProcessFileService,
     private uploadFile: UploadFileService,
     private loading: FuseLoadingService,
-    private route: Router,
+    private cdr: ChangeDetectorRef,
   ) {
     this.$getProcess();
     this.eventDownloadFromCard();
@@ -149,15 +154,17 @@ export class FilesListComponent implements OnInit {
       .pipe(
         switchMap((processId) =>
           this.uploadProcessFile.findByTarget(
-            this.target?.name ?? TargetFiles.TODOS,
+            this.target?.name || TargetFiles.TODOS,
             processId,
             targetId,
+            this.isFinished
           ),
         ),
       )
       .subscribe((res: GetUploadFile[]) => {
         this.allFiles = res;
         this.selectedFiles = this.allFiles;
+        this.cdr.detectChanges()
       });
   }
 

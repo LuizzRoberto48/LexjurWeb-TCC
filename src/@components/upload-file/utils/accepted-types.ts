@@ -56,4 +56,13 @@ function jpeg(): UploadType {
   };
 }
 
-export { excel, doc, txt, pdf, png, jpeg };
+function jpg(): UploadType {
+  return {
+    name: 'jpg',
+    accept: 'image/jpg',
+    extensions: 'jpg',
+    label: '',
+  };
+}
+
+export { excel, doc, txt, pdf, png, jpeg, jpg };

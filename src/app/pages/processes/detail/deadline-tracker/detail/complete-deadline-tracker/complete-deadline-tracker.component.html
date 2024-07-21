@@ -1,6 +1,40 @@
 <div
   class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden mx-6 my-8"
+  style="min-height: 77vh !important"
 >
- <h1>Formulário de conclusão</h1>
- 
+  <ng-container *ngIf="target.id" >
+    <files-list
+      [isFilterTarget]="false"
+      [target]="target"
+      [$processNumber]="$processNumber"
+      [title]="'Arquivos de conclusão'"
+      [minHeight]="'55vh'"
+      [isFinished]="true"
+    ></files-list>
+  </ng-container>
+
+  <div class="flex flex-col px-8">
+    <mat-form-field class="flex-auto" >
+      <mat-label>Observação de conclusão</mat-label>
+      <textarea
+      [(ngModel)]="finishedNote"
+        matInput
+        cdkTextareaAutosize
+        [cdkAutosizeMinRows]="2"
+      ></textarea>
+    </mat-form-field>
+  </div>
+  <div class="flex flex-row justify-between items-center px-9 my-3">
+    <button
+      mat-flat-button
+      class="max-w-50"
+      (click)="finished()"
+      *hasPermission="'edit-Process'"
+    >
+      Voltar
+    </button>
+    <button class="max-w-50 bg-green-600 text-white" mat-flat-button (click)="send()">
+      <span>Concluir agendamento</span>
+    </button>
+  </div>
 </div>

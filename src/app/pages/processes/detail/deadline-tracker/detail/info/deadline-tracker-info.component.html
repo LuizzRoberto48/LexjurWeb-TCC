@@ -73,9 +73,20 @@
     </p>
   </div>
 </div>
+<div class="grid grid-cols-2 gap-4 mt-4"  *ngIf="info.status === 'COMPLETED'">
+  <p class="text-gray-900 font-bold">
+    Observação de conclusão:
+    <span class="font-light">{{ info.finishedNote }}</span>
+  </p>
+</div>
 
 <div class="flex items-center justify-end">
-  <button mat-stroked-button type="button" [color]="'secondary'" (click)="back()">
+  <button
+    mat-stroked-button
+    type="button"
+    [color]="'secondary'"
+    (click)="back()"
+  >
     Voltar
   </button>
 </div>

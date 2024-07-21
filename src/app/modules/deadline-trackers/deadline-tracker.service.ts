@@ -6,6 +6,8 @@ import { ProcessService } from '../process/services/process.service';
 import { Observable, switchMap } from 'rxjs';
 import { Process } from '../process/models/process.model';
 import { DateTime } from 'luxon';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'any',
@@ -45,5 +47,10 @@ export class DeadlineTrackerService extends BaseHttpService<any> {
         .toISO();
     }
     return <string>isoDate;
+  }
+
+  completeDeadline(id: number, finishedNote:string) {
+    const url = `${environment.apiURL}/deadline_trackers/complete/${id}`;
+    return this.http.put(url, { finishedNote });
   }
 }
