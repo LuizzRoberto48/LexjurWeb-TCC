@@ -51,6 +51,7 @@ export interface GetUploadFile {
   resource?: SmallResource;
   target: TargetFiles;
   targetId: number;
+  isFinished:boolean;
   updateAt?: string;
   base64?: string;
   urlFile?: string;
@@ -73,6 +74,7 @@ export interface CreateUploadProcessFile {
   processId: number;
   processNumber: DeadlineProcessWithResources;
   targetId: number;
+  isFinished?:boolean;
   target: string;
   fileClassificationId: number;
   createAt: string;

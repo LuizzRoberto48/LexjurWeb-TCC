@@ -34,6 +34,7 @@ export class UploadProcessFileService {
 
   currentTarget: { name: string; id: number };
   $currentProcessNumber: Observable<string>;
+  $isFinishedFile:BehaviorSubject<boolean> = new BehaviorSubject(false)
 
   constructor(
     private _http: HttpClient,
@@ -68,6 +69,11 @@ export class UploadProcessFileService {
     );
   }
 
+
+  sendFinishedFile(isFinished:boolean) {
+    this.$isFinishedFile.next(isFinished)
+  }
+
   updateFile(obj: CreateUploadProcessFile, file?: File): Observable<any> {
     const formData: FormData = this.formatDataFile(file, obj);
 
@@ -95,11 +101,12 @@ export class UploadProcessFileService {
     );
   }
 
-  findByTarget(target: string, processId: number, targetId?: number) {
+  findByTarget(target: string, processId: number, targetId?: number, isFinished:boolean = false) {
     let params = new HttpParams();
     if (targetId) params = params.set('targetId', targetId);
     params = params.set('processId', processId.toString());
     params = params.set('name', target);
+    params = params.set('isFinished', isFinished);
     return this._http.get<GetUploadFile[]>(
       `${environment.apiURL}/process/uploads/targets`,
       { params },
@@ -137,14 +144,20 @@ export class UploadProcessFileService {
 
   public findCardFile(uploadFile: GetUploadFile): UploadType {
     if (!uploadFile) return;
-    const extension = getLastIndex(uploadFile.originalName);
-    const file = this.fileService.acceptedTypes.find((accepted) =>
-      accepted.extensions.includes(extension),
-    );
-    file.label = uploadFile.originalName;
-    file.target = uploadFile.target;
-    file.id = uploadFile.id;
-    return { ...file } as UploadType;
+    try {
+      const extension = getLastIndex(uploadFile.originalName);
+      const file = this.fileService.acceptedTypes.find((accepted) =>
+        accepted.extensions.includes(extension),
+      );
+      //if(!file) return;
+      
+      file.label = uploadFile?.originalName;
+      file.target = uploadFile?.target;
+      file.id = uploadFile.id;
+      return { ...file } as UploadType;
+    } catch(e) {
+      console.error("Erro ao tentar mostrar o card file")
+    }
   }
 
   fetchFileAsObservable(

@@ -36,6 +36,7 @@ export class FilesFormComponent implements OnInit {
   @Output() onClose: EventEmitter<boolean> = new EventEmitter();
   @Input() uploadFile: GetUploadFile;
   @Input() processId: number;
+  @Input() text = 'Adicione um arquivo';
 
   processWithResources: DeadlineProcessWithResources[] = [];
   classifications: { id: number; name: string }[] = [];
@@ -50,11 +51,11 @@ export class FilesFormComponent implements OnInit {
   isEdit: boolean = false;
   subs: Subscription[] = [];
   isLoading: boolean = false;
+  isFinished = false;
 
   constructor(
     private dTrackerService: DeadlineTrackerService,
     public uploadService: UploadProcessFileService,
-    private fileService: UploadFileService,
     private notificationService: NotificationService,
     private cd: ChangeDetectorRef,
     private notification: NotificationService,
@@ -68,6 +69,7 @@ export class FilesFormComponent implements OnInit {
     this.listClassifications();
     this.initFile();
     this.getEditProcessNumber();
+    this.isFinishedFile();
   }
 
   clearProcessValidator() {
@@ -107,6 +109,15 @@ export class FilesFormComponent implements OnInit {
           this.isEdit = false;
         }
         this.isProcessControlEnabled();
+      },
+    });
+    this.subs.push(subs);
+  }
+
+  isFinishedFile() {
+    const subs = this.uploadService.$isFinishedFile.subscribe({
+      next: (data: boolean) => {
+        this.isFinished = data;
       },
     });
     this.subs.push(subs);
@@ -215,6 +226,7 @@ export class FilesFormComponent implements OnInit {
 
   private createFile(obj: CreateUploadProcessFile) {
     const { id, ...sendObj } = obj;
+    sendObj.isFinished = this.isFinished;
     this.uploadService.createFile(this.fileType.file, sendObj).subscribe({
       next: (data) => {
         this.uploadService.$crudFile.next({ file: data, method: 'create' });

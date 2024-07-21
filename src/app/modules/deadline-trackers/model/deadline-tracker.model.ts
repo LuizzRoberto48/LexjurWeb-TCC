@@ -38,6 +38,8 @@ export interface IDeadlineTracker {
   status: ProgressStatus;
   local?: string;
   note?: string;
+  finishedNote?:string
+
 }
 
 export interface CreateDeadlineTracker {
