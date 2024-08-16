@@ -1,17 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { ParamsModel } from 'app/global/base-http/base-http.model';
 import { DeadlineStatus } from 'app/global/components/search-fields/search-fields.model';
 import { Paginator } from 'app/global/paginator/public-api';
 import { getEnumKeyByEnumValue } from 'app/global/utils/str-manipulations';
+import { AuthService } from 'app/modules/auth/auth.service';
+import { CoreSheedList } from 'app/modules/cores/core-sheet/core-sheet.component';
 import { LocalCore } from 'app/modules/cores/model/get-core';
 import { CoreService } from 'app/modules/cores/service/core.service';
 import { DeadlineTrackerService } from 'app/modules/deadline-trackers/deadline-tracker.service';
-import { IDeadlineTracker } from 'app/modules/deadline-trackers/model/deadline-tracker.model';
 import { configDialogResource } from 'app/modules/process/utils';
 import { Subscription } from 'rxjs';
 
@@ -44,10 +45,20 @@ export class SchedulesComponent implements OnInit, OnDestroy {
     private route: Router,
     private notification: NotificationService,
     private __confirmationService: FuseConfirmationService,
+    private _bottomSheet: MatBottomSheet,
+    private auth: AuthService
   ) {}
 
   ngOnInit(): void {
     this.getCore();
+    this.showBottomSheet()
+  }
+
+  showBottomSheet() {
+    this.auth.check().subscribe((isAuth) => {
+      if (isAuth && !this.coreService.localCore)
+        this._bottomSheet.open(CoreSheedList, { disableClose: true });
+    });
   }
 
   getCore() {
