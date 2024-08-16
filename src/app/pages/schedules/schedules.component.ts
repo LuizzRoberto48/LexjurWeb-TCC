@@ -23,7 +23,7 @@ import { Subscription } from 'rxjs';
 export class SchedulesComponent implements OnInit, OnDestroy {
   localCore: LocalCore;
   length = 0;
-  pageSize = 2;
+  pageSize = 12;
   pageIndex = 1;
   pageSizeOptions = [2, 24, 36];
   subs: Subscription[] = [];
