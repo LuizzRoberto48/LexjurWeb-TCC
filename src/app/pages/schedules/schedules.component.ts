@@ -25,7 +25,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   length = 0;
   pageSize = 12;
   pageIndex = 1;
-  pageSizeOptions = [2, 24, 36];
+  pageSizeOptions = [12, 24, 36];
   subs: Subscription[] = [];
   columns: string[] = [
     'processNumber',
