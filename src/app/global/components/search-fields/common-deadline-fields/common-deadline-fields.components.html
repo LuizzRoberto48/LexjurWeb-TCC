@@ -1,0 +1,156 @@
+<form [formGroup]="form" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+  <div class="flex flex-col" *ngIf="displayControls?.includes('id')">
+    <mat-form-field class="w-full">
+      <mat-label>Id</mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="id"
+        (blur)="changedId('id')"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="flex flex-col" *ngIf="displayControls.includes('deadlineStatus')">
+    <mat-form-field class="flex-auto gt-xs:pl-3">
+      <mat-label>Status</mat-label>
+      <mat-select
+        formControlName="deadlineStatus"
+        
+        [placeholder]="'--Selecione--'"
+      >
+        <mat-option [value]="'--Selecione--'">--Selecione--</mat-option>
+        <mat-option [value]="opt" *ngFor="let opt of status"
+          >{{ opt }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="flex flex-col" *ngIf="displayControls.includes('deadlineTypeId')">
+    <mat-form-field class="flex-auto gt-xs:pl-3">
+      <mat-label>Tipo</mat-label>
+      <mat-select
+        formControlName="deadlineTypeId"
+        (selectionChange)="deadlineTypeChanged($event)"
+        [placeholder]="'--Selecione--'"
+      >
+        <mat-option [value]="'--Selecione--'">--Selecione--</mat-option>
+        <mat-option [value]="opt.id" *ngFor="let opt of deadlineTypes"
+          >{{ opt.label }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div
+    class="flex flex-col"
+    *ngIf="displayControls.includes('deadlineSubTypeId')"
+  >
+    <mat-form-field class="flex-auto gt-xs:pl-3">
+      <mat-label>Sub tipo</mat-label>
+      <mat-select
+        formControlName="deadlineSubTypeId"
+        
+        [placeholder]="'--Selecione--'"
+      >
+        <mat-option [value]="'--Selecione--'">--Selecione--</mat-option>
+        <mat-option [value]="opt.id" *ngFor="let opt of deadlineSubTypes">{{ opt.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="flex flex-col" *ngIf="displayControls.includes('insideLawyerId')">
+    <mat-form-field class="flex-auto gt-xs:pl-3">
+      <mat-label>Advogado responsável</mat-label>
+      <mat-select
+        formControlName="insideLawyerId"
+        
+        [placeholder]="'--Selecione--'"
+      >
+        <mat-option [value]="'--Selecione--'">--Selecione--</mat-option>
+        <mat-option [value]="opt.id" *ngFor="let opt of insideLaywers"
+          >{{ opt.name }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="flex flex-col" *ngIf="displayControls.includes('rangeDate')">
+    <mat-form-field class="w-full">
+      <mat-label>Data do cadastro</mat-label>
+      <mat-date-range-input
+        [formGroup]="rangeDate"
+        [rangePicker]="range"
+        [comparisonStart]="rangeDate.value.start"
+        [comparisonEnd]="rangeDate.value.end"
+      >
+        <input
+          matStartDate
+          placeholder="Início"
+          formControlName="startDate"
+          readonly
+          
+        />
+        <input
+          matEndDate
+          placeholder="Fim"
+          formControlName="endDate"
+          (dateChange)="rangeDateChange('endDate', 'rangeDate')"
+          readonly
+        />
+      </mat-date-range-input>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="range"
+      ></mat-datepicker-toggle>
+      <mat-date-range-picker #range></mat-date-range-picker>
+      <button
+        class="visibility"
+        mat-icon-button
+        (click)="resetDate('rangeDate')"
+      >
+        <mat-icon> close </mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <div
+    class="flex flex-col"
+    *ngIf="displayControls.includes('rangeDateInternDeadline')"
+  >
+    <mat-form-field class="w-full">
+      <mat-label>Data prazo interno</mat-label>
+      <mat-date-range-input
+        [formGroup]="rangeDateInternDeadline"
+        [rangePicker]="rangeInternDate"
+        [comparisonStart]="rangeDateInternDeadline.value.start"
+        [comparisonEnd]="rangeDateInternDeadline.value.end"
+      >
+        <input
+          matStartDate
+          placeholder="Início"
+          formControlName="startInternDate"
+          readonly
+          (dateChange)="rangeDateChange('startInternDate', 'rangeDateInternDeadline')"
+        />
+        <input
+          matEndDate
+          placeholder="Fim"
+          formControlName="endInternDate"
+          (dateChange)="rangeDateChange('endInternDate', 'rangeDateInternDeadline')"
+          readonly
+        />
+      </mat-date-range-input>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="rangeInternDate"
+      ></mat-datepicker-toggle>
+      <mat-date-range-picker #rangeInternDate></mat-date-range-picker>
+      <button
+        class="visibility"
+        mat-icon-button
+        (click)="resetDate('rangeDateInternDeadline')"
+      >
+        <mat-icon> close </mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+</form>

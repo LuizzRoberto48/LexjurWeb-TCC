@@ -23,7 +23,7 @@ import {
   Subject,
   SubObject,
 } from '../models/process.model';
-import { Paginator } from 'app/global/paginator/public-api';
+import { httpParams } from '../utils';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +34,7 @@ export class ProcessService {
   constructor(private _http: HttpClient) {}
 
   updateProcessMemory(process) {
-    this._process$.next({...process })
+    this._process$.next({ ...process });
   }
 
   getProcessById(id: number): Observable<Process> {
@@ -43,9 +43,9 @@ export class ProcessService {
 
   getProcessByCore(
     coreId: number,
-    queryParams:{}
+    queryParams: {},
   ): Observable<GetProcessPageable> {
-    const params = this.httpParams(queryParams);
+    const params = httpParams(queryParams);
     return this._http
       .get<GetProcessPageable>(
         `${environment.apiURL}/core/${coreId}/processes`,
@@ -68,7 +68,7 @@ export class ProcessService {
     processId: number,
     query: any,
   ): Observable<any> {
-    const params = this.httpParams(query);
+    const params = httpParams(query);
     return this._http.get<any>(
       `${environment.apiURL}/core/${coreId}/processes/${processId}/search`,
       { params },
@@ -77,14 +77,6 @@ export class ProcessService {
 
   set memoryProcess(process: Process) {
     this._process$.next(process);
-  }
-
-  private httpParams(params: {}= {}): HttpParams {
-    let httpParams = new HttpParams();
-    Object.keys(params).forEach(function (key) {
-      httpParams = httpParams.append(key, params[key]);
-    });
-    return httpParams;
   }
 
   getInsideLawyerByProcess(data) {

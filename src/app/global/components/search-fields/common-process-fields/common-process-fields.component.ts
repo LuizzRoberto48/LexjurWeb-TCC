@@ -7,9 +7,9 @@ import { LawyerService } from 'app/modules/lawyer/lawyer.service';
 import { GetLawyer } from 'app/modules/lawyer/model/lawyer.model';
 import { ProcessStatus } from 'app/modules/process/models/process.model';
 import { ProcessService } from 'app/modules/process/services/process.service';
-import { SearchProcessService } from 'app/modules/process/services/search-process.service';
 import { MY_FORMATS } from 'app/shared/date-picker-formats';
 import { DateTime } from 'luxon';
+import { SearchProcessService } from '../search-fields.service';
 
 @Component({
   selector: 'common-process-fields',

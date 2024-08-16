@@ -1,18 +1,19 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CoreService } from 'app/modules/cores/service/core.service';
 import { Observable, Subscription } from 'rxjs';
 import { LocalCore } from 'app/modules/cores/model/get-core';
-import { SearchModalListComponent } from '../search-process-list/search-modal-list.component';
+import { SearchModalListComponent } from '../../../modules/process/components/search-process-list/search-modal-list.component';
 import { MatDialog } from '@angular/material/dialog';
-import { ProcessService } from '../../services/process.service';
-import { SearchProcessService } from '../../services/search-process.service';
+import { ProcessService } from '../../../modules/process/services/process.service';
+import { SearchProcessService } from './search-fields.service';
+import { EMPTYSELECT, SearchFieldsTypes } from './search-fields.model';
 
 @Component({
   selector: 'search-process',
   templateUrl: './search-process.component.html',
   styleUrls: ['./search-process.component.scss'],
 })
-export class SearchProcessNewComponent {
+export class SearchProcessNewComponent implements OnInit {
   @Output() emitSearchValue: EventEmitter<{ name: string; value: string }> =
     new EventEmitter();
   @Output() emitSearchList: EventEmitter<{ name: string; value: string }[]> =
@@ -20,13 +21,14 @@ export class SearchProcessNewComponent {
   searchList: { id?: number; name: string; value: string }[] = [];
 
   @Input() title = 'Buscar Processos';
-  @Input() isAppendProcessFilter = false;
   @Input() isExpandable = true;
   @Input() hasFilterBtn = false;
   @Input() filterBtnText = 'Filtrar';
   @Input() displayControls: string[] = [];
+  @Input() searchType: SearchFieldsTypes = 'process';
 
   status!: { name: string; label: string };
+
   $subs: Subscription[] = [];
 
   constructor(
@@ -48,15 +50,33 @@ export class SearchProcessNewComponent {
     return this.searchProcess.filtersForm;
   }
 
-  onChangedCommonForm(event: { id?: number; value: string; name: string }) {
+  ngOnInit(): void {
+    this.changeFields();
+  }
+
+  changeFields() {
+    this.form.valueChanges.subscribe({
+      next: (values) => {
+        const filteredValues = Object.keys(values)
+          .filter(
+            (key) => values[key] !== '--Selecione--' && values[key] !== '',
+          )
+          .map((key) => ({
+            name: key,
+            value: values[key],
+          }));
+        this.searchList = []
+        filteredValues.map(value => this.onChangedCommonForm(value))
+      },
+    });
+  }
+
+  onChangedCommonForm(event: { value: string; name: string }) {
     if (event.name === 'id') {
       this.searchList = [event];
-      return
+      this.emitSearchValue.emit(event);
+      return;
     }
-    // Remove the old element with the same name if it exists
-    this.searchList = this.searchList.filter(
-      (e) => e.name !== event.name && e.value !== '' && e.value !== null,
-    );
     this.searchList.push(event);
     this.emitSearchValue.emit(event);
   }

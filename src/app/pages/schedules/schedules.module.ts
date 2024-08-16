@@ -4,24 +4,26 @@ import { Route, RouterModule } from '@angular/router';
 import { MaterialModule } from 'app/shared/material.module';
 import { SchedulesComponent } from './schedules.component';
 import { HeaderContentModule } from '@components/header-content/header-content.module';
+import { SearchProcessModule } from 'app/modules/process/components/search-process.module';
+import { DeadlineTrackerService } from 'app/modules/deadline-trackers/deadline-tracker.service';
+import { GlobalModule } from 'app/shared/global.module';
 
 const exampleRoutes: Route[] = [
   {
     path: '',
-    component: SchedulesComponent
-  }
+    component: SchedulesComponent,
+  },
 ];
 
 @NgModule({
-  declarations: [
-    SchedulesComponent
-  ],
+  declarations: [SchedulesComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(exampleRoutes),
-    MaterialModule,
     HeaderContentModule,
-  ]
+    SearchProcessModule,
+    GlobalModule,
+  ],
+  providers: [DeadlineTrackerService],
 })
-export class SchedulesModule {
-}
+export class SchedulesModule {}

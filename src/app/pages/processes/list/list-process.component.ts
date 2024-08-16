@@ -22,7 +22,6 @@ import { Subscription } from 'rxjs';
   templateUrl: './list-process.component.html',
 })
 export class ListProcessComponent {
-  screenWidth: string;
   length = 0;
   pageSize = 12;
   pageIndex = 1;
@@ -60,7 +59,7 @@ export class ListProcessComponent {
   }
 
   searchList(event: any[]) {
-    const status = event.find((ev) => ev.name == 'status' && ev.value);
+    const status = event.find((ev) => ev.name == 'processStatus' && ev.value);
     const insideLawyer = event.find((ev) => ev.name == 'insideLawyer' && ev.value);
     const startDate = event.find((ev) => ev.name == 'startDate' && ev.value);
     const endDate = event.find((ev) => ev.name == 'endDate' && ev.value);

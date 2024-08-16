@@ -8,6 +8,7 @@ import { Process } from '../process/models/process.model';
 import { DateTime } from 'luxon';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
+import { httpParams } from '../process/utils';
 
 @Injectable({
   providedIn: 'any',
@@ -22,6 +23,13 @@ export class DeadlineTrackerService extends BaseHttpService<any> {
 
   get $process() {
     return this.processService.$obsevableProcess;
+  }
+
+  findAllPaginated(coreId:number, queryParams: {}): Observable<any> {
+    const params = httpParams(queryParams);
+    return this.http.get<any>(`${environment.apiURL}/deadline_trackers/${coreId}/all`, {
+      params,
+    });
   }
 
   findProcessResources(): Observable<any> {
@@ -49,7 +57,7 @@ export class DeadlineTrackerService extends BaseHttpService<any> {
     return <string>isoDate;
   }
 
-  completeDeadline(id: number, finishedNote:string) {
+  completeDeadline(id: number, finishedNote: string) {
     const url = `${environment.apiURL}/deadline_trackers/complete/${id}`;
     return this.http.put(url, { finishedNote });
   }

@@ -65,7 +65,7 @@
   </div>
   <div class="flex flex-col" *ngIf="displayControls.includes('status')">
     <mat-form-field class="flex-auto gt-xs:pl-3">
-      <mat-label>Status do processo</mat-label>
+      <mat-label>Status</mat-label>
       <mat-select
         formControlName="status"
         (selectionChange)="selectChanged('status', $event.value, 'status')"

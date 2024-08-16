@@ -31,6 +31,12 @@ export class LawyerService {
     );
   }
 
+  findAllInsideLawyersByCore(coreId:number) {
+    return this._http.get<GetLawyer[]>(
+      `${environment.apiURL}/lawyers/inside_lawyers/${coreId}`,
+    );
+  }
+
   findInsideLaywerByFilter(
     coreId: number,
     fields: LawyerFields,

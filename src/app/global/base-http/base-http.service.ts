@@ -56,12 +56,6 @@ export abstract class BaseHttpService<T extends BaseResourceModel> {
       .pipe(map(this.jsonDataToResources.bind(this)));
   }
 
-  findAllPaginated(filter?: string): Observable<PageRequest> {
-    return this.http.get<PageRequest>(`${this.path}?${filter || ''}`, {
-      params: this._httpParams,
-    });
-  }
-
   findById(id: number): Observable<T> {
     const url = `${this.path}/${id}`;
     return this.http

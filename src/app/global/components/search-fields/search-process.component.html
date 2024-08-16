@@ -6,10 +6,14 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <div class="px-8 py-3">
-      <common-process-fields
-        (changedForm)="onChangedCommonForm($event)"
-        [displayControls]="displayControls"
-      ></common-process-fields>
+      <ng-container *ngIf="searchType == 'process'">
+        <common-process-fields
+          [displayControls]="displayControls"
+        ></common-process-fields>
+      </ng-container>
+      <ng-container *ngIf="searchType == 'deadline'">
+        <search-deadline [displayControls]="displayControls"></search-deadline>
+      </ng-container>
       <div class="flex items-center justify-end">
         <button
           *ngIf="hasFilterBtn"
