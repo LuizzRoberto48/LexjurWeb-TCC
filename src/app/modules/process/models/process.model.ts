@@ -60,6 +60,7 @@ export interface CreateProcess {
   adversePosition: string;
   lawyerProcess: number[];
   causeValue: string;
+  organNumber?: string;
 }
 
 export interface ProcessForm {
@@ -135,6 +136,8 @@ export interface Process {
   distributionDate: Date;
   quoteDate: Date;
   description: string;
+  stakeholderPosition: string;
+  adversePosition: string;
 }
 
 export interface ProcessSmall {

@@ -126,6 +126,7 @@ export class FormProcessService {
       adverseLawyer,
       causeValue,
       adverseStakeholder,
+      organNumber,
       ...process
     } = form;
     let distributionIsoDate = distributionDate;
@@ -144,6 +145,7 @@ export class FormProcessService {
       distributionDate: distributionIsoDate,
       quoteDate: quoteIsoDate,
       causeValue: causeValue.toString(),
+      organNumber: organNumber || '',
     };
     process.isEletronic ? obj.eletronicSystemId : delete obj.eletronicSystemId;
     return obj;
