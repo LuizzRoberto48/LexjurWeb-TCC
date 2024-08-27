@@ -133,29 +133,33 @@ export class FormProcessComponent implements OnInit {
   getEditProcess() {
     this.route.data.subscribe({
       next: ({ data }) => {
-        console.log(data)
         this.processId = data.id;
         this.form = this.formService.objToForm(this.form, data);
         this.form.controls['adverseStakeholder'].get('type').enable();
-        this.changeLawArea();
-        this.changeOrigin();
-        this.changeUfs();
-        this.changeCounty();
+        this.changeLawArea(true);
+        this.changeOrigin(true);
+        this.changeUfs(true);
+        this.changeCounty(true);
         this.changeObject();
         this.changeClient();
-        this.changedUfOab();
+        this.changedUfOab(true);
       },
     });
   }
 
-  changeLawArea() {
+  changeLawArea(isInit = false) {
     const areaId = this.form.get('lawAreaId').value;
+    if(!isInit) {
+      this.form.get('originId').reset();
+      this.form.get('lawSubAreaId').reset();
+    }
     this.getSubLawyerAreas(areaId);
     this.getOrigins(areaId);
   }
 
-  changeOrigin() {
+  changeOrigin(isInit = false) {
     const originId = this.form.get('originId').value;
+    if(!isInit) this.form.get('organId').reset();
     this.getOrgans(originId);
   }
 
@@ -187,6 +191,7 @@ export class FormProcessComponent implements OnInit {
   changeOrgan() {
     const organId = this.form.get('organId').value;
     const foundOrgan = this.organs.find((organ) => organ.id === organId);
+    this.form.get('organNumber').reset();
 
     if (foundOrgan)
       this.form.get('organNumber').setValue(foundOrgan.organNumber);
@@ -198,18 +203,21 @@ export class FormProcessComponent implements OnInit {
     });
   }
 
-  changeUfs() {
+  changeUfs(isInit = false) {
     const ufName = this.form.get('uf').value;
+    if(!isInit) this.form.get('countyId').reset();
     this.getCountyByUf(ufName);
   }
 
-  changeCounty() {
+  changeCounty(isInit = false) {
     const countyId = this.form.get('countyId').value;
+    if(!isInit) this.form.get('forumId').reset();
     this.getForumsByCounty(countyId);
   }
 
   changeObject() {
     const objectId = this.form.get('objectId').value;
+    
     this.getSubObjects(objectId);
   }
 
@@ -218,9 +226,9 @@ export class FormProcessComponent implements OnInit {
     this.getStakeholders(clientId);
   }
 
-  changedUfOab() {
+  changedUfOab(isInit = false) {
     const uf = this.form.get('adverseLawyer.ufOab').value;
-    console.log(uf)
+    if(!isInit) this.form.get('adverseLawyer.name').reset();
     this.findAdverseLawyerByUf(uf);
   }
 

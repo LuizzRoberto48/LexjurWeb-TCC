@@ -28,8 +28,16 @@
           </div>
           <div>
             <p class="text-gray-900 font-medium">
-              Fase atual:
-              <span class="font-light">{{ process.Phase.name }}</span>
+              Número do processo:
+              <span class="font-light">{{
+                process.caseNumber
+              }}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Número Antigo do Processo:
+              <span class="font-light">{{ process.oldCaseNumber }}</span>
             </p>
           </div>
           <div>
@@ -40,7 +48,24 @@
           </div>
           <div>
             <p class="text-gray-900 font-medium">
-              Área do direito:
+              Órgão: <span class="font-light">{{ process.Organ.name }}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Número do Órgão:
+              <span class="font-light">{{ process?.organNumber ?? '' }}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Fase Atual:
+              <span class="font-light">{{ process.Phase.name }}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Área do Direito:
               <span class="font-light">{{
                 process.LawSubArea.LawArea.name
               }}</span>
@@ -48,18 +73,14 @@
           </div>
           <div>
             <p class="text-gray-900 font-medium">
-              Órgão: <span class="font-light">{{ process.Organ.name }}</span>
+              Sub-área do Direito:
+              <span class="font-light">{{ process.LawSubArea.name }}</span>
             </p>
           </div>
           <div>
             <p class="text-gray-900 font-medium">
-              Número órgão:
-              <span class="font-light">{{ process?.organNumber ?? '' }}</span>
-            </p>
-          </div>
-          <div>
-            <p class="text-gray-900 font-medium">
-              Foro: <span class="font-light">{{ process.Forum.name }}</span>
+              UF:
+              <span class="font-light">{{ process.Forum.County.uf }}</span>
             </p>
           </div>
           <div>
@@ -70,18 +91,17 @@
           </div>
           <div>
             <p class="text-gray-900 font-medium">
+              Foro: <span class="font-light">{{ process.Forum.name }}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
               Instância: <span class="font-light">{{ process.instance }}</span>
             </p>
           </div>
           <div>
             <p class="text-gray-900 font-medium">
-              Número do processo antigo:
-              <span class="font-light">{{ process.oldCaseNumber }}</span>
-            </p>
-          </div>
-          <div>
-            <p class="text-gray-900 font-medium">
-              Adv responsável:
+              Adv. Responsável:
               <span class="font-light">{{ getInsideLawyer(process) }}</span>
             </p>
           </div>
@@ -93,14 +113,8 @@
           </div>
           <div>
             <p class="text-gray-900 font-medium">
-              Tipo de ação:
+              Tipo de Ação:
               <span class="font-light">{{ process.ActionType.name }}</span>
-            </p>
-          </div>
-          <div>
-            <p class="text-gray-900 font-medium">
-              Sub-área do direito:
-              <span class="font-light">{{ process.LawSubArea.name }}</span>
             </p>
           </div>
           <div>
@@ -109,6 +123,12 @@
               <span class="font-light">{{
                 process.SubObject.Object.name
               }}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Sub Objeto:
+              <span class="font-light">{{ process.SubObject.name }}</span>
             </p>
           </div>
         </div>
@@ -128,13 +148,19 @@
           </div>
           <div>
             <p class="text-gray-900 font-medium">
-              Parte interessada:
+              Parte Interessada:
               <span class="font-light">{{ process.Stakeholder.name }}</span>
             </p>
           </div>
           <div>
             <p class="text-gray-900 font-medium">
-              Parte adversa:
+               Posição Parte Interessada:
+              <span class="font-light">{{ process.stakeholderPosition }}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Parte Adversa:
               <span class="font-light">{{
                 process.AdverseStakeholder.name
               }}</span>
@@ -142,7 +168,13 @@
           </div>
           <div>
             <p class="text-gray-900 font-medium">
-              CPF parte adversa:
+              Tipo:
+              <span class="font-light">{{ process.AdverseStakeholder.type }}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              CPF/CNPJ Parte Adversa: --MASCARA--
               <span class="font-light">{{
                 process.AdverseStakeholder.cpfCnpj
               }}</span>
@@ -150,15 +182,7 @@
           </div>
           <div>
             <p class="text-gray-900 font-medium">
-              Email parte adversa:
-              <span class="font-light">{{
-                process.AdverseStakeholder.email
-              }}</span>
-            </p>
-          </div>
-          <div>
-            <p class="text-gray-900 font-medium">
-              Telefone parte adversa:
+              Telefone Parte Adversa: --MASCARA--
               <span class="font-light">{{
                 process.AdverseStakeholder.phone
               }}</span>
@@ -166,20 +190,34 @@
           </div>
           <div>
             <p class="text-gray-900 font-medium">
+              Email Parte Adversa:
+              <span class="font-light">{{
+                process.AdverseStakeholder.email
+              }}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              Posição Parte Adversa:
+              <span class="font-light">{{ process.adversePosition }}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              UF OAB Advogado Adverso:
+              <span class="font-light">{{getOutsideLawyer(process).ufOab}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
+              OAB Advogado Adverso:
+              <span class="font-light">{{getOutsideLawyer(process)?.oab}}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-900 font-medium">
               Advogado Adverso:
-              <span class="font-light">{{ getOutsideLawyer(process) }}</span>
-            </p>
-          </div>
-          <div>
-            <p class="text-gray-900 font-medium">
-              E-mail advogado adverso:
-              <span class="font-light">{{ process.Forum.County.name }}</span>
-            </p>
-          </div>
-          <div>
-            <p class="text-gray-900 font-medium">
-              Telefone advogado adverso:
-              <span class="font-light">{{ process.instance }}</span>
+              <span class="font-light">{{ getOutsideLawyer(process)?.name }}</span>
             </p>
           </div>
         </div>
@@ -191,7 +229,7 @@
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4 px-3 py-2">
           <div>
             <p class="text-gray-900 font-medium">
-              Data de distribuição:
+              Data da distribuição:
               <span class="font-light">{{
                 process.distributionDate | date : 'dd/MM/yyyy'
               }}</span>
@@ -199,7 +237,7 @@
           </div>
           <div>
             <p class="text-gray-900 font-medium">
-              Data de citação:
+              Data da citação:
               <span class="font-light">{{
                 process.quoteDate | date : 'dd/MM/yyyy'
               }}</span>

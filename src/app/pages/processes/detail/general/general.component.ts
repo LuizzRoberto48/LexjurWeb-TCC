@@ -33,6 +33,7 @@ export class ProcessGeneralComponent {
 
   getEditProcess() {
     this.processService.$obsevableProcess.subscribe((res) => {
+      console.log(res);
       this.process = res;
     });
   }
@@ -42,7 +43,7 @@ export class ProcessGeneralComponent {
   }
 
   getOutsideLawyer(data) {
-    return this.processService.getOutsideLawyerByProcess(data)?.name;
+    return this.processService.getOutsideLawyerByProcess(data);
   }
 
   processStatus(status: ProcessStatus) {
