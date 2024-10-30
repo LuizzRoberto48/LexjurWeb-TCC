@@ -6,6 +6,7 @@ import { ExportProcess } from 'app/modules/process/models/export-process';
 import { ProcessStatus } from 'app/modules/process/models/process.model';
 import { processFields } from 'app/modules/process/process-fields';
 import { ExportProcessService } from 'app/modules/process/services/export-process.service';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'exporter',
@@ -14,10 +15,9 @@ import { ExportProcessService } from 'app/modules/process/services/export-proces
 })
 export class ExporterComponent {
   @ViewChild('filterInput') filterInput;
-  status: { name: string; value: string };
-  insideLawyer: { id?: number; name: string; value: string };
-  startDate: { name: string; value: string };
-  endDate: { name: string; value: string };
+  processStatus: { name: string; value: string };
+  insideLawyerId: { id?: number; name: string; value: string };
+  rangeDate:{name:string, value:{endDate:DateTime, startDate:Date}}
   filterProcessFields: { name: string; label: string }[] = [];
   processFields: { name: string; label: string }[] = processFields.sort(
     (a, b) => a.label.localeCompare(b.label),
@@ -50,7 +50,7 @@ export class ExporterComponent {
   }
 
   isValidateBuildExcel(): boolean {
-    if (this.status?.name || this.insideLawyer?.id || this.endDate?.value)
+    if (this.processStatus?.name || this.insideLawyerId?.value || this.rangeDate?.value?.endDate)
       return true;
 
     return false;
@@ -85,17 +85,12 @@ export class ExporterComponent {
       return;
     }
     const body: ExportProcess = {
-      ...(this.insideLawyer?.id && { insideLawyer: this.insideLawyer.id }),
-      ...(this.status?.value && {
-        status: getEnumKeyByEnumValue(ProcessStatus, this.status.value),
+      ...(this.insideLawyerId?.value && { insideLawyer: this.insideLawyerId?.value }),
+      ...(this.processStatus?.value && {
+        status: getEnumKeyByEnumValue(ProcessStatus, this.processStatus.value),
       }),
-      ...(this.startDate?.value &&
-        this.endDate?.value && {
-          rangeDate: {
-            start: this.startDate.value,
-            end: this.endDate.value,
-          },
-        }),
+      ...(this.rangeDate?.value?.endDate && { startDate: this.rangeDate.value.startDate }),
+      ...(this.rangeDate?.value?.endDate && { endDate: this.rangeDate.value.endDate }),
       columns: this.filterProcessFields,
     };
     
@@ -104,8 +99,7 @@ export class ExporterComponent {
         const { blob, filename } =
           this.exportService.transformResponseToBlob(res);
         this.exportService.saveFile(blob, filename);
-      },
-      error: () => {},
+      }
     });
   }
 }

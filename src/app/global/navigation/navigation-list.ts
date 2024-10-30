@@ -35,5 +35,12 @@ export const NavigationList: FuseNavigationItem[] = [
     type : 'basic',
     icon : 'heroicons_outline:exporter_2',
     link : '/exporter'
+  },
+  {
+    id   : 'migracao-processos',
+    title: 'Migração',
+    type : 'basic',
+    icon : 'heroicons_outline:switch-horizontal',
+    link : '/migracao-processos'
   }
 ];

@@ -19,6 +19,7 @@ import {
   Origin,
   Phase,
   Process,
+  SendProcessStatus,
   Stakeholder,
   Subject,
   SubObject,
@@ -42,13 +43,12 @@ export class ProcessService {
   }
 
   getProcessByCore(
-    coreId: number,
     queryParams: {},
   ): Observable<GetProcessPageable> {
     const params = httpParams(queryParams);
     return this._http
       .get<GetProcessPageable>(
-        `${environment.apiURL}/core/${coreId}/processes`,
+        `${environment.apiURL}/processes`,
         { params },
       )
       .pipe(
@@ -106,17 +106,24 @@ export class ProcessService {
     );
   }
 
+  reactivate(id: number, status: SendProcessStatus) {
+    return this._http.put<Process>(
+      `${environment.apiURL}/processes/reactivate/${id}`,
+      {status},
+    );
+  }
+
   delete(id: number) {
     return this._http.delete<void>(`${environment.apiURL}/processes/${id}`);
   }
 
   findLawAreas(): Observable<LawArea[]> {
-    return this._http.get<LawArea[]>(`${environment.apiURL}/law_areas`);
+    return this._http.get<LawArea[]>(`${environment.apiURL}/processes/law_areas`);
   }
 
   findSubLawAreas(lawAreaId: number): Observable<LawSubArea[]> {
     return this._http.get<LawSubArea[]>(
-      `${environment.apiURL}/sub_law_areas/${lawAreaId}`,
+      `${environment.apiURL}/processes/sub_law_areas/${lawAreaId}`,
     );
   }
 
@@ -125,31 +132,31 @@ export class ProcessService {
   }
 
   findObjects(): Observable<Object[]> {
-    return this._http.get<Object[]>(`${environment.apiURL}/objects`);
+    return this._http.get<Object[]>(`${environment.apiURL}/processes/objects`);
   }
 
   findSubObjects(objId: number): Observable<SubObject[]> {
     return this._http.get<SubObject[]>(
-      `${environment.apiURL}/sub_objects/${objId}`,
+      `${environment.apiURL}/processes/sub_objects/${objId}`,
     );
   }
 
   findOriginByLawArea(lawAreaId: number): Observable<Origin[]> {
     return this._http.get<Origin[]>(
-      `${environment.apiURL}/origins/${lawAreaId}`,
+      `${environment.apiURL}/processes/origins/${lawAreaId}`,
     );
   }
 
   findOrigins(): Observable<Origin[]> {
-    return this._http.get<Origin[]>(`${environment.apiURL}/origins`);
+    return this._http.get<Origin[]>(`${environment.apiURL}/processes/origins`);
   }
 
   findOrgans(originId: number): Observable<Organ[]> {
-    return this._http.get<Organ[]>(`${environment.apiURL}/organs/${originId}`);
+    return this._http.get<Organ[]>(`${environment.apiURL}/processes/organs/${originId}`);
   }
 
   findActiontypes(): Observable<ActionType[]> {
-    return this._http.get<ActionType[]>(`${environment.apiURL}/actions`);
+    return this._http.get<ActionType[]>(`${environment.apiURL}/processes/actions`);
   }
 
   findCountiesByUf(ufName: string): Observable<County[]> {
@@ -157,36 +164,36 @@ export class ProcessService {
   }
 
   findForumByCountyId(countyId: number): Observable<Forum[]> {
-    return this._http.get<Forum[]>(`${environment.apiURL}/forums/${countyId}`);
+    return this._http.get<Forum[]>(`${environment.apiURL}/processes/forums/${countyId}`);
   }
 
   findPhases(): Observable<Phase[]> {
-    return this._http.get<Phase[]>(`${environment.apiURL}/phases`);
+    return this._http.get<Phase[]>(`${environment.apiURL}/processes/phases`);
   }
 
   findClients(): Observable<Client[]> {
-    return this._http.get<Client[]>(`${environment.apiURL}/clients`);
+    return this._http.get<Client[]>(`${environment.apiURL}/processes/clients`);
   }
 
   findStakeholders(clientId: number): Observable<Stakeholder[]> {
     return this._http.get<Stakeholder[]>(
-      `${environment.apiURL}/stakeholders/${clientId}`,
+      `${environment.apiURL}/processes/stakeholders/${clientId}`,
     );
   }
 
   findSubjects(): Observable<Subject[]> {
-    return this._http.get<Subject[]>(`${environment.apiURL}/subjects`);
+    return this._http.get<Subject[]>(`${environment.apiURL}/processes/subjects`);
   }
 
   findStakeholdersPositions(): Observable<string[]> {
-    return this._http.get<string[]>(`${environment.apiURL}/positions`);
+    return this._http.get<string[]>(`${environment.apiURL}/processes/positions`);
   }
 
   findAdverseStakeholdersByType(
     type: string,
   ): Observable<AdverseStakeholder[]> {
     return this._http.get<AdverseStakeholder[]>(
-      `${environment.apiURL}/adverse-stakeholders/${type}`,
+      `${environment.apiURL}/processes/adverse-stakeholders/${type}`,
     );
   }
 
@@ -196,14 +203,14 @@ export class ProcessService {
     let params = new HttpParams();
     params = params.append('name', name || '');
     return this._http.get<AdverseStakeholder[]>(
-      `${environment.apiURL}/adverse-stakeholders`,
+      `${environment.apiURL}/processes/adverse-stakeholders`,
       { params },
     );
   }
 
   findEletronicSystems(): Observable<EletronicSystem[]> {
     return this._http.get<EletronicSystem[]>(
-      `${environment.apiURL}/eletronic-systems`,
+      `${environment.apiURL}/processes/eletronic-systems`,
     );
   }
 }

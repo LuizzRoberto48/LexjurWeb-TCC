@@ -8,11 +8,13 @@
   <div class="content" mat-dialog-content>
     <ng-content select="[body]"></ng-content>
   </div>
-  <div mat-dialog-actions
+  <ng-container *ngIf="hasBtn">
+    <div mat-dialog-actions
     class="flex items-center justify-center sm:justify-end px-6 py-4 space-x-3 bg-gray-50 dark:bg-black dark:bg-opacity-10">
     <button class="btn btn-cancel" (click)="cancel()" mat-stroked-button>{{cancelText}}</button>
     <button class="ml-4" mat-flat-button [color]="'primary'" (click)="confirm()">
       <span class="ml-2 mr-1">{{confirmText}}</span>
     </button>
   </div>
+  </ng-container>
 </div>

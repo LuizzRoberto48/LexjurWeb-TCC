@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import { FuseNavigationItem } from '@fuse/components/navigation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { ProcessDetailService } from 'app/modules/process/services/process-detail.service';
 import { ProcessService } from 'app/modules/process/services/process.service';
-import { BehaviorSubject, filter, map, Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'process-detail',

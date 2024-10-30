@@ -1,0 +1,4 @@
+/* Desativa a interação, mas mantém a aparência visual do botão ativo */
+.readonly-radio-group {
+    pointer-events: none;
+  }

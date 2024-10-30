@@ -5,9 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   Process,
   ProcessStatus,
+  SendProcessStatus,
 } from 'app/modules/process/models/process.model';
 import { ProcessService } from 'app/modules/process/services/process.service';
 import { CompleteProcessFormComponent } from '../../complete-process-form/complete-process-form.component';
+import { NotificationService } from '@fuse/components/notification/notification.service';
 
 @Component({
   selector: 'app-process-general',
@@ -24,7 +26,8 @@ export class ProcessGeneralComponent {
     protected _activatedRoute: ActivatedRoute,
     public route: Router,
     public dialog: MatDialog,
-    private cdf:ChangeDetectorRef
+    private cdf:ChangeDetectorRef,
+    private notificationService:NotificationService
   ) {}
 
   ngOnInit() {
@@ -54,17 +57,26 @@ export class ProcessGeneralComponent {
     this.route.navigate([`/processos/edit/${this.process.id}`]);
   }
 
-  finished() {
-    this.openDialog();
-  }
-
-  openDialog() {
+  openDialog(isEdit:boolean = true) {
     const dialogRef = this.dialog.open(CompleteProcessFormComponent, {
-      data: { processId: this.process.id },
+      data: { processId: this.process.id, isEdit },
       minWidth: '40vw',
     });
     dialogRef.afterClosed().subscribe((result) => {
       this.cdf.detectChanges()
     });
+  }
+
+  reactived() {
+    this.processService.reactivate(this.process.id, SendProcessStatus.ACTIVE).subscribe({
+      next:(res)=> {
+        this.process = {
+          ...this.process,
+          status: SendProcessStatus.ACTIVE
+        }
+        this.notificationService.success('Processo reativado com sucesso')
+        this.cdf.detectChanges()
+      }
+    })
   }
 }

@@ -40,7 +40,6 @@ export class CoresFormComponent implements OnInit{
   update(){
     const id = this.data.id
     this.coreService.update(id, this.accountForm.value).subscribe(res=>{
-      console.log(res);
       this.notification.success('Núcleo editado com sucesso');
     },error=>{
       console.log(error)

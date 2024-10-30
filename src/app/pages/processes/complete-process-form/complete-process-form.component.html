@@ -1,29 +1,40 @@
 <gl-dialog
   [title]="'Encerrar processo'"
-  [isDisableClose]="true"
+  [isDisableClose]="false"
   (emitClick)="btnClicked($event)"
+  [hasBtn]="data.isEdit ? false : true"
+
 >
   <ng-container body>
     <form [formGroup]="form">
-      <div class="flex flex-col"> 
+      <div class="flex flex-col">
         <div class="grid w-full">
           <div class="grid grid-cols-1">
             <p>Poderá ser encerrado ?</p>
-            <mat-radio-group formControlName="canBeEndded"> 
+            <mat-radio-group
+              formControlName="canBeEndded"
+              [ngClass]="{ 'readonly-radio-group': isReadOnly }"
+            >
               <mat-radio-button [value]="true">Sim</mat-radio-button>
               <mat-radio-button [value]="false">Não</mat-radio-button>
             </mat-radio-group>
           </div>
           <div class="grid grid-cols-1 mt-4">
             <p>Aguarda autorização para encerramento ?</p>
-            <mat-radio-group formControlName="waitToAuthorizaded">
+            <mat-radio-group
+              formControlName="waitToAuthorizaded"
+              [ngClass]="{ 'readonly-radio-group': isReadOnly }"
+            >
               <mat-radio-button [value]="true">Sim</mat-radio-button>
               <mat-radio-button [value]="false">Não</mat-radio-button>
             </mat-radio-group>
           </div>
           <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-            <div class="flex flex-col ">
-              <mat-form-field class="flex-auto gt-xs:pl-3">
+            <div class="flex flex-col">
+              <mat-form-field
+                class="flex-auto gt-xs:pl-3"
+                [ngClass]="{ 'readonly-radio-group': isReadOnly }"
+              >
                 <mat-label>Tipo encerramento</mat-label>
                 <mat-select formControlName="type">
                   <mat-option [value]="opt" *ngFor="let opt of types">{{
@@ -45,32 +56,20 @@
                 <mat-datepicker-toggle
                   matIconSuffix
                   [for]="picker"
+                  [ngClass]="{ 'readonly-radio-group': isReadOnly }"
                 ></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
                 <mat-error ga-form-field-errors></mat-error>
               </mat-form-field>
             </div>
-  
-            <div class="flex flex-col">
-              <mat-form-field class="w-full">
-                <mat-label>Valor provisionado </mat-label>
-                <input
-                  matInput
-                  type="text"
-                  prefix="R$ "
-                  mask="separator.2"
-                  thousandSeparator="."
-                  decimalMarker=","
-                  formControlName="value"
-                />
-                <mat-error ga-form-field-errors></mat-error>
-              </mat-form-field>
-            </div>
           </div>
           <div class="grid grid-cols-1 gap-4 mt-4">
-            <mat-form-field class="w-full">
+            <mat-form-field
+              class="w-full"
+              [ngClass]="{ 'readonly-radio-group': isReadOnly }"
+            >
               <mat-label>Observação </mat-label>
-              <textarea matInput  formControlName="observation"></textarea>
+              <textarea matInput formControlName="observation"></textarea>
             </mat-form-field>
           </div>
         </div>

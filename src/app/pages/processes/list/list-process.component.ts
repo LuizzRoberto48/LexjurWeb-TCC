@@ -58,20 +58,20 @@ export class ListProcessComponent {
     this.getCore();
   }
 
+  /*TODO: Ao mudar a página o filtro de busca é perdido */
   searchList(event: any[]) {
     const status = event.find((ev) => ev.name == 'processStatus' && ev.value);
-    const insideLawyer = event.find((ev) => ev.name == 'insideLawyer' && ev.value);
-    const startDate = event.find((ev) => ev.name == 'startDate' && ev.value);
-    const endDate = event.find((ev) => ev.name == 'endDate' && ev.value);
+    const insideLawyer = event.find((ev) => ev.name == 'insideLawyerId' && ev.value);
+    const rangeDate = event.find((ev) => ev.name == 'rangeDate' && ev.value);
     const body = {
-      ...(insideLawyer?.id && { insideLawyer: insideLawyer.id }),
+      ...(insideLawyer?.value && { insideLawyer: insideLawyer.value }),
       ...(status && {
         status: getEnumKeyByEnumValue(ProcessStatus, status.value),
       }),
-      ...(startDate?.value && { startDate: startDate.value }),
-      ...(endDate?.value && { endDate: endDate.value }),
+      ...(rangeDate?.value?.endDate && { startDate: rangeDate.value.startDate }),
+      ...(rangeDate?.value?.endDate && { endDate: rangeDate.value.endDate }),
     };
-    
+
     this.getCore(body)
   }
 
@@ -92,8 +92,12 @@ export class ListProcessComponent {
     this.route.navigate([`processos/edit/${process.id}`]);
   }
 
-  getListByCore(id: number, queryParams: {}) {
-    this.processService.getProcessByCore(id, queryParams).subscribe({
+  getListByCore(coreId: number, queryParams: {}) {
+    queryParams = {
+      ...queryParams,
+      coreId
+    }
+    this.processService.getProcessByCore(queryParams).subscribe({
       next: (res: GetProcessPageable) => {
         this.length = res.totalItems;
         this.recentTransactionsDataSource.data = res.process;

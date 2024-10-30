@@ -64,6 +64,7 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   getCore() {
     const subs = this.coreService.$obsevableCore.subscribe({
       next: (core) => {
+        if(!core?.id) return;
         this.localCore = core;
         this.getList(core.id);
       },

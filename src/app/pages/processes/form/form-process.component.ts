@@ -97,9 +97,9 @@ export class FormProcessComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-
     this.getCore();
     this.getLawyerAreas();
+    
     this.getUfs();
 
     this.getActionTypes();

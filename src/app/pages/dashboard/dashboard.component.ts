@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(private processService: ProcessService) {}
 
   ngOnInit(): void {
-    this.$countProcess = this.processService.getProcessCount();
+    //this.$countProcess = this.processService.getProcessCount();
   }
 
   /*  get processCount():Observable<number> {

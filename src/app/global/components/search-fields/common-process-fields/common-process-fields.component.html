@@ -63,11 +63,11 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div class="flex flex-col" *ngIf="displayControls.includes('status')">
+  <div class="flex flex-col" *ngIf="displayControls.includes('processStatus')">
     <mat-form-field class="flex-auto gt-xs:pl-3">
       <mat-label>Status</mat-label>
       <mat-select
-        formControlName="status"
+        formControlName="processStatus"
         (selectionChange)="selectChanged('status', $event.value, 'status')"
         [placeholder]="'--Selecione--'"
       >

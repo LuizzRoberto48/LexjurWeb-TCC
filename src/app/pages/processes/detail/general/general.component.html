@@ -3,9 +3,34 @@
 >
   <div class="overflow-x-auto md:mx-0 sm:mx-2 md:px-5">
     <mat-accordion class="m-8" multi>
-      <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel [expanded]="true" [disabled]="true">
         <mat-expansion-panel-header>
-          <mat-panel-title> Detalhe do processo </mat-panel-title>
+          <mat-panel-title class="text-gray-700 ml-3">
+            Detalhe do processo
+          </mat-panel-title>
+          <button mat-icon-button [matMenuTriggerFor]="menu" class="ml-5">
+            <mat-icon class="text-gray-700">more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openDialog(true)" *ngIf="process.status != 'ACTIVE'">
+              <mat-icon>remove_red_eye</mat-icon>
+              <span>Visualizar conclusão</span>
+            </button>
+            <button mat-menu-item (click)="toEdit()">
+              <mat-icon>edit</mat-icon>
+              <span>Editar processo</span>
+            </button>
+            <button mat-menu-item (click)="reactived()" *ngIf="process.status != 'ACTIVE'">
+              <mat-icon>cached</mat-icon> 
+              <span>Reativar processo</span>
+            </button>
+            <button mat-menu-item (click)="openDialog(false)" *ngIf="process.status == 'ACTIVE'">
+              <div class="flex items-center gap-2">
+                <mat-icon>check</mat-icon>
+                <span>Encerrar processo</span>
+              </div>
+            </button>
+          </mat-menu>
         </mat-expansion-panel-header>
         <p
           class="text-primary-700 font-bold my-5 text-base bg-gray-100 rounded-2xl px-3 py-2"
@@ -257,35 +282,6 @@
               <span class="font-light">{{ process.description }}</span>
             </p>
           </div>
-        </div>
-        <hr />
-        <div class="flex flex-row justify-between items-center px-10 mb-3">
-          <button
-            mat-flat-button
-            class="max-w-50 text-white"
-            [ngClass]="{'bg-green-600': process.status != 'FINISHED', 'bg-red-600': process.status == 'FINISHED'}"
-            (click)="finished()"
-            *hasPermission="'edit-Process'"
-          >
-            <ng-container *ngIf="process.status == 'FINISHED'">
-              <span>Processo encerrado</span>
-            </ng-container>
-            <ng-container *ngIf="process.status != 'FINISHED'">
-              <div class="flex items-center gap-2">
-                <mat-icon>check</mat-icon>
-                <span>Concluir processo</span>
-              </div>
-            </ng-container>
-          </button>
-          <button
-            class="max-w-50"
-            mat-flat-button
-            [color]="'primary'"
-            (click)="toEdit()"
-          >
-            <mat-icon>edit</mat-icon>
-            <span>Editar processo</span>
-          </button>
         </div>
       </mat-expansion-panel>
     </mat-accordion>

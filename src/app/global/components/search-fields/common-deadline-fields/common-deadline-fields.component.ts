@@ -83,7 +83,7 @@ export class CommonDeadlineFieldsComponent {
   }
 
   private getLawyers() {
-    console.log(this.core)
+    if(!this.core?.id) return;
     this.lawyerService.findAllInsideLawyersByCore(this.core.id).subscribe({
       next: (res) => {
         this.insideLaywers = res;
@@ -94,7 +94,6 @@ export class CommonDeadlineFieldsComponent {
   private getDeadlineTypes() {
     this.typesService.findAll().subscribe({
       next: (res) => {
-        console.log(res)
         this.deadlineTypes = res;
       },
     });

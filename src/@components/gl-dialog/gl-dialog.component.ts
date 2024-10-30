@@ -12,6 +12,7 @@ export class GlDialogComponent implements OnInit {
   @Input() confirmText: string = "Confirmar";
   @Input() cancelText: string = "Cancelar"
   @Input() isDisableClose:boolean = false;
+  @Input() hasBtn = true
 
   @Output() emitClick:EventEmitter<any> = new EventEmitter()
 

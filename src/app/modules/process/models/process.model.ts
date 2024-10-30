@@ -6,6 +6,12 @@ export enum ProcessStatus {
   WAIT_TO_FINISHED = 'Aguardando Encerramento',
 }
 
+export enum SendProcessStatus {
+  ACTIVE="ACTIVE" ,
+  FINISHED="FINISHED",
+  WAIT_TO_FINISHED="WAIT_TO_FINISHED",
+}
+
 export enum InstanceType {
   PRIMEIRA = 'PRIMEIRA',
   SEGUNDA = 'SEGUNDA',
@@ -60,7 +66,10 @@ export interface CreateProcess {
   adversePosition: string;
   lawyerProcess: number[];
   causeValue: string;
-  organNumber?: string;
+  status?:ProcessStatus
+  organId?:number;
+  lawSubAreaId?:number;
+  organNumber?:string
 }
 
 export interface ProcessForm {
@@ -117,6 +126,8 @@ export interface Process {
   Subject: any;
   oldCaseNumber: string;
   isEletronic: boolean;
+  adversePosition:any
+  stakeholderPosition:any
   uf: string;
   instance: InstanceType;
   organNumber: string | undefined;
@@ -136,8 +147,9 @@ export interface Process {
   distributionDate: Date;
   quoteDate: Date;
   description: string;
-  stakeholderPosition: string;
-  adversePosition: string;
+  forumId:number;
+  organId?:number;
+  lawSubAreaId?:number
 }
 
 export interface ProcessSmall {

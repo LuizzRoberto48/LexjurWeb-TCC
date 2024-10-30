@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Inject, ViewChild } from '@angular/core';
-import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
+import { Inject, ViewChild } from '@angular/core';
+import { AfterViewInit,Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
-  MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
 import { GlDialogComponent } from '@components/gl-dialog/gl-dialog.component';

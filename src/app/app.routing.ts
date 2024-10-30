@@ -87,6 +87,13 @@ export const appRoutes: Route[] = [
             (m) => m.ExporterModule,
           ),
       },
+      {
+        path: 'migracao-processos',
+        loadChildren: () =>
+          import('app/pages/process-migration/process-migration.module').then(
+            (m) => m.ProcessMigrationModule,
+          ),
+      },
     ],
   },
 ];

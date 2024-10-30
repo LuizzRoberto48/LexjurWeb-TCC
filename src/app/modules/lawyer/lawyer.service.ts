@@ -49,12 +49,9 @@ export class LawyerService {
   }
 
   private httpParams(...params: any[]): HttpParams {
-    // Merge all objects into a single object
     const combinedParams = Object.assign({}, ...params);
-    // Construct HttpParams from the combined object
     let httpParams = new HttpParams();
     Object.keys(combinedParams).forEach((key) => {
-      // Ensure the value is not null or undefined before appending
       if (combinedParams[key] != null) {
         httpParams = httpParams.append(key, combinedParams[key]);
       }
@@ -70,6 +67,10 @@ export class LawyerService {
 
   update(id: number, info: CreateLawyer) {
     return this._http.put(`${environment.apiURL}/lawyers/${id}`, info);
+  }
+
+  updateProcesses(newLawyerId:number, body:{processIds:number[]}) {
+    return this._http.put(`${environment.apiURL}/lawyers/processes/${newLawyerId}`, body);
   }
 
   updateCurrentLawyer(info: CreateLawyer) {
