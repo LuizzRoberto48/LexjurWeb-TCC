@@ -16,9 +16,13 @@
               <mat-icon>remove_red_eye</mat-icon>
               <span>Visualizar conclusão</span>
             </button>
-            <button mat-menu-item (click)="toEdit()">
+            <button mat-menu-item (click)="toEdit()" *ngIf="process.status == 'ACTIVE'">
               <mat-icon>edit</mat-icon>
               <span>Editar processo</span>
+            </button>
+            <button mat-menu-item (click)="toEdit(true)" *ngIf="process.status == 'FINISHED'">
+              <mat-icon>insert_drive_file</mat-icon>
+              <span>Visualizar processo</span>
             </button>
             <button mat-menu-item (click)="reactived()" *ngIf="process.status != 'ACTIVE'">
               <mat-icon>cached</mat-icon> 
@@ -199,7 +203,7 @@
           </div>
           <div>
             <p class="text-gray-900 font-medium">
-              CPF/CNPJ Parte Adversa: --MASCARA--
+              CPF/CNPJ Parte Adversa:
               <span class="font-light">{{
                 process.AdverseStakeholder.cpfCnpj
               }}</span>
@@ -207,7 +211,7 @@
           </div>
           <div>
             <p class="text-gray-900 font-medium">
-              Telefone Parte Adversa: --MASCARA--
+              Telefone Parte Adversa:
               <span class="font-light">{{
                 process.AdverseStakeholder.phone
               }}</span>

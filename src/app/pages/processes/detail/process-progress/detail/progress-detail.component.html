@@ -19,12 +19,14 @@
       </mat-step>
       <mat-step #horizontalStepperStep3>
         <ng-template matStepLabel>Arquivos</ng-template>
-        <files-list
-          [isFilterTarget]="false"
-          [target]="target"
-          [$processNumber]="$processNumber"
-          [isCreated]="!isEdit"
-        ></files-list>
+        <ng-container *ngIf="$processNumber">
+          <files-list
+            [isFilterTarget]="false"
+            [target]="target"
+            [$processNumber]="$processNumber"
+            [isCreated]="!isEdit"
+          ></files-list>
+        </ng-container>
       </mat-step>
       
     </mat-horizontal-stepper>

@@ -14,7 +14,6 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { DeadlineTrackerFormComponent } from './detail/form/deadline-tracker-form.component';
 import { DeadlineFormResolver } from 'app/modules/deadline-trackers/resolver/deadline-tracker.resolver';
 import { FilesModule } from 'app/modules/process-files/components/files.module';
-import { UploadProcessFileService } from 'app/modules/process-files/services/upload-process.service';
 import { DeadlineTrackerInfoComponent } from './detail/info/deadline-tracker-info.component';
 import { CompleteDeadlineTrackerComponent } from './detail/complete-deadline-tracker/complete-deadline-tracker.component';
 
@@ -79,6 +78,6 @@ const routes: Routes = [
     FilesModule,
     
   ],
-  providers: [UploadProcessFileService],
+  providers: [],
 })
 export class DeadlineTrackerModule {}

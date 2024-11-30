@@ -6,7 +6,7 @@
 
 >
   <ng-container body>
-    <form [formGroup]="form">
+    <form [formGroup]="form" >
       <div class="flex flex-col">
         <div class="grid w-full">
           <div class="grid grid-cols-1">
@@ -70,6 +70,7 @@
             >
               <mat-label>Observação </mat-label>
               <textarea matInput formControlName="observation"></textarea>
+              <mat-error ga-form-field-errors></mat-error>
             </mat-form-field>
           </div>
         </div>

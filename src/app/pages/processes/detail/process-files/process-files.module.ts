@@ -7,7 +7,6 @@ import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ProcessFilesComponent } from './process-files.component';
 import { FilesModule } from 'app/modules/process-files/components/files.module';
-import { UploadProcessFileService } from 'app/modules/process-files/services/upload-process.service';
 
 const routes: Routes = [
   {
@@ -30,6 +29,6 @@ const routes: Routes = [
     MatButtonToggleModule,
     FilesModule,
   ],
-  providers: [UploadProcessFileService],
+  providers: [],
 })
 export class ProcessFilesModule {}

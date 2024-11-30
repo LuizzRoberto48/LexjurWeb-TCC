@@ -2,6 +2,7 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  Inject,
   Input,
   OnInit,
   Output,
@@ -24,6 +25,7 @@ import { NotificationService } from '@fuse/components/notification/notification.
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_FORMATS } from 'app/shared/date-picker-formats';
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'files-form',
   templateUrl: './files-form.component.html',
@@ -33,7 +35,7 @@ import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter'
   ],
 })
 export class FilesFormComponent implements OnInit {
-  @Output() onClose: EventEmitter<boolean> = new EventEmitter();
+  
   @Input() uploadFile: GetUploadFile;
   @Input() processId: number;
   @Input() text = 'Adicione um arquivo';
@@ -41,7 +43,6 @@ export class FilesFormComponent implements OnInit {
   processWithResources: DeadlineProcessWithResources[] = [];
   classifications: { id: number; name: string }[] = [];
   types: TargetFiles[] = [];
-
   fileType = {} as { type: UploadType; file?: File };
   currentFile: File;
   urlFile: string;
@@ -58,18 +59,28 @@ export class FilesFormComponent implements OnInit {
     public uploadService: UploadProcessFileService,
     private notificationService: NotificationService,
     private cd: ChangeDetectorRef,
+    public dialogRef:MatDialogRef<any>,
     private notification: NotificationService,
-  ) {
-    this.form = this.initForm;
-  }
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      uploadFile: GetUploadFile;
+      processId: number;
+      text?: string;
+    },
+  ) {}
 
   ngOnInit() {
+    this.uploadFile = this.data.uploadFile;
+    this.processId = this.data.processId;
+    this.text = this.data?.text || 'Adicione um arquivo'
     this.form = this.initForm;
-    this.findProcessResources();
-    this.listClassifications();
-    this.initFile();
-    this.getEditProcessNumber();
-    this.isFinishedFile();
+    setTimeout(() => {
+      this.findProcessResources();
+      this.listClassifications();
+      this.initFile();
+      this.getEditProcessNumber();
+      this.isFinishedFile();
+    }, 0);
   }
 
   clearProcessValidator() {
@@ -98,6 +109,7 @@ export class FilesFormComponent implements OnInit {
         this.getEditProcessNumber();
         /* edit */
         if (file) {
+          console.log(file)
           this.form.controls['id'].setValue(file.id);
           this.uploadFile = file;
           this.fileType.type = this.uploadService.findCardFile(this.uploadFile);
@@ -180,6 +192,7 @@ export class FilesFormComponent implements OnInit {
           });
           this.form.reset();
           this.currentFile = null;
+          this.dialogRef.close()
         },
       });
     this.subs.push(subs);
@@ -206,7 +219,6 @@ export class FilesFormComponent implements OnInit {
     this.currentFile = null;
     this.form.reset();
     this.form.clearValidators();
-    this.onClose.emit(false);
   }
 
   send() {
@@ -217,11 +229,14 @@ export class FilesFormComponent implements OnInit {
     this.isLoading = true;
     const formValue = this.form.getRawValue();
     const sendObj = this.formToObj(formValue);
+    
     if (formValue?.id) {
       this.updateFile(sendObj);
+      this.dialogRef.close({file:sendObj, method:'update'})
       return;
     }
     this.createFile(sendObj);
+    this.dialogRef.close({file:sendObj, method:'create'})
   }
 
   private createFile(obj: CreateUploadProcessFile) {

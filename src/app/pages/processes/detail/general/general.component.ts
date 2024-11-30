@@ -36,7 +36,6 @@ export class ProcessGeneralComponent {
 
   getEditProcess() {
     this.processService.$obsevableProcess.subscribe((res) => {
-      console.log(res);
       this.process = res;
     });
   }
@@ -53,8 +52,10 @@ export class ProcessGeneralComponent {
     return ProcessStatus[status];
   }
 
-  toEdit() {
-    this.route.navigate([`/processos/edit/${this.process.id}`]);
+  toEdit(isView = false) {
+    this.route.navigate([`/processos/edit/${this.process.id}`], {
+      queryParams: { isView }
+    });
   }
 
   openDialog(isEdit:boolean = true) {

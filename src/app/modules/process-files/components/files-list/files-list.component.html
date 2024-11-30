@@ -1,104 +1,87 @@
 <div class="inset-0 flex flex-col min-w-0 overflow-hidden w-full">
-  <mat-drawer-container [hasBackdrop]="true">
-    <mat-drawer
-      [disableClose]="true"
-      mode="side"
-      [opened]="isOpened"
-      position="end"
-      class="mat-drawer w-full md:w-160 dark:bg-gray-900 mat-drawer-side mat-drawer-opened"
-    >
-      <files-form
-        (onClose)="isOpened = $event"
-        [processId]="$processId | async"
-      ></files-form>
-    </mat-drawer>
-    <mat-drawer-content
-      class="bg-white sm:mt-0 mt-5 px-6 md:px-6 mr-0"
-      [ngStyle]="{ 'min-height': minHeight }"
-    >
-      <!-- Actions -->
-      <div
-        class="flex shrink-0 items-center"
-        [ngClass]="{
-          'justify-end': !isSearchInput,
-          'justify-between': isSearchInput
-        }"
+  <div
+    class="flex shrink-0 items-center"
+    [ngClass]="{
+      'justify-end': !isSearchInput,
+      'justify-between': isSearchInput
+    }"
+  >
+    <ng-container *ngIf="isSearchInput">
+      <!-- Search -->
+      <mat-form-field
+        class="fuse-mat-dense fuse-mat-rounded min-w-64"
+        [subscriptSizing]="'dynamic'"
       >
-        <ng-container *ngIf="isSearchInput">
-          <!-- Search -->
-          <mat-form-field
-            class="fuse-mat-dense fuse-mat-rounded min-w-64"
-            [subscriptSizing]="'dynamic'"
-          >
-            <mat-icon
-              class="icon-size-5"
-              matPrefix
-              [svgIcon]="'heroicons_solid:search'"
-            ></mat-icon>
-            <input matInput [autocomplete]="'off'" [placeholder]="'Buscar'" />
-          </mat-form-field>
-        </ng-container>
-      </div>
-      <div
-        class="flex shrink-0 items-center sm:mt-0 md:mt-10 w-full gap-4"
-        *ngIf="isFilterTarget"
-      >
-        <mat-button-toggle-group
-          name="targets"
-          multiple
-          (change)="onToggleChange($event)"
+        <mat-icon
+          class="icon-size-5"
+          matPrefix
+          [svgIcon]="'heroicons_solid:search'"
+        ></mat-icon>
+        <input matInput [autocomplete]="'off'" [placeholder]="'Buscar'" />
+      </mat-form-field>
+    </ng-container>
+  </div>
+  <div
+    class="flex shrink-0 items-center sm:mt-0 md:mt-10 w-full gap-4"
+    *ngIf="isFilterTarget"
+  >
+    <mat-button-toggle-group
+      name="targets"
+      multiple
+      (change)="onToggleChange($event)"
+    >
+      <ng-container *ngFor="let target of uploadProcessFile.targetList">
+        <mat-button-toggle
+          class="rounded-3xl text-sm bg-gray-100"
+          [value]="target"
+          [checked]="selectedTargets.includes(target)"
         >
-          <ng-container *ngFor="let target of uploadProcessFile.targetList">
-            <mat-button-toggle
-              class="rounded-3xl text-sm bg-gray-100"
-              [value]="target"
-              [checked]="selectedTargets.includes(target)"
-            >
-              <span>{{ target | titlecase }}</span>
-            </mat-button-toggle>
-          </ng-container>
-        </mat-button-toggle-group>
-      </div>
-      <div class="flex flex-col items-start px-2">
-        <div class="flex flex-row items-center justify-start gap-3 mt-5">
-          <p class="font-semibold text-lg">{{ title }}</p>
-          <button
-            mat-icon-button
-            [color]="'primary'"
-            (click)="newFile()"
-            style="border: 1px solid #ddd"
-          >
-            <mat-icon>note_add</mat-icon>
+          <span>{{ target | titlecase }}</span>
+        </mat-button-toggle>
+      </ng-container>
+    </mat-button-toggle-group>
+  </div>
+  <div class="flex flex-col items-start px-2">
+    <div class="flex flex-row items-center justify-start gap-3 mt-5">
+      <p class="font-semibold text-lg">{{ title }}</p>
+      <button
+        mat-icon-button
+        [color]="'primary'"
+        (click)="newFile()"
+        style="border: 1px solid #ddd"
+      >
+        <mat-icon>note_add</mat-icon>
+      </button>
+    </div>
+
+    <div
+      class="flex flex-row flex-wrap justify-center md:justify-start gap-4 w-full p-5 rounded-lg border border-slate-200 min-h-96 mt-5"
+    >
+      <ng-container *ngIf="!selectedFiles.length">
+        <div class="flex items-center justify-center col-span-full w-full">
+          <button mat-stroked-button color="primary" (click)="newFile()">
+            Adicionar arquivos
           </button>
         </div>
-
-        <div
-          class="flex flex-row flex-wrap justify-center md:justify-start gap-4 w-full p-5 rounded-lg border border-slate-200 min-h-100 mt-5"
-        >
-          <ng-container *ngIf="!selectedFiles.length">
-            <div class="flex items-center justify-center col-span-full w-full">
-              <button mat-stroked-button color="primary" (click)="newFile()">
-                Adicionar arquivos
-              </button>
-            </div>
-          </ng-container>
-          <ng-container *ngFor="let file of selectedFiles">
-            <upload-file-card
-              [uploadType]="uploadProcessFile.findCardFile(file)"
-              (clicked)="isOpened = !isOpened; sendUploadFile(file)"
-            ></upload-file-card>
-          </ng-container>
-          <!-- <div
-            class="bottom-0 flex flex-col w-full py-5 col-span-full"
-            *ngIf="selectedFiles.length"
-          >
-            <div class="flex flex-row text-center justify-center gap-4">
-              <button mat-stroked-button color="primary">Anterior</button>
-              <button mat-stroked-button color="accent">Próximo</button>
-            </div>
-          </div> -->
-        </div>
-      </div>
-    </mat-drawer-content>
-  </mat-drawer-container>
+      </ng-container>
+      <ng-container *ngFor="let file of paginatedFiles">
+        <upload-file-card
+          [uploadType]="uploadProcessFile.findCardFile(file)"
+          (clicked)="sendUploadFile(file)"
+        ></upload-file-card>
+      </ng-container>
+    </div>
+    <div
+      class="bottom-0 flex flex-col w-full col-span-full justify-end mt-5"
+      *ngIf="selectedFiles.length"
+    >
+      <mat-paginator
+        #paginator
+        [length]="selectedFiles.length"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[15, 30, 100]"
+        (page)="onPageChange()"
+      ></mat-paginator>
+    </div>
+  </div>
 </div>

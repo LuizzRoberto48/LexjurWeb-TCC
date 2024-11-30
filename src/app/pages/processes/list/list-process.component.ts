@@ -18,7 +18,7 @@ import { configDialogResource } from 'app/modules/process/utils';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-form-process',
+  selector: 'list-process',
   templateUrl: './list-process.component.html',
 })
 export class ListProcessComponent {

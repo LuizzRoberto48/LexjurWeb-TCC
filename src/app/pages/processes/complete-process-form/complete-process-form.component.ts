@@ -57,7 +57,10 @@ export class CompleteProcessFormComponent implements AfterViewInit {
 
   btnClicked(event: boolean) {
     if (!event) return;
-    if (!this.form.valid) return;
+    if (!this.form.valid) {
+      this.notification.danger('Formulário incompleto. Preencha os campos corretamente')
+      return
+    };
     const { date, ...rest } = this.form.value;
     const newDate = new Date(date).toISOString();
     const sendForm: FinishedProcess = {

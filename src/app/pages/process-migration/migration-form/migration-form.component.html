@@ -1,81 +1,80 @@
-<section>
-  <div class="flex items-center justify-center h-20 border-inherit border-b-2">
-    <h2 class="text-2xl font-normal text-gray-700" >Efetuar Migração</h2>
-  </div>
-  <div class="content" mat-dialog-content>
-    <fuse-loading-bar [show]="true"></fuse-loading-bar>
-    <form >
-      <div class="grid grid-cols-1 gap-6 mt-4 mb-3 p-20">
-        <div class="flex flex-col">
-          <mat-form-field class="block chips">
-            <mat-label>Processos selecionados</mat-label>
-            <mat-chip-grid #chipGrid>
-              <mat-chip-row
-                *ngFor="let field of filterProcessFields"
-                (removed)="removeProcessField(field)"
-                [selectable]="true"
-                [removable]="true"
-              >
-                {{ field.caseNumber }}
-                <button matChipRemove [attr.aria-label]="'remove'">
-                  <mat-icon>cancel</mat-icon>
-                </button>
-              </mat-chip-row>
-            </mat-chip-grid>
-            <input
-              class="pb-2 -ml-1 mt-3"
-              #filterInput
-              placeholder="Adicionar uma coluna"
-              [matChipInputFor]="chipGrid"
-              [matAutocomplete]="auto"
-            />
-            <mat-autocomplete
-              #auto="matAutocomplete"
-              (optionSelected)="selectProcessField($event)"
+<div class="flex items-center justify-center h-20 border-inherit border-b-2">
+  <h2 class="text-2xl font-normal text-gray-700">Efetuar Migração</h2>
+</div>
+<div class="content" mat-dialog-content>
+  <fuse-loading-bar [show]="true"></fuse-loading-bar>
+  <form>
+    <div class="grid grid-cols-1 gap-6 mt-4 mb-3 p-20">
+      <div class="flex flex-col">
+        <mat-form-field class="block chips">
+          <mat-label>Processos selecionados</mat-label>
+          <mat-chip-grid #chipGrid>
+            <mat-chip-row
+              *ngFor="let field of filterProcessFields"
+              (removed)="removeProcessField(field)"
+              [selectable]="true"
+              [removable]="true"
             >
-              <mat-option *ngFor="let field of processes" [value]="field.id">
-                <p>{{ field.caseNumber }}</p>
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </div>
-        <div class="flex flex-col">
-          <mat-form-field class="flex-auto gt-xs:pl-3">
-            <mat-label>Núcleo</mat-label>
-            <mat-select (selectionChange)="changeCore($event.value)">
-              <mat-option [value]="c.id" *ngFor="let c of cores">{{
-                c.name | titlecase
-              }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="flex flex-col">
-          <mat-form-field class="flex-auto gt-xs:pl-3">
-            <mat-label>Novo responsável</mat-label>
-            <mat-select [formControl]="selectedLawyerForm">
-              <mat-option [value]="es.id" *ngFor="let es of laywers">{{
-                es.name | titlecase
-              }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+              {{ field.caseNumber }}
+              <button matChipRemove [attr.aria-label]="'remove'">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          </mat-chip-grid>
+          <input
+            class="pb-2 -ml-1 mt-3"
+            #filterInput
+            placeholder="Adicionar uma coluna"
+            [matChipInputFor]="chipGrid"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selectProcessField($event)"
+          >
+            <mat-option *ngFor="let field of processes" [value]="field.id">
+              <p>{{ field.caseNumber }}</p>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
       </div>
-    </form>
-  </div>
-  <div
-    mat-dialog-actions
-    class="flex items-center sm:justify-center py-4 gap-5 absolute bottom-0 w-full h-28"
+      <div class="flex flex-col">
+        <mat-form-field class="flex-auto gt-xs:pl-3">
+          <mat-label>Núcleo</mat-label>
+          <mat-select (selectionChange)="changeCore($event.value)">
+            <mat-option [value]="c.id" *ngFor="let c of cores">{{
+              c.name | titlecase
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="flex flex-col">
+        <mat-form-field class="flex-auto gt-xs:pl-3">
+          <mat-label>Novo responsável</mat-label>
+          <mat-select [formControl]="selectedLawyerForm">
+            <mat-option [value]="es.id" *ngFor="let es of laywers">{{
+              es.name | titlecase
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>
+<div
+  mat-dialog-actions
+  class="flex items-center sm:justify-center py-4 gap-5 absolute bottom-0 w-full h-28"
+>
+  <button class="btn btn-cancel" mat-outline-button (click)="dialogRef.close()">
+    Cancelar
+  </button>
+  <button
+    class="ml-4"
+    mat-raised-button
+    [color]="'primary'"
+    (click)="migrate()"
   >
-    <button
-      class="btn btn-cancel"
-      mat-outline-button
-      (click)="dialogRef.close()"
-    >
-      Cancelar
-    </button>
-    <button class="ml-4" mat-raised-button [color]="'primary'" (click)="migrate()">
-      <span class="ml-2 mr-1">Efetuar Migração</span>
-    </button>
-  </div>
-</section>
+    <span class="ml-2 mr-1">Efetuar Migração</span>
+  </button>
+</div>

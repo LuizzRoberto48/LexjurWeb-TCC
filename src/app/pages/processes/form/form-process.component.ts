@@ -96,19 +96,17 @@ export class FormProcessComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.checkIsView()
     const id = this.route.snapshot.paramMap.get('id');
     this.getCore();
     this.getLawyerAreas();
-    
     this.getUfs();
-
     this.getActionTypes();
     this.getPhases();
     this.getObjects();
     this.getClients();
     this.getStakeholderPositions();
     this.getSubjects();
-
     this.observeChangeAdverseName();
     this.getEletronicSystems();
 
@@ -116,6 +114,13 @@ export class FormProcessComponent implements OnInit {
       this.isEdit = true;
       this.getEditProcess();
     }
+  }
+
+  checkIsView() {
+    this.route.queryParams.subscribe(params => {
+      const isView = params['isView'] === 'true';
+      if(isView) this.form.disable()
+    });
   }
 
   toDetail() {
@@ -165,7 +170,6 @@ export class FormProcessComponent implements OnInit {
 
   adverseSelected() {
     const group = this.form.get('adverseStakeholder');
-
     const found = this.adverseStakeholders.find(
       (adv) => adv.name.toLowerCase() === group.get('name').value.toLowerCase(),
     );

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UploadType } from './upload.model';
-import { doc, excel, jpeg, jpg, pdf, png, txt } from './utils/accepted-types';
+import { doc, excel, jpeg, jpg, pdf, png, txt, word } from './utils/accepted-types';
 import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -12,7 +12,7 @@ export class UploadFileService {
   acceptedTypes: UploadType[] = [];
 
   constructor() {
-    this.acceptedTypes.push(excel(), doc(), txt(), pdf(), png(), jpeg(), jpg());
+    this.acceptedTypes.push(excel(), doc(), txt(), pdf(), png(), jpeg(), jpg(), word());
   }
 
   set closeBtn(hasClose: boolean) {

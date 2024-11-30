@@ -65,4 +65,13 @@ function jpg(): UploadType {
   };
 }
 
-export { excel, doc, txt, pdf, png, jpeg, jpg };
+function word(): UploadType {
+  return {
+    name: 'word',
+    accept: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword'].join(),
+    extensions: ['doc, docx'].join(),
+    label: '',
+  };
+}
+
+export { excel, doc, txt, pdf, png, jpeg, jpg, word };

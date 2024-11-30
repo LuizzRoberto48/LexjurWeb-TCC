@@ -10,7 +10,6 @@ import { GlobalModule } from 'app/shared/global.module';
 import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FilesModule } from 'app/modules/process-files/components/files.module';
-import { UploadProcessFileService } from 'app/modules/process-files/services/upload-process.service';
 import { ProcessExpensesComponent } from './process-expenses.component';
 import { ProcessExpensesService } from 'app/modules/process-expenses/process-expenses.service';
 import localePt from '@angular/common/locales/pt';
@@ -82,7 +81,6 @@ const routes: Routes = [
     NgxMaskDirective,
   ],
   providers: [
-    UploadProcessFileService,
     ProcessExpensesService,
     provideNgxMask(),
     provideEnvironmentNgxMask(maskConfig),

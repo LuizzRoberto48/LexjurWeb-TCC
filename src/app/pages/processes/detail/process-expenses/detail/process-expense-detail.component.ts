@@ -5,7 +5,7 @@ import { GetProcessExpenses } from 'app/modules/process-expenses/expenses.model'
 import { ProcessExpensesService } from 'app/modules/process-expenses/process-expenses.service';
 import { TargetFiles } from 'app/modules/process-files/models/upload-process-files';
 import { ProcessProgressService } from 'app/modules/process-progress/progress.service';
-import { Observable, map, of, tap } from 'rxjs';
+import { Observable, Subscription, map, of, tap } from 'rxjs';
 
 @Component({
   selector: 'process-expense-detail',
@@ -18,6 +18,7 @@ export class ProcessFormDetailComponent {
   isEdit: boolean = false;
   $processNumber: Observable<string>;
   expense: GetProcessExpenses;
+  $subs: Subscription[] = [];
   id: number;
 
   constructor(
@@ -60,13 +61,18 @@ export class ProcessFormDetailComponent {
 
   private findProcessNumberFromTarget() {
     if (!this.id) return;
-    this.$processNumber = this.expenseService.findById(this.id).pipe(
+    const subs = this.expenseService.findById(this.id).pipe(
       tap((res) => {
         this.target.id = res.id;
         this.expense = res;
         this.cdr.detectChanges();
       }),
-      map((res) => res.process.caseNumber),
-    );
+      map((res) => this.$processNumber = res.process.caseNumber),
+    ).subscribe();
+    this.$subs.push(subs)
+  }
+
+  ngOnDestroy() {
+    this.$subs.forEach(s=> s.unsubscribe())
   }
 }

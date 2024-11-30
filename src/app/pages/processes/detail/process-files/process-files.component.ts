@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProcessService } from 'app/modules/process/services/process.service';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 
 @Component({
   selector: 'process-files',
@@ -9,22 +9,28 @@ import { Observable, map } from 'rxjs';
 })
 export class ProcessFilesComponent {
   isOpened = false;
-  $processId: Observable<number> = new Observable();
+  $processNumber: Observable<string> = new Observable();
   processId: number;
   @Input() isCreated = false;
   constructor(
     private processService: ProcessService,
     protected _activatedRoute: ActivatedRoute,
   ) {
+    
+  }
+
+  ngOnInit() {
     this.$getProcess();
   }
 
   $getProcess() {
-    this.$processId = this.processService.$obsevableProcess.pipe(
+    this.processService.$obsevableProcess.pipe(
       map((process) => {
+        this.$processNumber = of(process.caseNumber);
+        console.log()
         return process.id;
       }),
-    );
+    ).subscribe();
   }
 
   newFile() {

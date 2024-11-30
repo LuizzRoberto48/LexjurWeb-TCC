@@ -110,6 +110,7 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
+              
               <button mat-menu-item (click)="details(element)" *hasPermission="'read-ProcessDeadline'">
                 <mat-icon
                   class="icon-size-4 text-gray-600"
@@ -117,20 +118,24 @@
                 ></mat-icon>
                 <span>Detalhes</span>
               </button>
-              <button mat-menu-item (click)="edit(element)" *hasPermission="'edit-ProcessDeadline'">
-                <mat-icon
-                  class="icon-size-4 text-gray-600"
-                  svgIcon="edit"
-                ></mat-icon>
-                <span>Editar</span>
-              </button>
-              <button mat-menu-item (click)="finished(element)">
-                <mat-icon
-                  class="icon-size-4 text-gray-600"
-                  svgIcon="check"
-                ></mat-icon>
-                <span>Concluir</span>
-              </button>
+              <ng-container *ngIf="element.status !== 'COMPLETED'">
+                <button mat-menu-item (click)="edit(element)" *hasPermission="'edit-ProcessDeadline'">
+                  <mat-icon
+                    class="icon-size-4 text-gray-600"
+                    svgIcon="edit"
+                  ></mat-icon>
+                  <span>Editar</span>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="element.status !== 'COMPLETED'">
+                <button mat-menu-item (click)="finished(element)">
+                  <mat-icon
+                    class="icon-size-4 text-gray-600"
+                    svgIcon="check"
+                  ></mat-icon>
+                  <span>Concluir</span>
+                </button>
+              </ng-container>
               <button mat-menu-item (click)="removeDialog(element)" *hasPermission="'remove-ProcessDeadline'">
                 <mat-icon
                   class="icon-size-4 text-gray-600"

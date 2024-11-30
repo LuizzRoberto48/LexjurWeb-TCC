@@ -7,7 +7,7 @@ import { HeaderContentModule } from '@components/header-content/header-content.m
 import localePt from '@angular/common/locales/pt';
 import { routes } from './exporter.routing';
 import { ExporterComponent } from './exporter.component';
-import { SearchProcessModule } from 'app/modules/process/components/search-process.module';
+import { SearchProcessModule } from 'app/modules/process/components/search-process-list/search-process.module';
 
 
 registerLocaleData(localePt);

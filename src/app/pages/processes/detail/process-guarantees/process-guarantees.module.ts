@@ -10,7 +10,6 @@ import { GlobalModule } from 'app/shared/global.module';
 import { BreadCrumbModule } from '@components/breadcrumb/breadcrumb.module';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FilesModule } from 'app/modules/process-files/components/files.module';
-import { UploadProcessFileService } from 'app/modules/process-files/services/upload-process.service';
 import { ProcessGuaranteesComponent } from './process-guarantees.component';
 import localePt from '@angular/common/locales/pt';
 import { ProcessGuaranteeFormComponent } from './detail/form/process-guarantee-form.component';
@@ -82,7 +81,6 @@ const routes: Routes = [
     NgxMaskDirective,
   ],
   providers: [
-    UploadProcessFileService,
     ProcessGuaranteeService,
     provideNgxMask(),
     provideEnvironmentNgxMask(maskConfig),

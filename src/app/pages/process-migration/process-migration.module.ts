@@ -5,10 +5,11 @@ import { ProcessMigrationComponent } from './process-migration.component';
 import { Route, RouterModule } from '@angular/router';
 import { GlobalModule } from 'app/shared/global.module';
 import { HeaderContentModule } from '@components/header-content/header-content.module';
-import { SearchProcessModule } from 'app/modules/process/components/search-process.module';
 import { MigrationProcessFormComponent } from './migration-form/migration-form.component';
 import { GlDialogModule } from '@components/gl-dialog/gl-dialog.module';
 import { FuseLoadingBarModule } from '@fuse/components/loading-bar';
+import { ProcessesModule } from '../processes/processes.module';
+import { SearchProcessModule } from 'app/modules/process/components/search-process-list/search-process.module';
 
 export const routes: Route[] = [
   {
@@ -32,7 +33,7 @@ export const routes: Route[] = [
     HeaderContentModule,
     SearchProcessModule,
     GlDialogModule,
-    FuseLoadingBarModule
+    FuseLoadingBarModule,
   ]
 })
 export class ProcessMigrationModule { }

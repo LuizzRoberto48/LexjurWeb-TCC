@@ -15,7 +15,7 @@ import { IConfig } from 'ngx-mask';
 import { GlobalModule } from 'app/shared/global.module';
 import { FormProcessService } from 'app/modules/process/services/form-process.service';
 import { HeaderContentModule } from '@components/header-content/header-content.module';
-import { SearchProcessModule } from 'app/modules/process/components/search-process.module';
+import { SearchProcessModule } from 'app/modules/process/components/search-process-list/search-process.module';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -37,5 +37,8 @@ const maskConfig: Partial<IConfig> = {
     provideEnvironmentNgxMask(maskConfig),
     BreadcrumbService,
   ],
+  exports:[
+    ListProcessComponent
+  ]
 })
 export class ProcessesModule {}

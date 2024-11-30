@@ -11,7 +11,7 @@ import { DeadlineTrackerService } from 'app/modules/deadline-trackers/deadline-t
 import { IDeadlineTracker } from 'app/modules/deadline-trackers/model/deadline-tracker.model';
 import { TargetFiles } from 'app/modules/process-files/models/upload-process-files';
 import { UploadProcessFileService } from 'app/modules/process-files/services/upload-process.service';
-import { Observable, map, of, tap } from 'rxjs';
+import { Observable, Subscription, map, of, tap } from 'rxjs';
 
 @Component({
   selector: 'schedule-detail',
@@ -24,6 +24,7 @@ export class DeadlineTrackerDetailComponent implements OnInit, AfterViewInit {
   target: { name: string; id: number } = { name: '', id: null };
   $processNumber: Observable<string>;
   deadline: IDeadlineTracker = {} as IDeadlineTracker;
+  $subs: Subscription[] = [];
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -32,7 +33,6 @@ export class DeadlineTrackerDetailComponent implements OnInit, AfterViewInit {
     public uploadService: UploadProcessFileService,
   ) {
     this.editMode();
-    this.findProcessNumberFromTarget();
     this.uploadService.sendFinishedFile(false);
   }
 
@@ -52,16 +52,22 @@ export class DeadlineTrackerDetailComponent implements OnInit, AfterViewInit {
 
   findProcessNumberFromTarget() {
     if (!this.id) return;
-    this.$processNumber = this.deadlineService.findById(this.id).pipe(
-      tap((res) => {
-        this.target.id = res.id;
-        this.deadline = res;
-        this.cdr.detectChanges();
-      }),
-      map((res) => {
-        return res?.resource ? res.resource.number : res.process.caseNumber;
-      }),
-    );
+    const subs = this.deadlineService
+      .findById(this.id)
+      .pipe(
+        tap((res) => {
+          this.target.id = res.id;
+          this.deadline = res;
+          this.cdr.detectChanges();
+        }),
+        map((res) => {
+          this.$processNumber = res?.resource
+            ? res.resource.number
+            : res.process.caseNumber;
+        }),
+      )
+      .subscribe();
+    this.$subs.push(subs);
   }
 
   onUpdate(deadline: IDeadlineTracker) {
@@ -89,5 +95,9 @@ export class DeadlineTrackerDetailComponent implements OnInit, AfterViewInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.$subs.forEach((s) => s.unsubscribe());
   }
 }

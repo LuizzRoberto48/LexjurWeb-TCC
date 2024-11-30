@@ -1,6 +1,6 @@
-<div class="flex flex-col flex-auto p-2 md:p-5">
-  <div class="flex items-center justify-between sticky top-0 bg-white z-10 p-2 md:p-5">
-    <p class="font-semibold">{{text}}</p>
+<div class="flex flex-col flex-auto p-3 md:p-5">
+  <div class="flex items-center justify-between sticky top-0 bg-white z-10">
+    <p class="font-semibold text-gray-600 text-xl">{{text}}</p>
     <div class="flex items-center ">
       <!-- More menu -->
       <button mat-icon-button [matMenuTriggerFor]="moreMenu" *ngIf="uploadFile">
@@ -12,7 +12,7 @@
           <span>Remover</span>
         </button>
       </mat-menu>
-      <a mat-icon-button (click)="close()">
+      <a mat-icon-button (click)="dialogRef.close()">
         <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
       </a>
     </div>

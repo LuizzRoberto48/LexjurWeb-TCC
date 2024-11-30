@@ -62,10 +62,10 @@ export class UploadFileComponent {
     uploadType.label = file.name;
     return uploadType;
   }
-
+  
   acceptedFile(file: File) {
     const found = this.acceptedTypes.find(
-      (accepted) => accepted.accept == file.type,
+      (accepted) => accepted.accept.includes(file.type),
     );
     if (!found) {
       this.notification.danger('Extensão não permitida');

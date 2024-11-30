@@ -11,10 +11,6 @@ export class DeadlineTrackerInfoComponent {
   @Input() info:IDeadlineTracker;
   constructor(private location: Location){}
 
-  ngOnInit() {
-    
-  }
-
   back() {
     this.location.back();
   }

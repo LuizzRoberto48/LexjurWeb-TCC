@@ -56,7 +56,7 @@ const statusClassMappings: { [key in ProgressStatus]: StatusClass } = {
     },
   },
   COMPLETED: {
-    label: 'Completo',
+    label: 'Concluído',
     cssClass: {
       'bg-green-200': true,
       'text-green-800': true,

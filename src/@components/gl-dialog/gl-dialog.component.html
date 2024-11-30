@@ -1,6 +1,6 @@
 <div class="container">
-  <div class="header bg-gray-50 dark:bg-black dark:bg-opacity-10" mat-dialog-title>
-    <h2 *ngIf="title">{{title}}</h2>
+  <div class="header dark:bg-black border-solid border-inherit" mat-dialog-title>
+    <h2 *ngIf="title" class="text-xl p-5 text-gray-600 font-semibold tracking-wide">{{title}}</h2>
     <ng-container *ngIf="!title">
       <ng-content select="[header]"></ng-content>
     </ng-container>
@@ -10,7 +10,7 @@
   </div>
   <ng-container *ngIf="hasBtn">
     <div mat-dialog-actions
-    class="flex items-center justify-center sm:justify-end px-6 py-4 space-x-3 bg-gray-50 dark:bg-black dark:bg-opacity-10">
+    class="flex items-center justify-center sm:justify-end p-5 space-x-3  border-solid border-inherit">
     <button class="btn btn-cancel" (click)="cancel()" mat-stroked-button>{{cancelText}}</button>
     <button class="ml-4" mat-flat-button [color]="'primary'" (click)="confirm()">
       <span class="ml-2 mr-1">{{confirmText}}</span>

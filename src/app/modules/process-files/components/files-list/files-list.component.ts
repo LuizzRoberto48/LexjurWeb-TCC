@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ProcessService } from 'app/modules/process/services/process.service';
 import { Observable, Subscription, map, switchMap, tap } from 'rxjs';
 import {
@@ -11,7 +11,9 @@ import { findAndReplaceFromArray } from 'app/global/utils/str-manipulations';
 import { UploadFileService } from '@components/upload-file/upload-file.service';
 import { UploadType } from '@components/upload-file/upload.model';
 import { FuseLoadingService } from '@fuse/services/loading';
-import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { FilesFormComponent } from '../files-form/files-form.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 export const ALL = 'TODOS';
 @Component({
@@ -19,23 +21,26 @@ export const ALL = 'TODOS';
   templateUrl: './files-list.component.html',
 })
 export class FilesListComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator: any 
+  
   @Input() target: { name: TargetFiles; id: number };
   @Input() isFilterTarget: boolean = true;
   @Input() $processNumber: Observable<string>;
   @Input() isCreated: boolean = false;
-  @Input() isSearchInput:boolean = false;
+  @Input() isSearchInput: boolean = false;
   @Input() isFinished = false;
-  @Input() title = 'Meus arquivos'
-  @Input() minHeight = '66vh'
-   
+  @Input() title = 'Meus arquivos';
+  @Input() minHeight = '66vh';
+
   isDownloading: boolean = false;
-  isOpened = false;
   $processId: Observable<number> = new Observable();
   processId: number;
   allFiles: GetUploadFile[] = [];
   selectedFiles: GetUploadFile[] = [];
   selectedTargets: TargetFiles[] = [TargetFiles.TODOS];
+  paginatedFiles: GetUploadFile[] = [];
   subs: Subscription[] = [];
+  pageSize = 15
 
   constructor(
     private processService: ProcessService,
@@ -43,6 +48,7 @@ export class FilesListComponent implements OnInit {
     private uploadFile: UploadFileService,
     private loading: FuseLoadingService,
     private cdr: ChangeDetectorRef,
+    public dialog: MatDialog,
   ) {
     this.$getProcess();
     this.eventDownloadFromCard();
@@ -50,7 +56,7 @@ export class FilesListComponent implements OnInit {
 
   ngOnInit() {
     this.uploadProcessFile.currentTarget = this.target;
-    this.uploadProcessFile.$currentProcessNumber = this.$processNumber; //pode ser numero do processo ou do recurso
+    this.uploadProcessFile.$currentProcessNumber = this.$processNumber;
     this.findFiles();
     this.updatedFilesOnRealTime();
   }
@@ -107,6 +113,7 @@ export class FilesListComponent implements OnInit {
           this.uploadProcessFile.file = res;
           this.selectedTargets = [TargetFiles.TODOS];
           this.selectedFiles = this.allFiles;
+          this.openDialog()
         },
       });
     this.subs.push(subs);
@@ -125,6 +132,7 @@ export class FilesListComponent implements OnInit {
     switch (res.method) {
       case 'create':
         this.allFiles.push(res.file);
+        this.cdr.detectChanges()
         break;
       case 'update':
         this.allFiles = findAndReplaceFromArray(
@@ -133,9 +141,11 @@ export class FilesListComponent implements OnInit {
           res.file.id,
           res.file,
         );
+        this.cdr.detectChanges()
         break;
       case 'delete':
         this.allFiles = this.allFiles.filter((file) => file.id !== res.file.id);
+        this.cdr.detectChanges()
         break;
     }
   }
@@ -162,8 +172,10 @@ export class FilesListComponent implements OnInit {
         ),
       )
       .subscribe((res: GetUploadFile[]) => {
+        
         this.allFiles = res;
         this.selectedFiles = this.allFiles;
+        this.updatePaginatedFiles()
         this.cdr.detectChanges()
       });
   }
@@ -173,6 +185,16 @@ export class FilesListComponent implements OnInit {
     const currentValue = event.source.value;
     this.btnRules(currentValue);
     this.filterFilesByChangedTarget(checkedValues, currentValue);
+  }
+
+  updatePaginatedFiles(): void {
+    const startIndex = (this.paginator?.pageIndex * this.paginator?.pageSize) || 0;
+    const endIndex = (startIndex + this.paginator?.pageSize) || this.pageSize;
+    this.paginatedFiles = this.selectedFiles.slice(startIndex, endIndex);
+  }
+
+  onPageChange(): void {
+    this.updatePaginatedFiles();
   }
 
   btnRules(currentTarget) {
@@ -199,10 +221,21 @@ export class FilesListComponent implements OnInit {
   }
 
   newFile() {
-    this.isOpened = true;
     this.uploadProcessFile.file = null;
     this.selectedTargets = [TargetFiles.TODOS];
     this.selectedFiles = this.allFiles;
+    this.openDialog();
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(FilesFormComponent, {
+      data: { processId: this.processId, uploadFile: this.uploadFile },
+      minWidth: '50vw',
+      minHeight: '30vw',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) this.fetchFilesByTarget();
+    });
   }
 
   ngOnDestroy() {

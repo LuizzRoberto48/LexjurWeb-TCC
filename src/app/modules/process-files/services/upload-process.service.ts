@@ -23,7 +23,7 @@ import { getLastIndex } from 'app/global/utils/str-manipulations';
 import { UploadFileService } from '@components/upload-file/upload-file.service';
 
 @Injectable({
-  providedIn: 'any',
+  providedIn: 'root',
 })
 export class UploadProcessFileService {
   private currentFile$: BehaviorSubject<GetUploadFile> = new BehaviorSubject(

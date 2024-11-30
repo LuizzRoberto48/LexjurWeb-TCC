@@ -2,8 +2,9 @@
   class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden mx-6 my-8"
   style="min-height: 77vh !important"
 >
-  <ng-container *ngIf="target.id" >
+  <ng-container *ngIf="target.id">
     <files-list
+      style="padding: 20px 24px"
       [isFilterTarget]="false"
       [target]="target"
       [$processNumber]="$processNumber"
@@ -14,10 +15,10 @@
   </ng-container>
 
   <div class="flex flex-col px-8">
-    <mat-form-field class="flex-auto" >
+    <mat-form-field class="flex-auto">
       <mat-label>Observação de conclusão</mat-label>
       <textarea
-      [(ngModel)]="finishedNote"
+        [(ngModel)]="finishedNote"
         matInput
         cdkTextareaAutosize
         [cdkAutosizeMinRows]="2"
@@ -33,7 +34,11 @@
     >
       Voltar
     </button>
-    <button class="max-w-50 bg-green-600 text-white" mat-flat-button (click)="send()">
+    <button
+      class="max-w-50 bg-green-600 text-white"
+      mat-flat-button
+      (click)="send()"
+    >
       <span>Concluir agendamento</span>
     </button>
   </div>
