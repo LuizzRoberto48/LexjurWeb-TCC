@@ -22,40 +22,14 @@ import { Subscription } from 'rxjs';
   templateUrl: './list-process.component.html',
 })
 export class ListProcessComponent {
-  length = 0;
-  pageSize = 12;
-  pageIndex = 1;
-  pageSizeOptions = [12, 24, 36];
-
-  $subs: Subscription[] = [];
-  coreName: string = '';
-  filterProcess: { id?: number; value: string; name: string }[] = [];
-  pageEvent: PageEvent;
-  recentTransactionsDataSource: MatTableDataSource<any> =
-    new MatTableDataSource();
-  recentTransactionsTableColumns: string[] = [
-    'caseNumber',
-    'oldCaseNumber',
-    'subject',
-    'lawyer',
-    'distributionDate',
-    'quoteDate',
-    'instance',
-    'causeValue',
-    'action',
-  ];
-
-  constructor(
-    public route: Router,
-    private processService: ProcessService,
-    private coreService: CoreService,
-    private __confirmationService: FuseConfirmationService,
-    private notification: NotificationService,
-  ) {}
+  
+  processParams:any
+ 
+  constructor(public route: Router) {}
 
   ngOnInit() {
-    this.recentTransactionsDataSource.data = [];
-    this.getCore();
+    
+  //his.getCore();
   }
 
   /*TODO: Ao mudar a página o filtro de busca é perdido */
@@ -63,7 +37,7 @@ export class ListProcessComponent {
     const status = event.find((ev) => ev.name == 'processStatus' && ev.value);
     const insideLawyer = event.find((ev) => ev.name == 'insideLawyerId' && ev.value);
     const rangeDate = event.find((ev) => ev.name == 'rangeDate' && ev.value);
-    const body = {
+    this.processParams = {
       ...(insideLawyer?.value && { insideLawyer: insideLawyer.value }),
       ...(status && {
         status: getEnumKeyByEnumValue(ProcessStatus, status.value),
@@ -71,69 +45,5 @@ export class ListProcessComponent {
       ...(rangeDate?.value?.endDate && { startDate: rangeDate.value.startDate }),
       ...(rangeDate?.value?.endDate && { endDate: rangeDate.value.endDate }),
     };
-
-    this.getCore(body)
-  }
-
-  getCore(params = {}) {
-    const paginator: Paginator = { page: this.pageIndex, size: this.pageSize };
-    const allParams = {...paginator, ...params}
-    
-    const subs = this.coreService.$obsevableCore.subscribe((res) => {
-      if (res?.id) {
-        this.coreName = res.name;
-        this.getListByCore(res.id, allParams);
-      }
-    });
-    this.$subs.push(subs);
-  }
-
-  editProcess(process: GetProcess) {
-    this.route.navigate([`processos/edit/${process.id}`]);
-  }
-
-  getListByCore(coreId: number, queryParams: {}) {
-    queryParams = {
-      ...queryParams,
-      coreId
-    }
-    this.processService.getProcessByCore(queryParams).subscribe({
-      next: (res: GetProcessPageable) => {
-        this.length = res.totalItems;
-        this.recentTransactionsDataSource.data = res.process;
-      },
-    });
-  }
-
-  toDetail(process) {
-    this.route.navigate([`/processos/detail/${process.id}`]);
-  }
-
-  handlePageEvent(e: PageEvent) {
-    this.pageIndex = e.pageIndex + 1;
-    this.pageSize = e.pageSize;
-    this.getCore();
-  }
-
-  removeProcessDialog(process: Process): void {
-    const dialogRef = this.__confirmationService.open(configDialogResource());
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result == 'confirmed') {
-        this.remove(process.id);
-      }
-    });
-  }
-
-  remove(id: number) {
-    this.processService.delete(id).subscribe({
-      next: () => {
-        this.notification.success('processo removido com sucesso');
-        this.getCore();
-      },
-    });
-  }
-
-  ngOnDestroy() {
-    this.$subs.forEach((s) => s.unsubscribe());
   }
 }

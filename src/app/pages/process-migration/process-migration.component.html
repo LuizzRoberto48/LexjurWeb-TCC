@@ -10,152 +10,17 @@
     [isExpandable]="false"
     (emitSearchList)="searchList($event)"
     [searchType]="'process'"
-    [displayControls]="['processStatus', 'rangeDate']"
+    [displayControls]="['processStatus', 'insideLawyerId', 'rangeDate']"
     [hasFilterBtn]="true"
   ></search-process>
-  <div class="flex items-center justify-center mt-4 mx-5" *ngIf="selection.hasValue()">
-    <button mat-raised-button matSuffix [color]="'primary'" class="w-full" (click)="migrateProcess()">
+  <div class="flex items-center justify-center mt-4 mx-5" *ngIf="migrationTable.selection.hasValue()">
+    <button mat-raised-button matSuffix [color]="'primary'" class="w-full" (click)="migrateProcess(migrationTable.selection._selected)">
       <span class="flex items-center gap-2">
         Migrar processos selecionado(s)
         <mat-icon>swap_horiz</mat-icon>
       </span>
     </button>
   </div>
-  <div
-    class="xl:col-span-2 flex flex-col flex-auto bg-card shadow sm:rounded-2xl overflow-hidden px-5 py-3 sm:mx-5 h-full overflow-x-auto my-4"
-  > 
-    <div class="overflow-x-auto mx-6 h-full py-5">
-     
-      <table mat-table [dataSource]="dataSource">
-        <!-- Checkbox Column -->
-        <ng-container matColumnDef="select">
-          <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox
-              color="primary"
-              (change)="$event ? toggleAllRows() : null"
-              [checked]="selection.hasValue() && isAllSelected()"
-              [indeterminate]="selection.hasValue() && !isAllSelected()"
-            >
-            </mat-checkbox>
-          </th>
-          <td mat-cell *matCellDef="let row">
-            <mat-checkbox
-              color="primary"
-              (click)="$event.stopPropagation()"
-              (change)="$event ? selection.toggle(row) : null"
-              [checked]="selection.isSelected(row)"
-            >
-            </mat-checkbox>
-          </td>
-        </ng-container>
-
-        <!-- Position Column -->
-        <ng-container matColumnDef="caseNumber">
-          <th mat-header-cell *matHeaderCellDef>Número do Processo</th>
-          <td mat-cell *matCellDef="let element">
-            <span
-              class="inline-flex items-center px-2.5 py-0.5 rounded-full tracking-wide"
-            >
-              {{ element?.caseNumber }}
-            </span>
-          </td>
-        </ng-container>
-
-        <!-- Name Column -->
-        <ng-container matColumnDef="oldCaseNumber">
-          <th mat-header-cell *matHeaderCellDef>Número Antigo do Processo</th>
-          <td mat-cell *matCellDef="let element">
-            <span
-              class="inline-flex items-center px-2.5 py-0.5 rounded-full tracking-wide"
-            >
-              {{ element?.oldCaseNumber }}
-            </span>
-          </td>
-        </ng-container>
-
-        <!-- Weight Column -->
-        <ng-container matColumnDef="lawyer">
-          <th mat-header-cell *matHeaderCellDef>Advogado Responsável</th>
-          <td mat-cell *matCellDef="let element">
-            <span
-              class="inline-flex items-center px-2.5 py-0.5 rounded-full tracking-wide"
-            >
-              {{ element?.insideLawyer.name }}
-            </span>
-          </td>
-        </ng-container>
-
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="distributionDate">
-          <th mat-header-cell *matHeaderCellDef>Data da distribuição</th>
-          <td mat-cell *matCellDef="let element">
-            <span
-              class="inline-flex items-center px-2.5 py-0.5 rounded-full tracking-wide"
-            >
-              <span class="leading-relaxed whitespace-nowrap">{{
-                element?.distributionDate | date : 'dd/MM/yyyy'
-              }}</span>
-            </span>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="quoteDate">
-          <th mat-header-cell mat-sort-header *matHeaderCellDef>
-            Data da citação
-          </th>
-          <td mat-cell *matCellDef="let element">
-            <span
-              class="inline-flex items-center px-2.5 py-0.5 rounded-full tracking-wide"
-            >
-              <span class="leading-relaxed whitespace-nowrap">{{
-                element?.quoteDate | date : 'dd/MM/yyyy'
-              }}</span>
-            </span>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="instance">
-          <th mat-header-cell mat-sort-header *matHeaderCellDef>Instância</th>
-          <td mat-cell *matCellDef="let element">
-            <span
-              class="inline-flex items-center px-2.5 py-0.5 rounded-full tracking-wide"
-            >
-              <span class="leading-relaxed whitespace-nowrap">{{
-                element?.instance
-              }}</span>
-            </span>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="causeValue">
-          <th mat-header-cell mat-sort-header *matHeaderCellDef>
-            Valor da causa
-          </th>
-          <td mat-cell *matCellDef="let element">
-            <span
-              class="inline-flex items-center px-2.5 py-0.5 rounded-full tracking-wide uppercase"
-            >
-              <span class="leading-relaxed whitespace-nowrap">{{
-                element?.causeValue
-              }}</span>
-            </span>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          (click)="selection.toggle(row)"
-        ></tr>
-      </table>
-    </div>
-    <mat-paginator
-      [length]="length"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="pageSizeOptions"
-      (page)="handlePageEvent($event)"
-    >
-    </mat-paginator>
-  </div>
+  
+  <process-table [hasMigration]="true" #migrationTable [filter]="queryParams"></process-table>
 </div>

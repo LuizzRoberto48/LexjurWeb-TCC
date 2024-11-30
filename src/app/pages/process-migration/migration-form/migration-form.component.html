@@ -5,38 +5,11 @@
   <fuse-loading-bar [show]="true"></fuse-loading-bar>
   <form>
     <div class="grid grid-cols-1 gap-6 mt-4 mb-3 p-20">
-      <div class="flex flex-col">
-        <mat-form-field class="block chips">
-          <mat-label>Processos selecionados</mat-label>
-          <mat-chip-grid #chipGrid>
-            <mat-chip-row
-              *ngFor="let field of filterProcessFields"
-              (removed)="removeProcessField(field)"
-              [selectable]="true"
-              [removable]="true"
-            >
-              {{ field.caseNumber }}
-              <button matChipRemove [attr.aria-label]="'remove'">
-                <mat-icon>cancel</mat-icon>
-              </button>
-            </mat-chip-row>
-          </mat-chip-grid>
-          <input
-            class="pb-2 -ml-1 mt-3"
-            #filterInput
-            placeholder="Adicionar uma coluna"
-            [matChipInputFor]="chipGrid"
-            [matAutocomplete]="auto"
-          />
-          <mat-autocomplete
-            #auto="matAutocomplete"
-            (optionSelected)="selectProcessField($event)"
-          >
-            <mat-option *ngFor="let field of processes" [value]="field.id">
-              <p>{{ field.caseNumber }}</p>
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+      <div class="flex flex-col p-3 rounded-lg border-2 border-amber-200">
+        <p class="text-lg font-medium text-amber-900 ">
+          Serão migrados <span class="font-semibold">{{processes.total}} </span>
+          processo(s)
+        </p>
       </div>
       <div class="flex flex-col">
         <mat-form-field class="flex-auto gt-xs:pl-3">

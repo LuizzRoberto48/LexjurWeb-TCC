@@ -16,6 +16,7 @@ import { GlobalModule } from 'app/shared/global.module';
 import { FormProcessService } from 'app/modules/process/services/form-process.service';
 import { HeaderContentModule } from '@components/header-content/header-content.module';
 import { SearchProcessModule } from 'app/modules/process/components/search-process-list/search-process.module';
+import { ProcessTableModule } from 'app/modules/process/components/process-table/process-table.module';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -29,7 +30,8 @@ const maskConfig: Partial<IConfig> = {
     NotificationModule,
     GlobalModule,
     HeaderContentModule,
-    SearchProcessModule
+    SearchProcessModule,
+    ProcessTableModule
   ],
   providers: [
     FormProcessService,

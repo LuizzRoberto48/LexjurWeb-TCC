@@ -34,7 +34,7 @@ export class MigrationProcessFormComponent implements AfterViewInit {
     private cdr: ChangeDetectorRef,
     private notification:NotificationService,
     @Inject(MAT_DIALOG_DATA)
-    public processes: [{ id: number; caseNumber: string }],
+    public processes: { total:number },
     private loadingService: FuseLoadingService
   ) {
     
@@ -43,7 +43,6 @@ export class MigrationProcessFormComponent implements AfterViewInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.getAllCores();
-      this.filterProcessFields = this.processes;
     }, 0);
   }
 
@@ -59,25 +58,6 @@ export class MigrationProcessFormComponent implements AfterViewInit {
   changeCore(coreId: number) {
     this.loadingService.show()
     this.getLaywerByCore(coreId);
-  }
-
-  selectProcessField(event: MatAutocompleteSelectedEvent) {
-    const field = event.option.value;
-
-    const existField = this.processes.find((f) => f.id == field);
-    if (!existField) return;
-
-    const haveField = this.filterProcessFields.some((f) => f.id == field);
-    if (haveField) return;
-
-    this.filterProcessFields.push(existField);
-  }
-
-  removeProcessField(field: { id: number; caseNumber: string }) {
-    this.filterProcessFields = this.filterProcessFields.filter(
-      (f) => f.id != field.id,
-    );
-    this.cdr.detectChanges();
   }
 
   getLaywerByCore(coreId: number) {

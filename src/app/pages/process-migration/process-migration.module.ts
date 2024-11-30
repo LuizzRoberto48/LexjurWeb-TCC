@@ -10,6 +10,7 @@ import { GlDialogModule } from '@components/gl-dialog/gl-dialog.module';
 import { FuseLoadingBarModule } from '@fuse/components/loading-bar';
 import { ProcessesModule } from '../processes/processes.module';
 import { SearchProcessModule } from 'app/modules/process/components/search-process-list/search-process.module';
+import { ProcessTableModule } from 'app/modules/process/components/process-table/process-table.module';
 
 export const routes: Route[] = [
   {
@@ -34,6 +35,7 @@ export const routes: Route[] = [
     SearchProcessModule,
     GlDialogModule,
     FuseLoadingBarModule,
+    ProcessTableModule
   ]
 })
 export class ProcessMigrationModule { }
