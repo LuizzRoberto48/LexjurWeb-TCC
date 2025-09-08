@@ -47,7 +47,7 @@ export class UserPermissionsService extends BaseHttpService<any> {
   }
 
   destroySubs() {
-    this.destroy$.next(); // Emit a value to trigger unsubscription
-    this.destroy$.complete(); // Optionally, complete the subject to ensure it's not used again
+    this.destroy$.next(); 
+    this.destroy$.complete();
   }
 }

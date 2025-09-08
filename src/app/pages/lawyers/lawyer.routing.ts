@@ -1,7 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 import { LawyerComponent } from './lawyer.component';
 import { PermissionsListComponent } from './permissions/list/permissions-list.component';
-import { PERMISSIONID, USERID } from 'app/modules/user/profile/profile-helper';
+import { PERMISSIONID } from 'app/modules/user/profile/profile-helper';
 import { LawyerPermissionFormComponent } from './permissions/form/permission-form.component';
 import { LawyerPermissionsComponent } from './permissions/perimissions.component';
 import { LawyerContainerComponent } from './lawyer-container/lawyer-container.component';

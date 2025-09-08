@@ -76,12 +76,10 @@ export class AuthService {
   check(): Observable<boolean> {
     const accessToken = <string>localStorage.getItem('accessToken');
 
-    // Check if the user is logged in
     if (this._authenticated || accessToken) {
       return of(true);
     }
 
-    // Check the access token availability
     if (!this.accessToken || !accessToken) {
       return of(false);
     }

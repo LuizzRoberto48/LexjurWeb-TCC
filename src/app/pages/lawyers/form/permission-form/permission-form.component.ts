@@ -45,7 +45,7 @@ export class LawyerPermissionFormComponent {
   selectChange(event: MatSelectChange) {
     const found = this.permissions.find((c) => c.id == event.value);
     this.laywerForm.setLocalStorage(found, 'selectedPermissionObj');
-    //this.laywerForm.setPermissionForm()
+    this.laywerForm.setPermissionForm(found);
   }
 
   cbxAdmin() {

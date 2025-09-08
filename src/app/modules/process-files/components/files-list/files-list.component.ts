@@ -93,13 +93,18 @@ export class FilesListComponent implements OnInit {
     this.uploadProcessFile.getFileFromBucket(uploadFile).subscribe({
       next: (res) => {
         this.uploadFile.makeDownload(res.urlFile);
-      },
-      complete: () => {
-        this.loading._setLoadingStatus(
+         this.loading._setLoadingStatus(
           false,
           `processos/detail/${this.processId}/files`,
         );
       },
+      error: (err) => {
+        console.error(err);
+        this.loading._setLoadingStatus(
+          false,
+          `processos/detail/${this.processId}/files`,
+        );
+      }
     });
   }
 

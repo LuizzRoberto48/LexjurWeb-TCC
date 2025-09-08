@@ -54,7 +54,7 @@ export class ProcessAttachedComponent {
   }
 
   openDialog(processes) {
-    const dialogRef = this.dialog.open(SearchModalListComponent, {
+    this.dialog.open(SearchModalListComponent, {
       data: processes,
       minWidth: '40vw',
       minHeight: '30wh',
@@ -163,13 +163,13 @@ export class ProcessAttachedComponent {
   }
 
   processAttachedSearch(params) {
+    console.log(params)
     const coreId = this.core.id;
     const subs = this.process
       .pipe(
         switchMap((process: Process) => {
           const processes$ = this.processService.getProcessByParams(
-            coreId,
-            process.id,
+            
             params,
           );
           return forkJoin({

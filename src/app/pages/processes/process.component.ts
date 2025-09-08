@@ -25,7 +25,7 @@ export class ProcessComponent {
   showBottomSheet() {
     this.auth.check().subscribe((isAuth) => {
       if (isAuth && !this.coreService.localCore)
-        this._bottomSheet.open(CoreSheedList, { disableClose: true });
+        this._bottomSheet.open(CoreSheedList, { disableClose: false });
     });
   }
 }

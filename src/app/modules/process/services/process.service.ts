@@ -64,13 +64,11 @@ export class ProcessService {
   }
 
   getProcessByParams(
-    coreId: number,
-    processId: number,
     query: any,
   ): Observable<any> {
     const params = httpParams(query);
     return this._http.get<any>(
-      `${environment.apiURL}/core/${coreId}/processes/${processId}/search`,
+      `${environment.apiURL}/attached_processes`,
       { params },
     );
   }

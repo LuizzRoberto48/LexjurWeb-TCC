@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { LawyerFormService } from 'app/modules/lawyer/lawyer-form.service';
 import { CompleteLawyer } from 'app/modules/lawyer/model/lawyer.model';
 import { Subscription } from 'rxjs';

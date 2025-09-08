@@ -79,6 +79,19 @@
         </div>
         <div class="flex flex-col">
           <mat-form-field class="flex-auto gt-xs:pl-3">
+            <mat-label>Área do direito</mat-label>
+            <mat-select
+              formControlName="lawAreaId"
+              (selectionChange)="changeLawArea()"
+            >
+              <mat-option [value]="area.id" *ngFor="let area of lawAreas">{{
+                area.name
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+          <mat-form-field class="flex-auto gt-xs:pl-3">
             <mat-label>Origem</mat-label>
             <mat-select
               formControlName="originId"
@@ -119,19 +132,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="flex flex-col">
-          <mat-form-field class="flex-auto gt-xs:pl-3">
-            <mat-label>Área do direito</mat-label>
-            <mat-select
-              formControlName="lawAreaId"
-              (selectionChange)="changeLawArea()"
-            >
-              <mat-option [value]="area.id" *ngFor="let area of lawAreas">{{
-                area.name
-              }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+        
         
         <div class="flex flex-col">
           <mat-form-field class="flex-auto gt-xs:pl-3">
@@ -295,7 +296,7 @@
                 [value]="position"
                 *ngFor="let position of positions"
                 >{{ position }}</mat-option
-              >,
+              >
             </mat-select>
           </mat-form-field>
         </div>

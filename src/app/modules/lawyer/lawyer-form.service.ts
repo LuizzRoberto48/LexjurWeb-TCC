@@ -107,7 +107,7 @@ export class LawyerFormService {
 
   setLocalStorage(value: any, formType: formTypes): void {
     const serializedFormData = JSON.stringify(value);
-    localStorage.setItem(formType, serializedFormData);
+    sessionStorage.setItem(formType, serializedFormData);
   }
 
   getLocalStorage(formType: formTypes) {
@@ -126,12 +126,12 @@ export class LawyerFormService {
   }
 
   clearAllFromLocalStorage() {
-    localStorage.removeItem('basicInfoForm');
-    localStorage.removeItem('addressInfoForm');
-    localStorage.removeItem('coreInfoForm');
-    localStorage.removeItem('permissionInfoForm');
-    localStorage.removeItem('selectedCoresObj');
-    localStorage.removeItem('selectedPermissionObj');
+    sessionStorage.removeItem('basicInfoForm');
+    sessionStorage.removeItem('addressInfoForm');
+    sessionStorage.removeItem('coreInfoForm');
+    sessionStorage.removeItem('permissionInfoForm');
+    sessionStorage.removeItem('selectedCoresObj');
+    sessionStorage.removeItem('selectedPermissionObj');
   }
 
   clearForms() {
