@@ -5,6 +5,7 @@ import { CommonProcessFieldsComponent } from 'app/global/components/search-field
 import { CommonDeadlineFieldsComponent } from 'app/global/components/search-fields/common-deadline-fields/common-deadline-fields.component';
 import { GlobalModule } from 'app/shared/global.module';
 import { SearchProcessService } from 'app/global/components/search-fields/search-fields.service';
+import { ProcessTableModule } from '../process-table/process-table.module';
 
 
 @NgModule({
@@ -14,7 +15,7 @@ import { SearchProcessService } from 'app/global/components/search-fields/search
     CommonProcessFieldsComponent,
     CommonDeadlineFieldsComponent
   ],
-  imports: [GlobalModule],
+  imports: [GlobalModule, ProcessTableModule],
   exports: [SearchProcessNewComponent, SearchModalListComponent],
   providers: [SearchProcessService],
 })

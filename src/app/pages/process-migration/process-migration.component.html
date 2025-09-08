@@ -11,8 +11,8 @@
     (emitSearchList)="searchList($event)"
     [searchType]="'process'"
     [displayControls]="['processStatus', 'insideLawyerId', 'rangeDate']"
-    [hasFilterBtn]="true"
-  ></search-process>
+    [hasFilterBtn]="true">
+  </search-process>
   <div class="flex items-center justify-center mt-4 mx-5" *ngIf="migrationTable.selection.hasValue()">
     <button mat-raised-button matSuffix [color]="'primary'" class="w-full" (click)="migrateProcess(migrationTable.selection._selected)">
       <span class="flex items-center gap-2">

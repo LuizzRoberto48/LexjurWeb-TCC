@@ -200,7 +200,7 @@ export class UploadProcessFileService {
     uploadFile: GetUploadFile,
   ): Observable<{ file: File; urlFile: string }> {
     const fileProperties = this.findCardFile(uploadFile);
-    return this.downloadFile(uploadFile.bucketKey).pipe(
+    return this.downloadFile(uploadFile?.bucketKey).pipe(
       switchMap((res: { url: string }) => {
         const urlFile = res.url;
         return this.fetchFileAsObservable(

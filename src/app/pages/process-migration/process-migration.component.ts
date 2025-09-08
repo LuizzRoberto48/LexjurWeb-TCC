@@ -38,7 +38,7 @@ export class ProcessMigrationComponent {
     this.dialog.open(MigrationProcessFormComponent, {
       width: '90vw',
       height: '90vh',
-      data: {total:selectedProcess.length},
+      data: {total:selectedProcess.length, processes: selectedProcess},
       panelClass: ['migration-process'],
     });
     

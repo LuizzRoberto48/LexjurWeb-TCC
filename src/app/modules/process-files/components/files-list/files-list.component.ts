@@ -21,8 +21,8 @@ export const ALL = 'TODOS';
   templateUrl: './files-list.component.html',
 })
 export class FilesListComponent implements OnInit {
-  @ViewChild(MatPaginator) paginator: any 
-  
+  @ViewChild(MatPaginator) paginator: any
+
   @Input() target: { name: TargetFiles; id: number };
   @Input() isFilterTarget: boolean = true;
   @Input() $processNumber: Observable<string>;
@@ -93,7 +93,7 @@ export class FilesListComponent implements OnInit {
     this.uploadProcessFile.getFileFromBucket(uploadFile).subscribe({
       next: (res) => {
         this.uploadFile.makeDownload(res.urlFile);
-         this.loading._setLoadingStatus(
+        this.loading._setLoadingStatus(
           false,
           `processos/detail/${this.processId}/files`,
         );
@@ -177,7 +177,7 @@ export class FilesListComponent implements OnInit {
         ),
       )
       .subscribe((res: GetUploadFile[]) => {
-        
+
         this.allFiles = res;
         this.selectedFiles = this.allFiles;
         this.updatePaginatedFiles()
@@ -190,6 +190,7 @@ export class FilesListComponent implements OnInit {
     const currentValue = event.source.value;
     this.btnRules(currentValue);
     this.filterFilesByChangedTarget(checkedValues, currentValue);
+    this.updatePaginatedFiles()
   }
 
   updatePaginatedFiles(): void {
@@ -203,6 +204,7 @@ export class FilesListComponent implements OnInit {
   }
 
   btnRules(currentTarget) {
+    this.paginatedFiles = []
     if (currentTarget === ALL) {
       this.selectedTargets = [TargetFiles.TODOS];
     } else {
@@ -215,8 +217,8 @@ export class FilesListComponent implements OnInit {
     currentValue == ALL
       ? (this.selectedFiles = this.allFiles)
       : (this.selectedFiles = this.allFiles.filter((file) =>
-          targets.includes(file.target),
-        ));
+        targets.includes(file.target),
+      ));
   }
 
   private unmarkAllButton(): void {

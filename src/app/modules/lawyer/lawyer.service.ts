@@ -69,7 +69,7 @@ export class LawyerService {
     return this._http.put(`${environment.apiURL}/lawyers/${id}`, info);
   }
 
-  updateProcesses(newLawyerId:number, body:{processIds:number[]}) {
+  updateProcesses(newLawyerId:number, body:{processIds:number[], currentLawyerIds:number[]}) {
     return this._http.put(`${environment.apiURL}/lawyers/processes/${newLawyerId}`, body);
   }
 

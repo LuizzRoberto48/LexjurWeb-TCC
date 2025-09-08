@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 
@@ -49,36 +49,24 @@ export class ProcessAttachedComponent {
     private __confirmationService: FuseConfirmationService,
     private notification: NotificationService,
     private coreService: CoreService,
+    public route: Router,
   ) {
     this.findByProcess();
   }
 
-  openDialog(processes) {
-    this.dialog.open(SearchModalListComponent, {
-      data: processes,
-      minWidth: '40vw',
-      minHeight: '30wh',
+  open() {
+    this.route.navigate(['new'], {
+      relativeTo: this._activatedRoute.parent,
+      queryParams: { processId: this.processId },
     });
   }
-
-  ngOnInit() {
-    this.getUpdatedAttachedProcess();
-  }
-
-  getUpdatedAttachedProcess() {
-    this.attachedProcess.$updateLinkedProcess.subscribe({
-      next: (res: GetAttachedProcess) => {
-        this.findByProcess();
-      },
-    });
-  }
-
+  
   get $process() {
     return this.processService.$obsevableProcess;
   }
 
   goTo(attachedProcess: GetAttachedProcess) {
-    window.open(`/processos/detail/${attachedProcess.id}`, '_blank');
+    window.open(`/processos/detail/${attachedProcess.processId}`, '_blank');
   }
 
   findByProcess() {
@@ -94,7 +82,6 @@ export class ProcessAttachedComponent {
         this.dataSource.data = attached;
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-        //this.dataSource.filterPredicate = this.customFilterPredicate;
       });
 
     this.$subs.push(subs);
@@ -128,69 +115,6 @@ export class ProcessAttachedComponent {
     return this.processService.$obsevableProcess;
   }
 
-  openListDialog(processes) {
-    const dialog = this.dialog.open(SearchModalListComponent, {
-      data: processes,
-      minWidth: '40vw',
-      minHeight: '30wh',
-    });
-
-    dialog.afterClosed().subscribe({
-      next:() => {
-        this.findByProcess()
-      }
-    })
-  }
-
-  searchList(event: any[]) {
-    const id = event.find((ev) => ev.name == 'id' && ev.value);
-    const caseNumber = event.find((ev) => ev.name == 'caseNumber' && ev.value);
-    const uf = event.find((ev) => ev.name == 'uf' && ev.value);
-    const county = event.find((ev) => ev.name == 'county' && ev.id);
-    const client = event.find((ev) => ev.name == 'client' && ev.id);
-    const body = {
-      ...(id && { id: id.value }),
-      ...(caseNumber && { caseNumber: caseNumber.value }),
-      ...(uf && { uf: uf.value }),
-      ...(county && { county: county.id }),
-      ...(client && { client: client.id }),
-    };
-    if (Object.keys(body).length === 0) {
-      this.notification.waning('Adicione ao menos um filtro para sua busca');
-      return;
-    }
-    this.processAttachedSearch(body);
-  }
-
-  processAttachedSearch(params) {
-    console.log(params)
-    const coreId = this.core.id;
-    const subs = this.process
-      .pipe(
-        switchMap((process: Process) => {
-          const processes$ = this.processService.getProcessByParams(
-            
-            params,
-          );
-          return forkJoin({
-            currentProcessId: of(process.id),
-            processes: processes$,
-          });
-        }),
-      )
-      .subscribe({
-        next: (obj: { currentProcessId: number; processes: Process[] }) => {
-          const { currentProcessId, processes } = obj;
-
-          if (!processes.length) {
-            this.notification.waning('Não foi encontrado nenhum processo');
-            return;
-          }
-          this.openListDialog({ processes, currentProcessId });
-        },
-      });
-    this.$subs.push(subs);
-  }
 
   ngOnDestroy() {
     this.$subs.forEach((s) => s.unsubscribe());

@@ -48,8 +48,8 @@ export class DeadlineTrackerService extends BaseHttpService<any> {
     if (date instanceof DateTime) {
       isoDate = date
         .set({
-          hour: +hour ?? 0,
-          minute: +minute ?? 0,
+          hour: +hour || 0,
+          minute: +minute || 0,
         })
         .toUTC()
         .toISO();

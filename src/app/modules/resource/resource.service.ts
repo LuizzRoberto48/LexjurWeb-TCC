@@ -10,7 +10,6 @@ import {
 import { FormGroup } from '@angular/forms';
 import { ProcessService } from '../process/services/process.service';
 import { Process } from '../process/models/process.model';
-import { ParamsModel } from 'app/global/base-http/base-http.model';
 
 export const CORE = 'CORE';
 

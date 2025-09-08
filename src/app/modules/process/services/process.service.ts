@@ -66,6 +66,7 @@ export class ProcessService {
   getProcessByParams(
     query: any,
   ): Observable<any> {
+    console.log(query)
     const params = httpParams(query);
     return this._http.get<any>(
       `${environment.apiURL}/attached_processes`,

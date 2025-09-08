@@ -1,19 +1,18 @@
 import { DialogRef } from '@angular/cdk/dialog';
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   Inject,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormControl } from '@angular/forms';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { FuseLoadingService } from '@fuse/services/loading';
 import { Core } from 'app/modules/cores/model/get-core';
 import { CoreService } from 'app/modules/cores/service/core.service';
 import { LawyerService } from 'app/modules/lawyer/lawyer.service';
 import { GetLawyer } from 'app/modules/lawyer/model/lawyer.model';
+import { GetProcess, Process } from 'app/modules/process/models/process.model';
 
 @Component({
   selector: 'app-migration-form',
@@ -23,7 +22,6 @@ import { GetLawyer } from 'app/modules/lawyer/model/lawyer.model';
 export class MigrationProcessFormComponent implements AfterViewInit {
   cores: Core[] = [];
   laywers: GetLawyer[] = [];
-  filterProcessFields: { id: number; caseNumber: string }[] = [];
   selectedLawyerForm: FormControl = new FormControl();
   isLoading = false
 
@@ -31,13 +29,12 @@ export class MigrationProcessFormComponent implements AfterViewInit {
     private coreService: CoreService,
     private lawyerService: LawyerService,
     public dialogRef: DialogRef<any>,
-    private cdr: ChangeDetectorRef,
     private notification:NotificationService,
     @Inject(MAT_DIALOG_DATA)
-    public processes: { total:number },
+    public item: { total:number, processes:GetProcess[] },
     private loadingService: FuseLoadingService
   ) {
-    
+    console.log(item.processes[0].insideLawyer)
   }
 
   ngAfterViewInit() {
@@ -47,7 +44,6 @@ export class MigrationProcessFormComponent implements AfterViewInit {
   }
 
   getAllCores() {
-    this.filterProcessFields = []
     this.coreService.getAll().subscribe({
       next: (cores: Core[]) => {
         this.cores = cores;
@@ -70,13 +66,12 @@ export class MigrationProcessFormComponent implements AfterViewInit {
 
   migrate() {
     const lawyerId = this.selectedLawyerForm.value;
-    const processIds = this.filterProcessFields.map((p) => p.id);
-    this.lawyerService.updateProcesses(lawyerId, { processIds }).subscribe({
+    const currentLawyerIds = this.item.processes.map(p=> p.insideLawyer.id);
+    const processIds = this.item.processes.map(p=> p.id);
+    this.lawyerService.updateProcesses(lawyerId, { processIds, currentLawyerIds }).subscribe({
       next: (res) => {
         this.notification.success('Processo(s) migrados com sucesso');
         this.dialogRef.close();
-        this.filterProcessFields = []
-        
       },
     });
   }
