@@ -7,16 +7,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '@fuse/components/notification/notification.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-
 import { GetAttachedProcess } from 'app/modules/attached-process/attached-process.model';
 import { AttachedProcessService } from 'app/modules/attached-process/attached-process.service';
 import { LocalCore } from 'app/modules/cores/model/get-core';
 import { CoreService } from 'app/modules/cores/service/core.service';
-import { SearchModalListComponent } from 'app/modules/process/components/search-process-list/search-modal-list.component';
 import { Process } from 'app/modules/process/models/process.model';
 import { ProcessService } from 'app/modules/process/services/process.service';
 import { configDialogResource } from 'app/modules/process/utils';
-import { Observable, Subscription, forkJoin, of, switchMap } from 'rxjs';
+import { Observable, Subscription, switchMap } from 'rxjs';
 
 @Component({
   selector: 'process-attached',
@@ -60,7 +58,7 @@ export class ProcessAttachedComponent {
       queryParams: { processId: this.processId },
     });
   }
-  
+
   get $process() {
     return this.processService.$obsevableProcess;
   }

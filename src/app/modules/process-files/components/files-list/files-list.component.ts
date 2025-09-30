@@ -177,7 +177,7 @@ export class FilesListComponent implements OnInit {
         ),
       )
       .subscribe((res: GetUploadFile[]) => {
-
+        console.log(res)
         this.allFiles = res;
         this.selectedFiles = this.allFiles;
         this.updatePaginatedFiles()

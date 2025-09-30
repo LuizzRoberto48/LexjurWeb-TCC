@@ -1,11 +1,19 @@
 <div class="xl:col-span-2 flex flex-col flex-auto overflow-hidden">
-    <search-process
-        [title]="'Filtrar'"
-        [isExpandable]="true"
-        (emitSearchList)="searchList($event)"
-        [searchType]="'process'"
-        [displayControls]="['processStatus', 'insideLawyerId', 'rangeDate']"
-        [hasFilterBtn]="true"
-      ></search-process>
-      <process-table [filter]="{}"></process-table>
+  <search-process [title]="'Filtrar'" [isExpandable]="true" (emitSearchList)="searchList($event)"
+    [searchType]="'process'" [displayControls]="['processStatus', 'insideLawyerId', 'rangeDate']"
+    [hasFilterBtn]="true"></search-process>
+  <process-table [filter]="processParams" [removeCurrentProcess]="processId"
+    [customActionTemplate]="myActionTemplate"></process-table>
 </div>
+
+<ng-template #myActionTemplate let-process>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="confirmAttach(process)" *hasPermission="'read-Process'">
+      <mat-icon class="icon-size-4 text-gray-600" svgIcon="attachment"></mat-icon>
+      <span>Vincular</span>
+    </button>
+  </mat-menu>
+</ng-template>

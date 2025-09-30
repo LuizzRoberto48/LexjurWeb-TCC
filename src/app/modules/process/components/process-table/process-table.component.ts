@@ -17,11 +17,13 @@ import { SelectionModel } from '@angular/cdk/collections';
   templateUrl: './process-table.component.html',
   styleUrls: ['./process-table.component.scss'],
 })
-export class ProcessTableComponent implements OnInit{
+export class ProcessTableComponent implements OnInit {
 
-  @Input() filter:any = {}
-  @Input() set hasMigration(isMigration:boolean) {
-    if(isMigration) this.columns.unshift('select')
+  @Input() customActionTemplate: any;
+  @Input() filter: any = {}
+  @Input() removeCurrentProcess: number;
+  @Input() set hasMigration(isMigration: boolean) {
+    if (isMigration) this.columns.unshift('select')
   }
 
   length = 0;
@@ -50,17 +52,16 @@ export class ProcessTableComponent implements OnInit{
     private __confirmationService: FuseConfirmationService,
     private notification: NotificationService,
     public route: Router,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.dataSource.data = [];
-    this.getCore();
   }
 
-  ngOnChanges(changes:SimpleChange) {
-    if(changes['filter']?.currentValue)
+  ngOnChanges(changes: SimpleChange) {
+    if (changes['filter']?.currentValue || changes['filter']?.firstChange)
       this.getCore(this.filter || {})
-  
+
   }
 
   handlePageEvent(e: PageEvent) {
@@ -71,8 +72,8 @@ export class ProcessTableComponent implements OnInit{
 
   getCore(params = {}) {
     const paginator: Paginator = { page: this.pageIndex, size: this.pageSize };
-    const allParams = {...paginator, ...params}
-    
+    const allParams = { ...paginator, ...params }
+
     const subs = this.coreService.$obsevableCore.subscribe((res) => {
       if (res?.id) {
         this.getListByCore(res.id, allParams);
@@ -90,6 +91,8 @@ export class ProcessTableComponent implements OnInit{
       next: (res: GetProcessPageable) => {
         this.length = res.totalItems;
         this.dataSource.data = res.process;
+        if (this.removeCurrentProcess)
+          this.dataSource.data = this.removeCurrentProcessFromList(this.dataSource.data);
       },
     });
   }
@@ -118,6 +121,16 @@ export class ProcessTableComponent implements OnInit{
 
   toDetail(process) {
     this.route.navigate([`/processos/detail/${process.id}`]);
+  }
+
+  /**
+ * Remove o processo corrente da lista de processos.
+ * @param processes Lista de processos
+ * @returns Lista sem o processo corrente
+ */
+  removeCurrentProcessFromList(processes: Process[]): Process[] {
+    if (!this.removeCurrentProcess) return processes;
+    return processes.filter(p => p.id !== this.removeCurrentProcess);
   }
 
   isAllSelected() {

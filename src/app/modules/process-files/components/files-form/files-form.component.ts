@@ -109,7 +109,6 @@ export class FilesFormComponent implements OnInit {
         this.getEditProcessNumber();
         /* edit */
         if (file) {
-          console.log(file)
           this.form.controls['id'].setValue(file.id);
           this.uploadFile = file;
           this.fileType.type = this.uploadService.findCardFile(this.uploadFile);
@@ -237,6 +236,10 @@ export class FilesFormComponent implements OnInit {
     }
     this.createFile(sendObj);
     this.dialogRef.close({file:sendObj, method:'create'})
+  }
+
+  clickCloseIcon() {
+    this.dialogRef.close({file:null, method:'update'})
   }
 
   private createFile(obj: CreateUploadProcessFile) {
