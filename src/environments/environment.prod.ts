@@ -3,5 +3,5 @@ export const environment = {
   STORAGE_KEYS: {
     local_user: "LOCAL_USER"
   },
-  apiURL: "https://lexjur-backend.herokuapp.com/api"
+  apiURL: "https://lexjur-backend-81309417994c.herokuapp.com/api"
 };
