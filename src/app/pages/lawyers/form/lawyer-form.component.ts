@@ -86,10 +86,9 @@ export class LawyerFormComponent {
   get info() {
     const basic = this.basicForm.value;
     const address = this.addressForm.value;
-    const cores = this.lawyerForm.getCoresFromLocalStorage('selectedCoresObj');
-    const permission = this.lawyerForm.getCoresFromLocalStorage(
-      'selectedPermissionObj',
-    );
+    const cores = this.coreForm.value; 
+    const permission = this.permissionForm.value;
+
     return { basic, address, cores, permission };
   }
 

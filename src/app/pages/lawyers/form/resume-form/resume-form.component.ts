@@ -33,7 +33,21 @@ export class LawyerResumeFormComponent {
   ngOnInit() {}
 
   get cores() {
-    if (this.info?.cores) return this.info.cores.map((c) => c.name);
+    const data = this.info?.cores;
+ 
+    if (Array.isArray(data)) {
+        return data.map((c: any) => c.name);
+    }
+   
+    if (data && typeof data === 'object') {
+
+        const list = (data as any).nucleos || (data as any).cores || (data as any).selectedCores;
+        if (Array.isArray(list)) {
+            return list.map((c: any) => c.name);
+        }
+    }
+
+    return [];
   }
 
   send() {
@@ -65,16 +79,39 @@ export class LawyerResumeFormComponent {
   }
 
   formToObj() {
-    const { basic, address, cores, permission } = this.info;
+    if (!this.info) {
+      console.error('ERRO: this.info está vazio');
+      return null;
+    }
+
+    const basic = this.info.basic || {} as any;
+    const address = this.info.address || {} as any;
+
+    const coresData = this.info.cores as any;
+
+    let coresList = coresData && coresData.coreId ? coresData.coreId : coresData;
+
+    if (!Array.isArray(coresList)) {
+      coresList = [];
+    }
+
+    const permissionData = this.info.permission as any;
+    const permId = permissionData ? (permissionData.permissionId || permissionData.id) : null;
     const { id, email, birthday, ...rest } = basic;
     const lawyer = {
       ...rest,
       ...(birthday ? { birthday } : {}),
       ...(id ? { id } : {}),
       address,
-      cores: cores.map((c) => +c.id),
-      user: { email, permissionId: +permission.id },
+      
+      cores: coresList.map((c: any) => (typeof c === 'object' ? +c.id : +c)),
+      
+      user: { 
+        email, 
+        permissionId: permId ? +permId : null 
+      },
     };
+    
     return lawyer;
   }
 }
