@@ -69,7 +69,7 @@ export class LawyerListComponent {
             this.list();
             return;
           }
-          if (value.length <= 3) return;
+          if (value.length < 1) return;
           const fields: LawyerFields = {
             lName: value,
             logicalOperator: 'AND',
